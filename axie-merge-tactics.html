@@ -1,0 +1,2214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Axie Merge Tactics</title>
+  <style>
+    :root{
+      --bg:#0f140f;--panel:#1d231b;--panel2:#232c1f;--ink:#eef6e7;--muted:#b4c3a9;
+      --good:#5fdd9a;--bad:#ff7c90;--gold:#ffd76a;--vio:#9a85ff;--cyan:#67e8ff;
+      --hexw:94px;--hexh:82px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;background:
+      radial-gradient(1200px 700px at 20% -10%,#35523055 0%,transparent 65%),
+      radial-gradient(900px 700px at 100% 0%,#56432944 0%,transparent 60%),
+      linear-gradient(180deg,#10150f,#171f16 45%,#0f140f);
+      color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      min-height:100vh;
+    }
+    .app{max-width:1480px;margin:0 auto;padding:14px;display:block}
+    .panel{background:linear-gradient(180deg,#2a3424,#1b2318);border:1px solid #46563c;border-radius:14px;box-shadow:0 8px 25px #0008}
+    .header{padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+    h1{margin:0;font-size:18px;letter-spacing:.6px}
+    .titleWord{
+      font-size:32px;font-weight:900;letter-spacing:1px;line-height:1;
+      background:linear-gradient(180deg,#ffe8a1,#ffd86a 45%,#c98734);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      text-shadow:0 2px 0 #5f3d14,0 10px 24px #0008;
+      font-family:ui-rounded, "Trebuchet MS", system-ui, sans-serif;
+    }
+    .sub{color:var(--muted);font-size:12px}
+    .stats{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .hpWidget{min-width:220px;padding:8px 10px;border-radius:12px;border:1px solid #46563c;background:#182018;display:flex;gap:8px;align-items:center}
+    .avatar{width:34px;height:34px;border-radius:50%;border:2px solid #6f8b66;object-fit:cover}
+    .hpWrap{flex:1}
+    .hpTop{font-size:11px;color:#d7e6ce;display:flex;justify-content:space-between}
+    .hpBar{height:9px;border-radius:99px;background:#0d1410;border:1px solid #476046;overflow:hidden}
+    .hpFill{height:100%;background:linear-gradient(90deg,#62db95,#a7ffc7)}
+    .hpFill.enemy{background:linear-gradient(90deg,#ff7d92,#ffb2bf)}
+    .pill{padding:6px 10px;border-radius:999px;background:#182018;border:1px solid #46563c;font-size:12px}
+    .pill.big{border-radius:14px;padding:8px 12px;display:flex;flex-direction:column;min-width:92px;background:linear-gradient(180deg,#263022,#1a2218)}
+    .statLabel{font-size:10px;color:#9fb0dd;text-transform:uppercase;letter-spacing:.5px}
+    .statValue{font-size:19px;font-weight:800;line-height:1.05}
+    .mainBoard{padding:10px;position:relative}
+    .subSection{margin:10px;border:1px solid #2a3258;border-radius:12px;background:linear-gradient(180deg,#151a30,#101428);padding:10px}
+    .benchAttached{margin-top:0;border-top-left-radius:0;border-top-right-radius:0;border-top:0}
+    .subTitle{font-size:12px;color:#aab3d5;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+    #stageTrack{display:flex;gap:6px;margin-top:8px;align-items:center;flex-wrap:wrap}
+    .stageNode{width:22px;height:22px;border-radius:999px;border:1px solid #475a9f;background:#111731;display:flex;align-items:center;justify-content:center;font-size:10px;color:#9eb0e5}
+    .stageNode.done{background:linear-gradient(180deg,#2a8b5f,#1a5a3d);border-color:#5ce3a2;color:#e7fff5}
+    .stageNode.current{background:linear-gradient(180deg,#4b62d6,#2e43ad);border-color:#88a3ff;color:#fff;font-weight:800;box-shadow:0 0 0 2px #6d86f555}
+    .stageNode.boss{border-color:#c86a86}
+    .stageLine{width:14px;height:2px;background:#3b4d8d}
+    .heart.full{color:#ff5e7d;text-shadow:0 0 8px #ff5e7d99}
+    .heart.empty{color:#4b536f}
+    #boardWrap{position:relative;padding:8px;background:#10180f;border:1px solid #46563c;border-radius:14px;overflow:hidden}
+    #boardWrap::before{
+      content:'';position:absolute;left:6px;right:6px;bottom:6px;height:38%;pointer-events:none;z-index:1;
+      background:radial-gradient(120% 100% at 50% 100%,#56714866,#2f3f2a66 55%,transparent 70%);
+    }
+    #boardWrap::after{
+      content:'';position:absolute;inset:0;pointer-events:none;z-index:2;border-radius:14px;
+      box-shadow:inset 0 0 0 6px #3f423f, inset 0 0 0 10px #2e312f, inset 0 0 22px #000b;
+    }
+    #boardBg{
+      position:absolute;inset:0;opacity:.25;pointer-events:none;
+      background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="%2367e8ff"/><stop offset="1" stop-color="%23000000" stop-opacity="0"/></radialGradient></defs><circle cx="30" cy="30" r="20" fill="url(%23g)"/><circle cx="120" cy="100" r="26" fill="url(%23g)"/></svg>');
+      mix-blend-mode:screen;
+    }
+    .zoneLabel{position:absolute;left:10px;font-size:11px;padding:3px 6px;border-radius:8px;border:1px solid #4e5f9f;z-index:5;background:#131a34c9}
+    .zoneLabel.enemy{top:8px;border-color:#ad6380;background:#3a1f2ec9}
+    .zoneLabel.player{bottom:8px;border-color:#5f7ce0;background:#1a2346c9}
+    #board{display:flex;flex-direction:column;align-items:center;position:relative;z-index:3}
+    .boardRow{display:flex;height:74px}
+    .boardRow.odd{margin-left:47px}
+    .hex{
+      width:var(--hexw);height:var(--hexh);position:relative;margin-right:3px;cursor:pointer;
+      clip-path:polygon(24% 4%,76% 4%,98% 50%,76% 96%,24% 96%,2% 50%);
+      background:linear-gradient(180deg,#1f242b,#171d24);
+      border:2px solid #6e7581;
+      transition:.15s transform,.15s box-shadow,.15s filter;
+    }
+    .hex:hover{transform:translateY(-1px);box-shadow:0 0 0 1px #5f71cf,inset 0 0 0 1px #5f71cf}
+    .hex.playerZone{background:linear-gradient(180deg,#263626,#1c2a1f)}
+    .hex.enemyZone{background:linear-gradient(180deg,#3e2f22,#2b2118)}
+    .hex .coord{display:none}
+    .hex.selected{box-shadow:0 0 0 2px #7aa2ff,inset 0 0 0 1px #7aa2ff}
+    .hex.inRange{filter:grayscale(1) brightness(.9);box-shadow:inset 0 0 0 2px #8e95afaa}
+    .spawnGhost{
+      position:absolute;left:7px;top:7px;width:80px;height:66px;border-radius:12px;overflow:hidden;
+      border:2px dashed #ff9bb3;background:#7e334a4d;color:#ffd6e1;font-size:12px;display:flex;align-items:center;justify-content:center
+    }
+    .spawnGhost img{width:100%;height:100%;object-fit:cover;object-position:center 18%;filter:saturate(1.05)}
+    .slotUnit{
+      position:absolute;left:7px;top:7px;width:80px;height:66px;border-radius:12px;overflow:hidden;
+      background:linear-gradient(180deg,#1f2b54,#151d37);
+      border:3px solid #5f86ff;display:flex;flex-direction:column;justify-content:flex-end;
+      box-shadow:0 6px 14px #0007;
+    }
+    .slotUnit.enemy{border-color:#ff6f95;filter:brightness(.9) saturate(.85)}
+    .slotUnit.class-aqua{background:linear-gradient(180deg,#1f4d78,#18365c);border-color:#66c7ff}
+    .slotUnit.class-plant{background:linear-gradient(180deg,#2f6a3b,#204f2b);border-color:#74d88d}
+    .slotUnit.class-beast{background:linear-gradient(180deg,#7a4c26,#5a371c);border-color:#ffb472}
+    .slotUnit.class-bird{background:linear-gradient(180deg,#6f5a1f,#4f4016);border-color:#ffd978}
+    .uTop{display:flex;justify-content:space-between;font-size:11px}
+    .unitShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 35%,#000b 70%,#000e)}
+    .starOverlay{position:absolute;left:50%;top:0;transform:translateX(-50%);font-size:11px;color:#ffd76a;text-shadow:0 1px 2px #000;z-index:6;background:#0008;padding:0 4px;border-radius:0 0 6px 6px}
+    .unitNameOverlay{position:absolute;left:6px;right:6px;bottom:4px;font-size:10px;font-weight:700;text-shadow:0 1px 2px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .uName{font-weight:700;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .uBody{display:flex;justify-content:space-between;align-items:center}
+    .unitArt{width:26px;height:26px;border-radius:6px;object-fit:cover;border:1px solid #6a7bb3;box-shadow:0 0 10px #0008}
+    .unitBg{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 20%;transform:scale(1.18)}
+    .unitModel{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);overflow:hidden;transform:scale(1.18);transform-origin:center 68%;z-index:1}
+    .unitModel .modelFallback{width:100%;height:100%;object-fit:cover;object-position:center 20%;filter:saturate(1.05)}
+    .unitModel.model-board .modelFallback{transform:scale(1.04);object-position:center 10%;filter:saturate(1.12) contrast(1.06) drop-shadow(0 2px 6px #0008)}
+    .unitModel.model-combat{inset:0;width:100%;height:100%;transform:none;transform-origin:center center;z-index:1}
+    .unitModel.model-combat .modelFallback{object-position:center 22%;filter:saturate(1.1) contrast(1.06)}
+    .unitModel[data-anim="idle"]{animation:modelIdle 1.2s ease-in-out infinite}
+    .unitModel[data-anim="move"]{animation:modelMove .35s linear infinite}
+    .unitModel[data-anim="attack"]{animation:modelAttack .22s ease}
+    .unitModel[data-anim="cast"]{animation:modelCast .36s ease}
+    .unitModel[data-anim="hit"]{animation:modelHit .22s ease}
+    .unitModel[data-anim="death"]{animation:modelDeath .5s ease forwards}
+    .unitModel[data-anim="crit"]{animation:modelCrit .28s ease}
+    @keyframes modelIdle{0%,100%{transform:translateY(0) scale(1.18)}50%{transform:translateY(-1px) scale(1.19)}}
+    @keyframes modelMove{0%{transform:translateX(-2px) scale(1.17)}50%{transform:translateX(2px) scale(1.19)}100%{transform:translateX(-2px) scale(1.17)}}
+    @keyframes modelAttack{0%{transform:translateX(0) scale(1.18)}50%{transform:translateX(5px) scale(1.22)}100%{transform:translateX(0) scale(1.18)}}
+    @keyframes modelCast{0%{filter:brightness(1)}50%{filter:brightness(1.4)}100%{filter:brightness(1)}}
+    @keyframes modelHit{0%{filter:brightness(1)}50%{filter:brightness(.65)}100%{filter:brightness(1)}}
+    @keyframes modelDeath{to{opacity:0;transform:translateY(10px) scale(.92)}}
+    @keyframes modelCrit{0%{filter:saturate(1)}50%{filter:saturate(1.8)}100%{filter:saturate(1)}}
+    .unitArt.lg{width:24px;height:24px}
+    .unitArt.actor{width:42px;height:42px;border-radius:10px;position:relative;z-index:2}
+    .emoji{font-size:20px}
+    .star{color:#ffd76a}
+    .hpbar{height:6px;background:#0007;border-radius:99px;overflow:hidden;border:1px solid #25346a}
+    .hpfill{height:100%;background:linear-gradient(90deg,#39f18e,#8effb9)}
+    .right{padding:10px;display:flex;flex-direction:column;gap:10px}
+    .section{padding:10px}
+    .secTitle{font-size:12px;color:#aab3d5;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+    #shopRow{display:flex;gap:8px;align-items:stretch;position:relative}
+    #shop{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:1}
+    #shopSide{display:flex;flex-direction:column;gap:8px;min-width:96px}
+    #shopSellOverlay{
+      position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;text-align:center;
+      border-radius:12px;border:2px dashed #a55562;background:linear-gradient(180deg,#53232cee,#35171eee);color:#ffd4dc;
+      font-size:18px;font-weight:800;backdrop-filter:blur(2px)
+    }
+    #shopSellOverlay.show{display:flex}
+    .card{background:linear-gradient(180deg,#1a2142,#131834);border:1px solid #344172;border-radius:12px;padding:0;overflow:hidden}
+    .cardInner{padding:7px 8px}
+    .cardBanner{height:154px;background:#10152d;border-bottom:1px solid #2f3c70;position:relative;overflow:hidden}
+    .cardBanner img{width:100%;height:100%;object-fit:cover;object-position:center 10%}
+    .cardBanner .unitModel{inset:0;width:100%;height:100%;transform:none}
+    .cardBanner .unitModel .modelFallback{object-position:center 10%}
+    .shopCostOverlay{
+      position:absolute;left:6px;top:6px;z-index:4;
+      font-size:18px;font-weight:900;line-height:1;background:#0f172bd9;border:1px solid #5d77bf;
+      border-radius:10px;padding:2px 7px;color:#fff;text-shadow:0 1px 2px #000
+    }
+    .shopNameRow{
+      display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700
+    }
+    .shopNameRow .name{overflow:hidden;text-overflow:ellipsis}
+    .shopBuyBtn{width:100%;border-radius:0 0 12px 12px;padding:9px 10px;font-size:13px}
+    .badge{font-size:10px;padding:2px 6px;border-radius:999px;background:#0d1224;border:1px solid #314279}
+    .btn{
+      background:linear-gradient(180deg,#2f60ff,#274ee0);color:#fff;border:0;border-radius:10px;padding:8px 10px;
+      font-weight:700;cursor:pointer;font-size:12px
+    }
+    .btn:disabled{opacity:.45;cursor:not-allowed}
+    .btn.alt{background:linear-gradient(180deg,#4f3a8f,#3a2a71)}
+    .btn.warn{background:linear-gradient(180deg,#90364e,#6f263a)}
+    #bench{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+    .benchSlot{
+      height:88px;border:1px dashed #3a457a;border-radius:12px;position:relative;background:#121833;cursor:pointer
+    }
+    .benchSlot.selected{box-shadow:0 0 0 2px #7aa2ff inset}
+    .benchSlot .slotUnit{left:0;top:0;width:100%;height:100%;border-width:2px}
+    .benchSlot .unitBg{inset:0;transform:scale(1.08);object-position:center 15%}
+    .benchSlot .unitNameOverlay{font-size:11px;bottom:6px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+    #synergy,#relicList,#bagList,#log{font-size:12px;color:#d6ddf5;line-height:1.35}
+    #synergyActive{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+    .synBadge{
+      padding:8px 10px;border-radius:10px;background:linear-gradient(180deg,#212b53,#171f3f);
+      border:1px solid #4d63b0;font-size:12px;font-weight:700;cursor:help;color:#fff
+    }
+    #log{max-height:120px;overflow:auto;background:#0f1430;border:1px solid #2e3969;border-radius:10px;padding:8px}
+    #actorLayer{position:absolute;inset:0;pointer-events:auto;z-index:12}
+    #fxLayer{position:absolute;inset:0;pointer-events:none;z-index:14}
+    #debugHud{
+      position:absolute;top:8px;left:8px;z-index:20;pointer-events:none;
+      background:#070b1acc;border:1px solid #3f4f92;border-radius:8px;padding:6px 8px;
+      font-size:11px;line-height:1.2;color:#d6ddf5;min-width:120px
+    }
+    .actor{
+      position:absolute;width:80px;height:66px;border-radius:12px;border:5px solid #61a3ff;
+      background:linear-gradient(180deg,#24366e,#18254a);transition:transform .18s linear;
+      box-shadow:0 8px 18px #0008;overflow:hidden;
+    }
+    .actor.enemy{border-color:#ff648f;filter:brightness(.9) saturate(.88)}
+    .actor.class-aqua{background:linear-gradient(180deg,#296092,#1d4265)}
+    .actor.class-plant{background:linear-gradient(180deg,#3b7a45,#275933)}
+    .actor.class-beast{background:linear-gradient(180deg,#8a5c35,#613f24)}
+    .actor.class-bird{background:linear-gradient(180deg,#866f29,#5f501f)}
+    .actor .actorArt{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 18%;transform:scale(1.17);z-index:1}
+    .actor .actorShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 42%,#0006 74%,#000a);z-index:2}
+    .actor .actorStars{position:absolute;left:50%;top:2px;transform:translateX(-50%);font-size:12px;color:#ffd86a;text-shadow:0 1px 2px #000}
+    .actor .actorHp{position:absolute;left:6px;right:6px;bottom:12px;height:6px;border-radius:99px;background:#000a;border:1px solid #35507a;overflow:hidden}
+    .actor .actorHpFill{height:100%;background:linear-gradient(90deg,#53ef95,#90ffc1)}
+    .actor .actorMana{position:absolute;left:6px;right:6px;bottom:4px;height:5px;border-radius:99px;background:#00131f;border:1px solid #2a4a68;overflow:hidden}
+    .actor .actorManaFill{height:100%;background:linear-gradient(90deg,#58bfff,#9cd9ff)}
+    .battleCtas{position:absolute;right:10px;bottom:10px;z-index:25;display:flex;gap:8px}
+    #startBtn{
+      padding:14px 20px;font-size:17px;min-width:220px;
+      background:linear-gradient(180deg,#5cff8f,#20b95a);color:#082a16;border:1px solid #a3ffbf;
+      box-shadow:0 8px 22px #2bc96966,0 0 0 1px #d4ffe133 inset;animation:startPulse 1.2s ease-in-out infinite
+    }
+    @keyframes startPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+    #resetBtnBottom{width:100%;padding:12px 14px;font-size:14px}
+    .projectile{
+      position:absolute;width:14px;height:14px;border-radius:50%;
+      background:radial-gradient(circle at 30% 30%,#fff,#6fd8ff 45%,#2d5cab 75%);
+      box-shadow:0 0 16px #69d0ff;
+    }
+    .impact{
+      position:absolute;width:20px;height:20px;border-radius:50%;border:2px solid #9fe8ff;pointer-events:none;
+      animation:impact .25s ease-out forwards;
+    }
+    @keyframes impact{
+      from{transform:translate(-50%,-50%) scale(.3);opacity:1}
+      to{transform:translate(-50%,-50%) scale(1.2);opacity:0}
+    }
+    .float{
+      position:absolute;font-weight:700;font-size:13px;pointer-events:none;animation:floatUp .9s ease-out forwards
+    }
+    .float.dmg{color:#ff8ea1}.float.heal{color:#86ffc8}.float.energy{color:#7cc3ff}
+    @keyframes floatUp{0%{transform:translate(-50%,0);opacity:1}100%{transform:translate(-50%,-32px);opacity:0}}
+    .overlay{
+      position:fixed;inset:0;background:#040712cc;backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:50
+    }
+    .overlay.show{display:flex}
+    .modal{
+      width:min(980px,95vw);background:linear-gradient(180deg,#181e3b,#10152d);border:1px solid #3f4f92;border-radius:16px;padding:14px
+    }
+    .modalClose{float:right;background:#2a335f;border:1px solid #5b6cb3;color:#fff;border-radius:8px;padding:4px 8px;cursor:pointer}
+    .barRow{display:flex;align-items:center;gap:8px;margin:4px 0}
+    .bar{height:10px;border-radius:99px;background:linear-gradient(90deg,#5ca4ff,#8ec7ff)}
+    .statBar{height:8px;border-radius:99px;background:#182444;border:1px solid #3a4f8a;overflow:hidden;margin:2px 0 6px}
+    .statBar > span{display:block;height:100%;background:linear-gradient(90deg,#5ca4ff,#92d2ff)}
+    .relicGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .relicCard{background:linear-gradient(180deg,#1b2448,#131a35);border:1px solid #4558a5;border-radius:12px;padding:10px}
+    .small{font-size:11px;color:#aeb7da}
+    .shopTheme{background:linear-gradient(180deg,#3c341d,#262112);border-color:#6e5e31;box-shadow:inset 0 0 0 1px #d7b75e33}
+    .energyCoin{
+      width:74px;height:74px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;
+      background:radial-gradient(circle at 30% 28%,#fff0a8,#f7c84a 45%,#b97824 78%);border:2px solid #f2d06a;box-shadow:0 0 0 2px #7a5b22 inset;
+      font-size:42px;line-height:1
+    }
+    .energyCoin .num{
+      position:absolute;right:-4px;bottom:-3px;background:#0d1730;border:1px solid #4862b2;border-radius:999px;padding:2px 7px;
+      font-size:18px;font-weight:900;color:#fff
+    }
+    #boardSynergy{position:absolute;left:10px;bottom:8px;z-index:30;display:flex;flex-direction:column;gap:6px;max-width:46%}
+    #boardSynergy .synBadge{padding:7px 10px;font-size:12px}
+    #dragGhost{position:absolute;width:80px;height:66px;border-radius:12px;pointer-events:none;z-index:40;opacity:.9;display:none;box-shadow:0 0 0 2px #fff6,0 8px 20px #000a}
+    #selectedOverlay{
+      position:fixed;display:none;z-index:60;background:transparent;pointer-events:none
+    }
+    #selectedOverlay.show{display:block}
+    #selectedOverlay .modal{
+      width:330px;max-width:330px;pointer-events:auto;background:linear-gradient(180deg,#243225ee,#1a2318ee);border-color:#5f7c55
+    }
+    #selectedPanel{display:none}
+    .traitFxDash{animation:dashFlash .22s ease-out}
+    .traitFxPulse{animation:pulseFx .25s ease-out}
+    .castPop{animation:castPop .35s ease-out}
+    @keyframes dashFlash{0%{transform:scale(1) translateX(0)}50%{transform:scale(1.03) translateX(7px)}100%{transform:scale(1) translateX(0)}}
+    @keyframes pulseFx{0%{filter:brightness(1)}50%{filter:brightness(1.5)}100%{filter:brightness(1)}}
+    @keyframes castPop{0%{box-shadow:0 0 0 0 #8fe3ff00}40%{box-shadow:0 0 0 10px #8fe3ff88}100%{box-shadow:0 0 0 0 #8fe3ff00}}
+    .card.t1{border:3px solid #5e6f8a}.card.t2{border:3px solid #4e8bb7}.card.t3{border:3px solid #5da56a}.card.t4{border:3px solid #b08448}.card.t5{border:3px solid #b14d67}
+    .synBadge.off{opacity:.45;filter:grayscale(1)}
+    .card.shake{animation:shake .28s ease}
+    @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+    .shopPulse{position:relative}
+    .shopPulse::after{
+      content:'';position:absolute;inset:-2px;border-radius:12px;border:2px solid #fff;box-shadow:0 0 14px #fff8;pointer-events:none
+    }
+    .shopPulse.star2{animation:shopPulse2 1.2s infinite}
+    .shopPulse.star3{animation:shopPulse3 .9s infinite}
+    .shopPulse.star4{animation:shopPulse4 .75s infinite}
+    .shopMergeTag{
+      position:absolute;right:6px;top:6px;background:#ffffffdd;color:#141414;border-radius:8px;padding:2px 6px;font-weight:900;font-size:11px;z-index:3
+    }
+    .shopShake{animation:shopShake .28s linear}
+    @keyframes shopShake{0%{transform:translateX(0)}25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-3px)}100%{transform:translateX(0)}}
+    #battleBanner{
+      position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);z-index:35;font-size:56px;font-weight:900;pointer-events:none;display:none;text-shadow:0 8px 22px #000d
+    }
+    #battleBanner.win{color:#9cffc5;display:block;animation:bannerPop 2.6s ease}
+    #battleBanner.lose{color:#ff9eb0;display:block;animation:bannerPop 2.2s ease}
+    @keyframes bannerPop{0%{opacity:0;transform:translate(-50%,-40%) scale(.6)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}100%{opacity:0;transform:translate(-50%,-62%) scale(1)}}
+    .reelOut{animation:reelOut .22s ease-in forwards}
+    .reelIn{animation:reelIn .28s cubic-bezier(.2,.9,.2,1) both}
+    @keyframes reelOut{to{transform:scale(.15) rotate(14deg);opacity:0;filter:blur(1px)}}
+    @keyframes reelIn{from{transform:scale(.05) translateY(14px);opacity:0;filter:blur(1px)}to{transform:scale(1);opacity:1;filter:blur(0)}}
+    @keyframes shopPulse2{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+    @keyframes shopPulse3{0%,100%{transform:scale(1);box-shadow:0 0 0 #fff0}50%{transform:scale(1.04);box-shadow:0 0 18px #fff8}}
+    @keyframes shopPulse4{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.06);filter:brightness(1.2)}}
+    #advancedWrap{display:none}
+    .boardBanner{
+      position:absolute;left:50%;top:16px;transform:translateX(-50%);z-index:35;
+      font-size:44px;font-weight:900;letter-spacing:2px;pointer-events:none;text-shadow:0 4px 12px #000c
+    }
+    .boardBanner.win{color:#9dffbf}
+    .boardBanner.lose{color:#ff9aae}
+    #synergyOverlay{
+      position:fixed;display:none;z-index:60;background:transparent;pointer-events:none
+    }
+    #synergyOverlay.show{display:block}
+    #synergyOverlay .modal{
+      width:360px;max-width:360px;pointer-events:auto;background:linear-gradient(180deg,#1f2e32ee,#162124ee);border-color:#5d8a8f
+    }
+    .unitMini{display:flex;align-items:center;gap:6px;padding:6px;border:1px solid #3e4c73;border-radius:8px;background:#15213a}
+    .unitMini.off{filter:grayscale(1);opacity:.5}
+    .relicCard{position:relative;background:linear-gradient(180deg,#32422a,#1b2619);border:1px solid #7ba46f;border-radius:14px;padding:12px;box-shadow:inset 0 0 0 1px #c9ff9c22}
+    .relicCard .augIcon{font-size:24px}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="panel">
+      <div class="header">
+        <div>
+          <h1 class="titleWord">Axie Tactics</h1>
+        </div>
+        <div class="stats">
+          <div class="hpWidget">
+            <img class="avatar" src="assets/extracted/units/peon.png" alt="Player">
+            <div class="hpWrap">
+              <div class="hpTop"><span>You</span><span id="playerHpText"></span></div>
+              <div class="hpBar"><div id="playerHpFill" class="hpFill"></div></div>
+            </div>
+          </div>
+          <div class="hpWidget">
+            <img class="avatar" src="assets/extracted/boss/chimera_token.png" alt="Enemy">
+            <div class="hpWrap">
+              <div class="hpTop"><span>Enemy</span><span id="enemyHpText"></span></div>
+              <div class="hpBar"><div id="enemyHpFill" class="hpFill enemy"></div></div>
+            </div>
+          </div>
+        </div>
+        <div id="stageTrack"></div>
+      </div>
+      <div class="mainBoard">
+        <div id="boardWrap">
+          <div id="boardBg"></div>
+          <div id="battleBanner"></div>
+          <div id="dragCapOverlay" class="zoneLabel" style="left:50%;top:22%;transform:translateX(-50%);font-size:42px;padding:10px 16px;background:#2d333655;border-color:#8f969d55;opacity:.25;display:block"></div>
+          <div id="debugHud"></div>
+          <div id="dailyOnBoard" class="zoneLabel" style="right:10px;left:auto;top:8px;max-width:260px;display:flex;gap:6px;align-items:center"></div>
+          <div id="boardRelics" class="zoneLabel" style="right:10px;left:auto;top:58px;max-width:300px;display:flex;gap:6px;align-items:center;flex-wrap:wrap"></div>
+          <div id="boardSynergy"></div>
+          <div id="dragGhost"></div>
+          <div class="battleCtas">
+            <button id="startBtn" class="btn">Start Battle</button>
+            <button id="endlessBtn" class="btn alt" style="display:none">Start Endless</button>
+          </div>
+          <div id="board"></div>
+          <div id="actorLayer"></div>
+          <div id="fxLayer"></div>
+        </div>
+      </div>
+
+      <div id="benchSection" class="subSection benchAttached">
+        <div class="subTitle">
+          <span></span>
+        </div>
+        <div id="bench"></div>
+      </div>
+
+      <div id="shopSection" class="subSection shopTheme" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;border-top:0">
+        <div class="subTitle"></div>
+        <div id="shopRow">
+          <div id="shop"></div>
+          <div id="shopSide">
+            <div class="energyCoin">🪙<span id="energy" class="num">4</span></div>
+          </div>
+          <div id="shopSellOverlay"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="panel section">
+        <button id="toggleAdvancedBtn" class="btn alt" style="width:100%">Advanced</button>
+      </div>
+      <div id="advancedWrap">
+      <div id="dailyPanel" class="panel section" style="display:none">
+        <div class="secTitle">Daily Challenge</div>
+        <div id="dailyMod"></div>
+      </div>
+
+      <div id="bossPanel" class="panel section" style="display:none">
+        <div class="secTitle">Next Stage Boss</div>
+        <div id="chimeraInfo"></div>
+      </div>
+
+      <div class="panel section">
+        <div class="secTitle">Battle Recap <button id="toggleRecapBtn" class="btn alt" style="padding:3px 8px;font-size:10px;float:right">Toggle</button></div>
+        <div id="battleRecap"></div>
+      </div>
+
+      <div id="selectedPanel" class="panel section">
+        <div class="secTitle">Selected Unit</div>
+        <div id="unitInfo"></div>
+      </div>
+
+      <div class="panel section" style="display:none">
+        <div class="secTitle">Active Synergies <button id="openGlossaryBtn" class="btn alt" style="padding:4px 8px;font-size:10px">Glossary</button></div>
+        <div id="synergyActive"></div>
+        <div id="synergy"></div>
+      </div>
+
+      <div class="panel section">
+        <div class="secTitle">Battle Log <button id="toggleLogBtn" class="btn alt" style="padding:3px 8px;font-size:10px;float:right">Toggle</button></div>
+        <div id="log"></div>
+      </div>
+
+      <div class="panel section">
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <button id="openLeaderboardBtn" class="btn alt" style="flex:1">Leaderboard</button>
+          <button id="openBagBtn" class="btn alt" style="flex:1">Bag Pool</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <button id="openOddsBtn2" class="btn alt" style="flex:1">Shop Odds</button>
+          <button id="openGlossaryBtn2" class="btn alt" style="flex:1">Glossary</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <button id="toggleDebugBtn" class="btn alt" style="flex:1">Debug HUD</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <button id="toggleRenderModeBtn" class="btn alt" style="flex:1">Render: Classic</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+          <input id="seedInput" class="pill mono" style="border-radius:10px;min-width:140px;flex:1" placeholder="Challenge Seed" />
+          <button id="startSeededBtn" class="btn alt">Seeded</button>
+          <button id="copySeedBtn" class="btn alt">Copy</button>
+        </div>
+        <button id="resetBtnBottom" class="btn alt" style="width:auto;padding:6px 10px;font-size:11px">Reset Run</button>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="relicOverlay" class="overlay">
+    <div class="modal" style="max-width:980px;background:radial-gradient(120% 100% at 50% 0%,#425c34,#1a2418 65%)">
+      <h2 style="margin:0 0 6px 0">Choose an Augment</h2>
+      <div class="small" style="margin-bottom:10px">Select one power spike to continue the run.</div>
+      <div id="relicChoices" class="relicGrid"></div>
+    </div>
+  </div>
+
+  <div id="glossaryOverlay" class="overlay">
+    <div class="modal">
+      <button id="closeGlossaryBtn" class="modalClose">Close</button>
+      <h2 style="margin:0 0 8px 0">Trait/Class Glossary (Formulas)</h2>
+      <div id="glossaryBody" class="small"></div>
+    </div>
+  </div>
+
+  <div id="summaryOverlay" class="overlay">
+    <div class="modal">
+      <button id="closeSummaryBtn" class="modalClose">Close</button>
+      <h2 style="margin:0 0 8px 0">Run Summary</h2>
+      <div id="summaryBody" class="small"></div>
+    </div>
+  </div>
+
+  <div id="leaderboardOverlay" class="overlay">
+    <div class="modal">
+      <button id="closeLeaderboardBtn" class="modalClose">Close</button>
+      <h2 style="margin:0 0 8px 0">Leaderboard (Stages Cleared)</h2>
+      <div id="leaderboard"></div>
+    </div>
+  </div>
+
+  <div id="bagOverlay" class="overlay">
+    <div class="modal">
+      <button id="closeBagBtn" class="modalClose">Close</button>
+      <h2 style="margin:0 0 8px 0">Bag Pool Remaining</h2>
+      <div id="bagList"></div>
+    </div>
+  </div>
+
+  <div id="resultOverlay" class="overlay">
+    <div class="modal" style="max-width:760px;text-align:center;background:radial-gradient(120% 100% at 50% 0%,#345828,#1a2418 60%)">
+      <h1 id="resultTitle" style="margin:6px 0 6px 0;font-size:62px;letter-spacing:2px"></h1>
+      <div id="resultSub" class="small"></div>
+      <button id="closeResultBtn" class="btn" style="margin-top:16px;font-size:18px;padding:12px 20px">Continue</button>
+    </div>
+  </div>
+
+  <div id="selectedOverlay">
+    <div class="modal">
+      <div id="unitInfoFloating"></div>
+    </div>
+  </div>
+
+  <div id="oddsOverlay" class="overlay">
+    <div class="modal">
+      <button id="closeOddsBtn" class="modalClose">Close</button>
+      <h2 style="margin:0 0 8px 0">Shop Odds by Stage</h2>
+      <div id="oddsBody" class="small"></div>
+    </div>
+  </div>
+
+  <div id="bossOverlay" class="overlay">
+    <div class="modal" style="max-width:760px;background:radial-gradient(120% 100% at 50% 0%,#4b2626,#1d1212 65%)">
+      <button id="closeBossBtn" class="modalClose">Close</button>
+      <h2 style="margin:0 0 8px 0">Boss Details</h2>
+      <div id="bossBody" class="small"></div>
+    </div>
+  </div>
+
+  <div id="synergyOverlay">
+    <div class="modal">
+      <button id="closeSynergyBtn" class="modalClose">Close</button>
+      <h2 id="synergyModalTitle" style="margin:0 0 8px 0">Synergy Units</h2>
+      <div id="synergyUnitsBody" class="small" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px"></div>
+    </div>
+  </div>
+
+  <script>
+    const TIER_POOL = {1:10,2:8,3:6,4:4,5:3};
+    const STAGE_ODDS = {
+      1:{1:98.5,2:1,3:0.5,4:0,5:0},
+      2:{1:62,2:28,3:6,4:3,5:1},
+      3:{1:45,2:30,3:18,4:5,5:2},
+      4:{1:40,2:30,3:20,4:8,5:2},
+      5:{1:30,2:35,3:25,4:8,5:2},
+      6:{1:20,2:30,3:30,4:15,5:5},
+      7:{1:15,2:25,3:30,4:22,5:8},
+      8:{1:10,2:20,3:30,4:30,5:10},
+      9:{1:5,2:15,3:25,4:40,5:15},
+      10:{1:0,2:10,3:25,4:45,5:20}
+    };
+    const STAR_MULT = {1:1,2:1.6,3:2.5,4:3.8};
+
+    const UNIT_DEFS = [
+      {id:'peon',name:'Peon',emoji:'💧',tier:1,class:'Aqua',trait:'Assassin',atk:45,hp:480,mystic:false,range:1,attack:'Aqua Nip',skill:'Infiltrate backline, 150 magic dmg, 100% lifesteal'},
+      {id:'sprout',name:'Sprout',emoji:'🌱',tier:1,class:'Plant',trait:'Bastion',atk:30,hp:620,mystic:false,range:2,attack:'Seed Shot',skill:'Root Barrier roots self, gives 150 HP shield to self/ally'},
+      {id:'nut',name:'Nut',emoji:'🥜',tier:1,class:'Beast',trait:'Vanguard',atk:55,hp:560,mystic:false,range:1,attack:'Nut Crack',skill:'Frenzy Smash cleaves 3 front hexes for 110 dmg'},
+      {id:'pips',name:'Pips',emoji:'🐤',tier:1,class:'Bird',trait:'Mage',atk:35,hp:430,mystic:true,range:3,attack:'Feather Dart',skill:'Starlight Chirp grants 40 skill energy to adjacent allies'},
+
+      {id:'bubbles',name:'Bubbles',emoji:'🫧',tier:2,class:'Aqua',trait:'Mage',atk:40,hp:560,mystic:true,range:3,attack:'Bubble Pop',skill:'Bubble Shield grants ally absorb-200 shield + CC immunity'},
+      {id:'cactus',name:'Cactus',emoji:'🌵',tier:2,class:'Plant',trait:'Spikes',atk:40,hp:680,mystic:false,range:2,attack:'Prickly Jab',skill:'Needle Burst 30% pass/act trigger dealing 75 dmg circle'},
+      {id:'gnasher',name:'Gnasher',emoji:'🦁',tier:2,class:'Beast',trait:'Vanguard',atk:60,hp:720,mystic:false,range:1,attack:'Crunch',skill:'Bite & Tear deals 120 dmg + 50% armor shred'},
+      {id:'kestrel',name:'Kestrel',emoji:'🦅',tier:2,class:'Bird',trait:'Assassin',atk:50,hp:560,mystic:false,range:1,attack:'Beak Dive',skill:'Swoop Attack leaps untargetable, slams lowest HP for 160 dmg'},
+
+      {id:'nemo',name:'Nemo',emoji:'🐠',tier:3,class:'Aqua',trait:'Spikes',atk:55,hp:830,mystic:false,range:1,attack:'Tail Slap',skill:'Tail Whip Flurry strikes 3x for 50 dmg, reflects dmg'},
+      {id:'pumpkin',name:'Pumpkin',emoji:'🎃',tier:3,class:'Plant',trait:'Bastion',atk:35,hp:1100,mystic:false,range:1,attack:'Gourd Bash',skill:'October Shield taunts 2-hex radius, cuts damage taken by 50%'},
+      {id:'zoro',name:'Zoro',emoji:'🐺',tier:3,class:'Beast',trait:'Assassin',atk:65,hp:780,mystic:false,range:1,attack:'Alpha Slash',skill:'Slash Dash blinks behind target, hits path for 140 dmg'},
+      {id:'falcon',name:'Falcon',emoji:'🦜',tier:3,class:'Bird',trait:'Sniper',atk:55,hp:700,mystic:false,range:4,attack:'Pinpoint Peck',skill:'Gale Force hits for 130 dmg + 2 hex knockback'},
+
+      {id:'siren',name:'Siren',emoji:'🧜',tier:4,class:'Aqua',trait:'Sniper',atk:60,hp:920,mystic:false,range:4,attack:'Sonic Wave',skill:'Siren Song charms closest target for 3.5s'},
+      {id:'yggdrasil',name:'Yggdrasil',emoji:'🌳',tier:4,class:'Plant',trait:'Spikes',atk:60,hp:1250,mystic:false,range:2,attack:'Root Smash',skill:'Forest Vengeance global roots and stuns all targets for 150 magic dmg'},
+      {id:'goliath',name:'Goliath',emoji:'🗿',tier:4,class:'Beast',trait:'Bastion',atk:80,hp:1350,mystic:false,range:1,attack:'Titan Fist',skill:'Earthquake stuns 1-hex circle for 2.5s, 100 true dmg'},
+      {id:'raven',name:'Raven',emoji:'🐦‍⬛',tier:4,class:'Bird',trait:'Sniper',atk:70,hp:900,mystic:false,range:5,attack:'Caw Arrow',skill:'Omen Strike lanes for 200 dmg, executes under 25% HP'},
+
+      {id:'immanuel',name:'Immanuel',emoji:'🌊',tier:5,class:'Aqua',trait:'Mage',atk:80,hp:1200,mystic:true,range:4,attack:'Abyssal Bolt',skill:'Tidal Surge heals global allies for 300, pushes enemies back 2 rows'},
+      {id:'lotus',name:'Lotus',emoji:'🪷',tier:5,class:'Plant',trait:'Vanguard',atk:70,hp:1700,mystic:false,range:1,attack:'Petal Slap',skill:'Nirvana Aura passive aura heals 5% max HP/sec + resurrects once at 50% HP'},
+      {id:'chonky',name:'Chonky',emoji:'🦛',tier:5,class:'Beast',trait:'Spikes',atk:95,hp:1650,mystic:false,range:1,attack:'Heavy Chomp',skill:'Fat Roll crushes for 150 dmg + 25% max HP value'},
+      {id:'kallaway',name:'Kallaway',emoji:'🦚',tier:5,class:'Bird',trait:'Assassin',atk:85,hp:1180,mystic:false,range:1,attack:'Razor Wing',skill:'Bladestorm phys-immune whirlwind dealing 80 magic dmg/sec'}
+    ];
+    const UMAP = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,u]));
+    const UNIT_ASSETS = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,`assets/extracted/units/${u.id}.png`]));
+    const UNIT_MODEL_MANIFEST = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,{
+      runtime:'spritesheet',
+      performanceTier: u.tier>=4?'high':'low',
+      scale: u.tier>=4?1.22:1.18,
+      anchor:{x:0.5,y:0.68},
+      files:{
+        idle: `assets/extracted/units/${u.id}.png`,
+        move: `assets/extracted/units/${u.id}.png`,
+        attack: `assets/extracted/units/${u.id}.png`,
+        cast: `assets/extracted/units/${u.id}.png`,
+        hit: `assets/extracted/units/${u.id}.png`,
+        death: `assets/extracted/units/${u.id}.png`
+      },
+      animMap:{idle:'idle',move:'move',attack:'attack',cast:'cast',hit:'hit',death:'death',crit:'crit'}
+    }]));
+    const BOSS_ASSETS = {
+      phase1:'assets/extracted/boss/chimera_phase1.png',
+      phase2:'assets/extracted/boss/chimera_phase2.png',
+      token:'assets/extracted/boss/chimera_token.png'
+    };
+    const RELICS = [
+      {id:'mint',name:"Lunacia's Mint",desc:'+2 prep energy income',apply:s=>s.mods.incomeBonus+=2},
+      {id:'cloak',name:'Shadowstep Cloak',desc:'Assassins gain +30% crit',apply:s=>s.mods.rogueCrit+=0.30},
+      {id:'spores',name:'Thorn-Weaver Spores',desc:'Spikes +15% reflect',apply:s=>s.mods.thornReflect+=0.15},
+      {id:'crest',name:'Phalanx Crest',desc:'Bastions +15% max HP',apply:s=>s.mods.guardianHP+=0.15},
+      {id:'banner',name:'Desperado Banner',desc:'Snipers +20% damage',apply:s=>s.mods.sniperDmg+=0.20},
+      {id:'runestone',name:'Ancient Runestone',desc:'+15% skill power',apply:s=>s.mods.skillPower+=0.15},
+      {id:'scope',name:'Scope Stabilizer',desc:'Snipers +1 range',apply:s=>s.mods.sniperRange+=1},
+      {id:'capacitor',name:'Energy Capacitor',desc:'All allies start +20 energy',apply:s=>s.mods.startEnergy+=20},
+      {id:'watch',name:'Golden Pocket Watch',desc:'+15% attack speed',apply:s=>s.mods.globalAS+=0.15},
+      {id:'scrap',name:'Scrap Magnet',desc:'Selling grants +1 bonus energy',apply:s=>s.mods.sellBonusEnergy+=1},
+      {id:'gem',name:'Chimeric Blood Gem',desc:'Heal 20% max HP on kill',apply:s=>s.mods.killHeal+=0.2},
+      {id:'glass',name:'Double Vision Glass',desc:'20% chance to cast skill twice',apply:s=>s.mods.doubleCastChance+=0.2},
+      {id:'elixir',name:'Vitality Elixir',desc:'+12% max HP',apply:s=>s.mods.globalHP+=0.12},
+      {id:'adrenaline',name:'Adrenaline Syringe',desc:'Below 50% HP: +30% attack speed',apply:s=>s.mods.lowHpAS+=0.3},
+      {id:'secondwind',name:'Second Wind Charm',desc:'Once per battle revive one ally at 35%',apply:s=>s.mods.secondWind=true},
+      {id:'battery',name:'Overclock Battery',desc:'+1 prep income, +10 start energy',apply:s=>{s.mods.incomeBonus+=1;s.mods.startEnergy+=10}},
+      {id:'tax',name:"Tax Collector's Badge",desc:'Win +1 energy, Loss +2 energy',apply:s=>{s.mods.winBonusEnergy+=1;s.mods.lossBonusEnergy+=2}}
+    ];
+    const RELIC_ICONS = {
+      mint:'🪙',cloak:'🕶️',spores:'🦠',crest:'🛡️',banner:'🏴',runestone:'🪨',scope:'🔭',capacitor:'🔋',watch:'⌚',
+      scrap:'🧲',gem:'💎',glass:'🔮',elixir:'🧪',adrenaline:'💉',secondwind:'🫀',battery:'⚡',tax:'🧾'
+    };
+    const DAILY_MODS = [
+      {id:'bloodmoon',name:'Bloodmoon Skies',desc:'All units gain +20% attack.',apply:units=>units.forEach(u=>u.atk*=1.2)},
+      {id:'ironwall',name:'Ironwall March',desc:'All units gain +18% max HP.',apply:units=>units.forEach(u=>{u.maxHp*=1.18;u.hp*=1.18;})},
+      {id:'arcane',name:'Arcane Overflow',desc:'All units start with +30 energy.',apply:units=>units.forEach(u=>u.energy=Math.min(u.maxEnergy,u.energy+30))},
+      {id:'glass',name:'Glass Cannon',desc:'All units +25% attack but -20% HP.',apply:units=>units.forEach(u=>{u.atk*=1.25;u.maxHp*=0.8;u.hp=Math.min(u.hp,u.maxHp);})},
+      {id:'slowtime',name:'Slow Time',desc:'All units -20% attack speed.',apply:units=>units.forEach(u=>u.attackSpeed*=0.8)},
+      {id:'bounty',name:'Bounty Hunt',desc:'Wins grant +2 extra energy, losses grant +1.',applyState:s=>{s.mods.winBonusEnergy+=2;s.mods.lossBonusEnergy+=1}}
+    ];
+    const DAILY_ART = {
+      bloodmoon:'🌕',ironwall:'🪵',arcane:'✨',glass:'🔮',slowtime:'⏳',bounty:'🧭'
+    };
+
+    const state = {
+      stage:1,playerHp:24,playerMaxHp:24,energy:4,enemyHp:24,enemyMaxHp:24,
+      bench:[null,null,null,null,null],
+      grid:Array.from({length:10},()=>Array(5).fill(null)),
+      nextUid:1,units:{},shop:[null,null,null],
+      bag:Object.fromEntries(UNIT_DEFS.map(u=>[u.id,TIER_POOL[u.tier]])),
+      selected:null,dragging:null,mergePulseUid:null,inBattle:false,raf:0,battleTimer:0,lastLoopAt:0,loopRunning:false,combat:null,relics:[],relicTaken:{},pendingAdvance:false,pendingClearStage:null,fps:0,stallMs:0,
+      enemyPreview:null,enemyPreviewStage:null,lastBattleBreakdown:[],audioCtx:null,
+      daily:null,endlessUnlocked:false,endlessMode:false,bestStage:0,runSeed:null,seedRng:null,recapVisible:false,logVisible:false,debugVisible:false,advancedOpen:false,shopAnimSeq:0,
+      settings:{renderMode:'classic'},
+      modelCache:new Map(),modelActorPool:[],
+      leaderboard:[
+        {name:'AegisFox',stage:27},{name:'Lunacian',stage:24},{name:'HexMancer',stage:22},{name:'CrimsonMint',stage:19},{name:'SeaRogue',stage:17}
+      ],
+      runStats:{wins:0,losses:0,damageByDef:{},fieldCounts:{}},
+      mods:{
+        incomeBonus:0,aquaAS:0,beastFlatAtk:0,birdMove:0,rogueCrit:0,thornReflect:0,guardianHP:0,sniperDmg:0,skillPower:0,sniperRange:0,
+        startEnergy:0,globalAS:0,sellBonusEnergy:0,killHeal:0,doubleCastChance:0,globalHP:0,lowHpAS:0,secondWind:false,winBonusEnergy:0,lossBonusEnergy:0
+      }
+    };
+
+    const el = id => document.getElementById(id);
+    const boardEl = el('board'), actorLayer = el('actorLayer'), fxLayer = el('fxLayer'), logEl = el('log');
+
+    function log(msg){const d=document.createElement('div');d.innerHTML=msg;logEl.prepend(d);while(logEl.children.length>40)logEl.removeChild(logEl.lastChild)}
+    function rand(){return state.seedRng?state.seedRng():Math.random();}
+    function rnd(a){return a[Math.floor(rand()*a.length)]}
+    function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+    function boardCapForStage(stage){
+      const caps={1:2,2:3,3:3,4:4,5:4,6:5,7:5,8:6,9:6,10:7};
+      return caps[clamp(stage,1,10)] || 7;
+    }
+    function baseIncomeForStage(stage){
+      if(stage===1) return 3;
+      if(stage===2) return 4;
+      return 5;
+    }
+    function placedPlayerCount(){let n=0;for(let r=5;r<10;r++)for(let c=0;c<5;c++)if(state.grid[r][c])n++;return n;}
+    function classSlug(cls){return String(cls||'').toLowerCase();}
+    function buyCost(def){return (def?.tier||1)+1;}
+    function unitImgTag(defId,cls='unitArt',alt='unit'){
+      const src=UNIT_ASSETS[defId];
+      if(!src) return '';
+      return `<img class="${cls}" src="${src}" alt="${alt}" loading="lazy" onerror="this.style.display='none'">`;
+    }
+    function modelAsset(defId,anim='idle'){
+      const m=UNIT_MODEL_MANIFEST[defId];
+      if(!m) return null;
+      const file=m.files[m.animMap?.[anim]||anim] || m.files.idle;
+      return file?{manifest:m,file}:null;
+    }
+    function primeModelCache(){
+      for(const id of Object.keys(UNIT_MODEL_MANIFEST)){
+        const a=modelAsset(id,'idle'); if(!a||state.modelCache.has(a.file)) continue;
+        const img=new Image(); img.src=a.file; state.modelCache.set(a.file,img);
+      }
+    }
+    function renderUnitVisual(defId,viewState={anim:'idle'},opts={}){
+      const cls=opts.className||'unitBg', alt=opts.alt||'unit', anim=viewState.anim||'idle', surface=opts.surface||'board';
+      const useModel = state.settings.renderMode==='model' && surface!=='shop';
+      const a = useModel ? modelAsset(defId,anim) : null;
+      if(!a) return unitImgTag(defId,cls,alt);
+      const perf = a.manifest.performanceTier||'low';
+      const fallback=UNIT_ASSETS[defId]||a.file;
+      const modeClass = surface==='combat'?'model-combat':(surface==='board'?'model-board':'');
+      const scaleStyle = surface==='combat' ? '' : `transform:scale(${a.manifest.scale||1.18})`;
+      return `<div class="${cls} unitModel ${modeClass}" data-model="true" data-def="${defId}" data-anim="${anim}" data-perf="${perf}" style="${scaleStyle}"><img class="modelFallback" src="${a.file}" alt="${alt}" loading="lazy" onerror="this.src='${fallback}'"></div>`;
+    }
+    function setCombatAnim(u,anim='idle',duration=220){
+      const a=el('actor-'+u.id); if(!a) return;
+      const m=a.querySelector('[data-model]'); if(!m) return;
+      m.dataset.anim=anim;
+      if(anim!=='death'){
+        clearTimeout(a._animBackTimer);
+        a._animBackTimer=setTimeout(()=>{if(m.dataset.anim!=='death') m.dataset.anim='idle';},duration);
+      }
+    }
+    function acquireActorNode(){
+      return state.modelActorPool.pop() || document.createElement('div');
+    }
+    function releaseActorNodes(){
+      [...actorLayer.children].forEach(n=>{n.onclick=null; if(n._animBackTimer) clearTimeout(n._animBackTimer); state.modelActorPool.push(n);});
+      actorLayer.innerHTML='';
+    }
+    function isTankTrait(trait){return trait==='Bastion' || trait==='Vanguard';}
+    function unitMaxEnergy(def){
+      const base = def.mystic ? 50 : 100;
+      return isTankTrait(def.trait) ? Math.min(base,60) : base;
+    }
+    function attacksToCast(def){return Math.ceil(unitMaxEnergy(def)/20);}
+    function getChimeraConfig(stage){
+      return {
+        name:'Chimera Elite',emoji:'🐉',class:'Beast',trait:'Vanguard',
+        hp:3600 + stage*260,maxHp:3600 + stage*260,atk:120 + stage*10,range:2,maxEnergy:100,attackSpeed:1.35,dr:0.12
+      };
+    }
+    function weightedTier(stage){
+      const o=STAGE_ODDS[clamp(stage,1,10)],r=rand()*100;let s=0;
+      for(const t of [1,2,3,4,5]){s+=o[t];if(r<=s)return t}return 1;
+    }
+    function weightedTierWithRng(stage,rng){
+      const o=STAGE_ODDS[clamp(stage,1,10)],r=rng()*100;let s=0;
+      for(const t of [1,2,3,4,5]){s+=o[t];if(r<=s)return t}return 1;
+    }
+    function hashString(str){let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+    function makeRng(seedStr){let s=hashString(seedStr)||1;return ()=>((s=(s*1664525+1013904223)>>>0)/4294967296);}
+    function randomSeedStr(){return Math.floor(Math.random()*1e9).toString(36).toUpperCase();}
+    function pickRandom(arr,rng){return arr[Math.floor(rng()*arr.length)];}
+    function initDailyModifier(){
+      const prev=state.daily?.id;
+      const pool=DAILY_MODS.filter(m=>m.id!==prev);
+      state.daily = rnd(pool.length?pool:DAILY_MODS);
+      if(state.daily && state.daily.applyState) state.daily.applyState(state);
+    }
+    function buildEnemyPreview(stage){
+      const rng=makeRng(state.runSeed?`run-${state.runSeed}-stage-${stage}`:`stage-${stage}-seed`);
+      const used = new Set(), list = [];
+      const count = stage===1 ? 2 : Math.min(8, 3 + Math.floor(stage*0.7));
+      if(stage===5 || stage===10){list.push({boss:true,defId:'chimera',row:2,col:2,star:1});used.add('2|2');}
+      for(let i=0;i<count;i++){
+        const t = weightedTierWithRng(clamp(stage+1,1,10),rng);
+        const maxTier = stage===1 ? 1 : Math.min(5,Math.max(1,t+1));
+        const defs = UNIT_DEFS.filter(u=>u.tier<=maxTier);
+        const d = pickRandom(defs,rng);
+        let r,c,key,tries=0;
+        do{r=Math.floor(rng()*5);c=Math.floor(rng()*5);key=r+'|'+c;tries++;}while(used.has(key)&&tries<60);
+        used.add(key);
+        const star = stage>=8 && rng()<0.32 ? 2 : (stage>=10&&rng()<0.15?3:1);
+        list.push({boss:false,defId:d.id,row:r,col:c,star});
+      }
+      return list;
+    }
+    function startSeededRun(){
+      const inp=el('seedInput');
+      const seed=((inp&&inp.value)||'').trim()||randomSeedStr();
+      resetRun();
+      state.runSeed=seed;
+      state.seedRng=makeRng(`run-seed-${seed}`);
+      if(inp) inp.value=seed;
+      refreshEnemyPreview();
+      refreshShop();
+      renderPrepUnits();renderTop();
+      log(`<b>Seeded Challenge</b> started with seed <span class="mono">${seed}</span>.`);
+    }
+    function copySeed(){
+      const seed=(el('seedInput')&&el('seedInput').value.trim())||state.runSeed||'';
+      if(!seed){log('No seed to copy.');return;}
+      navigator.clipboard?.writeText(seed).then(()=>log(`Seed copied: <span class="mono">${seed}</span>`)).catch(()=>log(`Seed: <span class="mono">${seed}</span>`));
+    }
+    function refreshEnemyPreview(){
+      state.enemyPreview = buildEnemyPreview(state.stage);
+      state.enemyPreviewStage = state.stage;
+      renderEnemyIntent();
+    }
+    function renderEnemyIntent(){
+      const box=el('enemyIntent'); if(!box) return;
+      if(!state.enemyPreview || !state.enemyPreview.length){box.innerHTML='<span class="small">No enemy preview.</span>';return;}
+      const lines=state.enemyPreview.slice(0,8).map(p=>{
+        if(p.boss) return `• <img class="unitArt lg" src="${BOSS_ASSETS.token}" alt="Chimera"> Chimera Elite at [${p.row+1},${p.col+1}] — phase shift at 50% HP`;
+        const d=UMAP[p.defId], intent = d.trait==='Assassin'?'dives backline':d.trait==='Sniper'?'focuses range picks':'frontline pressure';
+        return `• ${unitImgTag(p.defId,'unitArt lg',d.name)} ${d.name} ${'★'.repeat(p.star)} at [${p.row+1},${p.col+1}] — ${intent}`;
+      });
+      box.innerHTML = lines.join('<br>');
+    }
+    function renderDailyMod(){
+      const box=el('dailyMod'); if(!box) return;
+      if(!state.daily){box.innerHTML='<span class="small">None</span>';return;}
+      const artId=UNIT_DEFS[hashString(state.daily.id)%UNIT_DEFS.length].id;
+      box.innerHTML = `<div><b>${state.daily.name}</b></div><div class="small">${state.daily.desc}</div>`;
+      const onBoard=el('dailyOnBoard');
+      if(onBoard){
+        onBoard.innerHTML = `<img src="${UNIT_ASSETS[artId]}" class="unitArt lg" style="width:34px;height:34px"> <span><b>${DAILY_ART[state.daily.id]||'🌿'} ${state.daily.name}</b></span>`;
+        onBoard.style.cursor='pointer';
+        onBoard.onclick=()=>openSideInfo(`Daily Challenge: ${state.daily.name}`,`<div class="small">${state.daily.desc}</div>`);
+      }
+    }
+    function renderBattleRecap(){
+      const box=el('battleRecap'); if(!box) return;
+      if(!state.recapVisible){box.innerHTML='';return;}
+      if(!state.lastBattleBreakdown.length){box.innerHTML='<span class="small">No battle yet.</span>';return;}
+      const top=state.lastBattleBreakdown.slice(0,5);
+      const max=Math.max(1,...top.map(x=>x.damage));
+      box.innerHTML = top.map(x=>`<div class="barRow"><span style="min-width:120px">${unitImgTag(x.defId,'unitArt lg',x.name)} ${x.name}</span><div class="bar" style="width:${Math.max(8,Math.round((x.damage/max)*120))}px"></div><span>${Math.round(x.damage)}</span></div>`).join('');
+    }
+    function renderLeaderboard(){
+      const box=el('leaderboard'); if(!box) return;
+      const data=[...state.leaderboard];
+      data.push({name:'You',stage:state.bestStage});
+      data.sort((a,b)=>b.stage-a.stage);
+      box.innerHTML=data.slice(0,8).map((x,i)=>`<div class="barRow"><span style="min-width:18px">#${i+1}</span><span style="min-width:110px">${x.name}</span><span class="badge">Stage ${x.stage}</span></div>`).join('');
+    }
+    function selectedUnitFromState(){
+      if(!state.selected) return null;
+      if(state.selected.type==='bench'){
+        const uid=state.bench[state.selected.i]; if(!uid||!state.units[uid]) return null;
+        return {u:state.units[uid],d:UMAP[state.units[uid].defId],enemy:false,preview:false};
+      }
+      if(state.selected.type==='grid'){
+        const uid=state.grid[state.selected.r][state.selected.c]; if(!uid||!state.units[uid]) return null;
+        return {u:state.units[uid],d:UMAP[state.units[uid].defId],enemy:false,preview:false};
+      }
+      if(state.selected.type==='enemy_preview'){
+        const p=(state.enemyPreview||[]).find(x=>x.row===state.selected.r&&x.col===state.selected.c);
+        if(!p) return null;
+        if(p.boss){ const cfg=getChimeraConfig(state.stage); return {u:{star:1},d:{id:'chimera',name:cfg.name,tier:6,class:cfg.class,trait:cfg.trait,atk:cfg.atk,hp:cfg.maxHp,mystic:false,attack:'Titan Claw',skill:'Phase enrage at 50% HP'},enemy:true,preview:true,boss:true}; }
+        return {u:{star:p.star||1},d:UMAP[p.defId],enemy:true,preview:true};
+      }
+      if(state.selected.type==='combat' && state.combat){
+        const cu=state.combat.units.find(x=>x.id===state.selected.id);
+        if(!cu) return null;
+        const d=UMAP[cu.defId] || {id:'chimera',name:cu.name,tier:6,class:cu.class,trait:cu.trait,atk:cu.atk,hp:cu.maxHp,attack:'Titan Claw',skill:'Phase enrage at 50% HP'};
+        return {u:{star:cu.star||1},d,enemy:cu.owner==='enemy',preview:false,boss:cu.defId==='chimera'};
+      }
+      return null;
+    }
+    function renderGlossaryBody(){
+      const g=el('glossaryBody'); if(!g) return;
+      g.innerHTML = `
+        <div><b>Stars</b>: 2★ = base ×1.6, 3★ = base ×2.5.</div>
+        <div><b>Energy</b>: basic attacks give +20 energy. Cast at Max Energy.</div>
+        <hr style="border-color:#36457f66">
+        <div>Synergy effects are shown in the <b>Active Synergies</b> badges on board and in side panel.</div>
+      `;
+    }
+    function renderOddsModal(){
+      const body=el('oddsBody'); if(!body) return;
+      body.innerHTML = Object.entries(STAGE_ODDS).map(([st,o])=>`<div>Stage ${st}: T1 ${o[1]}% • T2 ${o[2]}% • T3 ${o[3]}% • T4 ${o[4]}% • T5 ${o[5]}%</div>`).join('');
+    }
+    function openSideInfo(title,html){
+      const t=el('synergyModalTitle'), b=el('synergyUnitsBody'); if(!t||!b) return;
+      t.textContent=title; b.style.display='block'; b.innerHTML=html;
+      const sy=el('synergyOverlay'), br=el('boardWrap').getBoundingClientRect();
+      if(sy){sy.style.left=(br.right-710)+'px';sy.style.top=(br.top+12)+'px';sy.classList.add('show');}
+    }
+    function openBossModal(stage){
+      if(!(stage===5||stage===10)) return;
+      const c=getChimeraConfig(stage);
+      el('bossBody').innerHTML = `<div style="display:flex;gap:12px;align-items:center"><img src="${BOSS_ASSETS.phase2}" alt="Chimera" style="width:150px;height:120px;border-radius:12px;border:2px solid #b35a5a;object-fit:cover"><div><div style="font-size:22px;font-weight:800;color:#ffd1d1">${c.name}</div><div class="badge">Stage ${stage}</div><div class="small">HP ${Math.round(c.maxHp)} • ATK ${Math.round(c.atk)} • Range ${c.range}</div><div class="small">Phase 2 at 50% HP. Massive AoE control and burst.</div></div></div>`;
+      el('bossOverlay').classList.add('show');
+    }
+    function ensureAudio(){
+      if(!state.audioCtx){
+        const Ctx=window.AudioContext||window.webkitAudioContext;
+        if(!Ctx) return null;
+        state.audioCtx=new Ctx();
+      }
+      if(state.audioCtx.state==='suspended') state.audioCtx.resume();
+      return state.audioCtx;
+    }
+    function playTone(freq=440,dur=0.08,type='sine',vol=0.04){
+      const ctx=ensureAudio(); if(!ctx) return;
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type=type;o.frequency.value=freq;g.gain.value=vol;
+      o.connect(g);g.connect(ctx.destination);
+      const t=ctx.currentTime;
+      g.gain.setValueAtTime(vol,t);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.start(t);o.stop(t+dur);
+    }
+    function playCue(kind){
+      if(kind==='merge'){playTone(392,.08,'triangle',.05);setTimeout(()=>playTone(523,.1,'triangle',.05),65);}
+      else if(kind==='cast'){playTone(262,.05,'triangle',.05);setTimeout(()=>playTone(330,.07,'triangle',.045),55);setTimeout(()=>playTone(392,.09,'triangle',.04),110);}
+      else if(kind==='crit'){playTone(784,.05,'square',.045);setTimeout(()=>playTone(988,.06,'square',.04),45);}
+      else if(kind==='boss'){playTone(110,.22,'triangle',.08);setTimeout(()=>playTone(147,.24,'triangle',.07),170);}
+    }
+    function updateRunStatsFromBattle(units,win){
+      if(win) state.runStats.wins++; else state.runStats.losses++;
+      const p=units.filter(u=>u.owner==='player');
+      p.forEach(u=>{
+        state.runStats.damageByDef[u.defId]=(state.runStats.damageByDef[u.defId]||0)+(u.damageDone||0);
+        state.runStats.fieldCounts[u.defId]=(state.runStats.fieldCounts[u.defId]||0)+1;
+      });
+      state.lastBattleBreakdown=p.map(u=>({defId:u.defId,name:u.name,emoji:u.emoji,damage:u.damageDone||0})).sort((a,b)=>b.damage-a.damage);
+    }
+    function openSummary(win){
+      const body=el('summaryBody'); if(!body) return;
+      const dmgEntries=Object.entries(state.runStats.damageByDef).sort((a,b)=>b[1]-a[1]).slice(0,8);
+      const max=Math.max(1,...dmgEntries.map(([,v])=>v),1);
+      const comp=Object.entries(state.runStats.fieldCounts).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id])=>UMAP[id]?.name||id);
+      body.innerHTML = `
+        <div><b>Result:</b> ${win?'Victory (Stage 10 cleared)':'Defeat'}</div>
+        <div><b>Record:</b> ${state.runStats.wins}W - ${state.runStats.losses}L</div>
+        <div><b>Best Comp Core:</b> ${comp.length?comp.join(', '):'N/A'}</div>
+        <div style="margin-top:8px"><b>DPS Chart</b></div>
+        ${dmgEntries.map(([id,v])=>`<div class="barRow"><span style="min-width:120px">${unitImgTag(id,'unitArt lg',UMAP[id]?.name||id)} ${UMAP[id]?.name||id}</span><div class="bar" style="width:${Math.max(10,Math.round((v/max)*260))}px"></div><span>${Math.round(v)}</span></div>`).join('')||'<div class="small">No damage data.</div>'}
+        <div style="margin-top:8px"><b>Relic Impact</b></div>
+        <div>${state.relics.length?state.relics.map(r=>`• ${r.name}`).join('<br>'):'No relics chosen'}</div>
+      `;
+      el('summaryOverlay').classList.add('show');
+    }
+    function showResultModal(win){
+      const t=el('resultTitle'), s=el('resultSub');
+      if(!t||!s) return;
+      t.textContent = win ? '🏆 VICTORY! 🏆' : '☠ DEFEAT ☠';
+      t.style.color = win ? '#86ffc8' : '#ff8ea1';
+      s.textContent = win ? `Stage ${state.stage} cleared. The crowd roars!` : `You lost a life on Stage ${state.stage}.`;
+      el('resultOverlay').classList.add('show');
+    }
+
+    function buildBoard(){
+      boardEl.innerHTML='';
+      for(let r=0;r<10;r++){
+        const row=document.createElement('div');row.className='boardRow '+(r%2?'odd':'');
+        for(let c=0;c<5;c++){
+          const h=document.createElement('div');h.className='hex '+(r<5?'enemyZone':'playerZone');h.dataset.r=r;h.dataset.c=c;
+          h.innerHTML='';
+          h.onclick=()=>onHexClick(r,c);
+          row.appendChild(h);
+        }
+        boardEl.appendChild(row);
+      }
+    }
+
+    function unitChip(u,enemy=false,mode='board'){
+      const d = UMAP[u.defId];
+      const hp = u.hp && u.maxHp ? Math.max(0,Math.round(100*u.hp/u.maxHp)) : 100;
+      const star = '★'.repeat(u.star||1);
+      return `<div class="slotUnit class-${classSlug(d.class)} ${enemy?'enemy':''}" data-uid="${u.uid||''}">
+          ${renderUnitVisual(d.id,{anim:'idle'},{className:'unitBg',alt:d.name,surface:'board'})}
+          <div class="unitShade"></div>
+          <div class="starOverlay">${star}</div>
+          <div class="unitNameOverlay">${d.name}</div>
+          <div class="hpbar"><div class="hpfill" style="width:${hp}%"></div></div>
+      </div>`;
+    }
+
+    function renderPrepUnits(){
+      document.querySelectorAll('.hex').forEach(h=>{
+        const r=+h.dataset.r,c=+h.dataset.c;const uid=state.grid[r][c];
+        h.classList.toggle('selected',state.selected && ((state.selected.type==='grid'&&state.selected.r===r&&state.selected.c===c)||(state.selected.type==='enemy_preview'&&state.selected.r===r&&state.selected.c===c)));
+        h.classList.remove('inRange');
+        h.ondragover=(e)=>{e.preventDefault();};
+        h.ondrop=(e)=>{e.preventDefault();onHexDrop(r,c);};
+        [...h.querySelectorAll('.spawnGhost')].forEach(x=>x.remove());
+        [...h.querySelectorAll('.slotUnit')].forEach(x=>x.remove());
+        if(uid && !state.inBattle){
+          h.insertAdjacentHTML('beforeend',unitChip(state.units[uid],false));
+          const su=h.querySelector('.slotUnit');
+          if(uid===state.mergePulseUid) su.classList.add('traitFxPulse');
+          su.onclick=(e)=>{e.stopPropagation();selectGrid(r,c);};
+          su.draggable=true;
+          su.ondragstart=(e)=>{state.dragging={type:'grid',r,c};e.dataTransfer.setData('text/plain','grid');startDragPreview(uid);};
+          su.ondragend=()=>{state.dragging=null;endDragPreview();};
+        }
+      });
+      const bench=el('bench');bench.innerHTML='';
+      for(let i=0;i<5;i++){
+        const s=document.createElement('div');s.className='benchSlot'+(state.selected&&state.selected.type==='bench'&&state.selected.i===i?' selected':'');
+        s.onclick=()=>onBenchClick(i);
+        s.ondragover=(e)=>{e.preventDefault();};
+        s.ondrop=(e)=>{e.preventDefault();onBenchDrop(i);};
+        if(state.bench[i]){
+          s.innerHTML=unitChip(state.units[state.bench[i]],false,'bench');
+          const su=s.querySelector('.slotUnit');
+          if(state.bench[i]===state.mergePulseUid) su.classList.add('traitFxPulse');
+          su.onclick=(e)=>{e.stopPropagation();selectBench(i);};
+          su.draggable=true;
+          su.ondragstart=(e)=>{state.dragging={type:'bench',i};e.dataTransfer.setData('text/plain','bench');startDragPreview(state.bench[i]);};
+          su.ondragend=()=>{state.dragging=null;endDragPreview();};
+        }
+        bench.appendChild(s);
+      }
+      if(state.selected && state.selected.type==='grid'){
+        const uid=state.grid[state.selected.r][state.selected.c];
+        if(uid){
+          const rng=getPreviewRange(uid);
+          document.querySelectorAll('.hex').forEach(h=>{
+            const rr=+h.dataset.r,cc=+h.dataset.c;
+            if(hexDist({r:state.selected.r,c:state.selected.c},{r:rr,c:cc})<=rng) h.classList.add('inRange');
+          });
+        }
+      }
+      if(!state.inBattle && state.enemyPreview){
+        state.enemyPreview.forEach(p=>{
+          const h=document.querySelector(`.hex[data-r="${p.row}"][data-c="${p.col}"]`);
+          if(!h || h.querySelector('.slotUnit')) return;
+          const d=p.boss?{emoji:'🐉',name:'Chimera Elite'}:UMAP[p.defId];
+          const g=document.createElement('div');g.className='spawnGhost';g.title=`Spawn: ${p.boss?'Chimera Elite':d.name}`;
+          if(p.boss) g.innerHTML=`<img src="${BOSS_ASSETS.token}" alt="Boss">`;
+          else g.innerHTML=`<img src="${UNIT_ASSETS[p.defId]}" alt="${d.name}">`;
+          h.appendChild(g);
+        });
+      }
+      renderSelectedInfo();
+      state.mergePulseUid=null;
+      updateDebugHud();
+    }
+    function startDragPreview(uid){
+      const g=el('dragGhost'); if(!g||!uid||!state.units[uid]) return;
+      const d=UMAP[state.units[uid].defId];
+      g.innerHTML=unitImgTag(d.id,'unitBg',d.name);
+      g.style.display='block';
+      const sellOverlay=el('shopSellOverlay');
+      if(sellOverlay){
+        sellOverlay.classList.add('show');
+        sellOverlay.innerHTML=`Drop here to Sell<br><span style="font-size:24px;color:#ffe2a8">+${sellGainForUid(uid)} 🪙</span>`;
+      }
+      const cap=el('dragCapOverlay');
+      if(cap){cap.textContent=`${placedPlayerCount()}/${boardCapForStage(state.stage)}`;cap.style.display='block';cap.style.opacity='0.92';}
+      const wrap=el('boardWrap');
+      wrap.ondragover=(e)=>{e.preventDefault();updateDragGhost(e);};
+      wrap.ondragleave=()=>{g.style.display='none';};
+    }
+    function updateDragGhost(e){
+      const g=el('dragGhost'); const wrap=el('boardWrap'); if(!g||!wrap) return;
+      const wr=wrap.getBoundingClientRect(), x=e.clientX-wr.left, y=e.clientY-wr.top;
+      let best=null,bd=1e9;
+      document.querySelectorAll('.hex').forEach(h=>{
+        const r=+h.dataset.r,c=+h.dataset.c; if(r<5) return;
+        const cr=h.getBoundingClientRect(),cx=cr.left-wr.left+cr.width/2,cy=cr.top-wr.top+cr.height/2;
+        const d=(cx-x)*(cx-x)+(cy-y)*(cy-y); if(d<bd){bd=d;best={cx,cy};}
+      });
+      if(best){g.style.left=(best.cx-40)+'px';g.style.top=(best.cy-33)+'px';g.style.display='block';}
+    }
+    function endDragPreview(){
+      const g=el('dragGhost'); if(g) g.style.display='none';
+      el('shopSellOverlay')?.classList.remove('show');
+      const cap=el('dragCapOverlay'); if(cap) cap.style.opacity='0.2';
+      const wrap=el('boardWrap'); if(wrap){wrap.ondragover=null;wrap.ondragleave=null;}
+    }
+
+    function onHexDrop(r,c){
+      if(state.inBattle||!state.dragging||r<5) return;
+      const src=state.dragging; state.dragging=null;
+      if(src.type==='bench'){
+        const uid=state.bench[src.i]; if(!uid) return;
+        if(!state.grid[r][c] && placedPlayerCount()>=boardCapForStage(state.stage)){log(`Board cap reached (${boardCapForStage(state.stage)}) for Stage ${state.stage}.`);return;}
+        if(state.grid[r][c]){const tmp=state.grid[r][c];state.grid[r][c]=uid;state.bench[src.i]=tmp;}
+        else {state.grid[r][c]=uid;state.bench[src.i]=null;}
+      }else if(src.type==='grid'){
+        const uid=state.grid[src.r][src.c]; if(!uid) return;
+        if(src.r===r&&src.c===c) return;
+        const tmp=state.grid[r][c]; state.grid[r][c]=uid; state.grid[src.r][src.c]=tmp;
+      }
+      state.selected=null; autoMergeLoop(); state.selected=null; renderPrepUnits(); renderTop();
+    }
+    boardEl.ondragover=(e)=>{if(!state.inBattle) e.preventDefault();};
+    boardEl.ondrop=(e)=>{
+      if(state.inBattle||!state.dragging) return;
+      const wr=el('boardWrap').getBoundingClientRect();
+      let best=null,bd=1e9;
+      document.querySelectorAll('.hex').forEach(h=>{
+        const rr=+h.dataset.r,cc=+h.dataset.c; if(rr<5) return;
+        const cr=h.getBoundingClientRect(),cx=cr.left-wr.left+cr.width/2,cy=cr.top-wr.top+cr.height/2;
+        const d=(cx-(e.clientX-wr.left))**2 + (cy-(e.clientY-wr.top))**2;
+        if(d<bd){bd=d;best={r:rr,c:cc};}
+      });
+      if(best) onHexDrop(best.r,best.c);
+    };
+    function onBenchDrop(i){
+      if(state.inBattle||!state.dragging) return;
+      const src=state.dragging; state.dragging=null;
+      if(src.type==='grid'){
+        const uid=state.grid[src.r][src.c]; if(!uid) return;
+        if(state.bench[i]){const tmp=state.bench[i];state.bench[i]=uid;state.grid[src.r][src.c]=tmp;}
+        else {state.bench[i]=uid;state.grid[src.r][src.c]=null;}
+      }else if(src.type==='bench'){
+        const uid=state.bench[src.i]; if(!uid) return;
+        if(src.i===i) return;
+        const tmp=state.bench[i]; state.bench[i]=uid; state.bench[src.i]=tmp;
+      }
+      state.selected=null; autoMergeLoop(); state.selected=null; renderPrepUnits(); renderTop();
+    }
+
+    function getPreviewRange(uid){
+      const u=state.units[uid]; if(!u) return 1;
+      const d=UMAP[u.defId];
+      const s=getSynergyState();
+      let r=(d.range||1)+1;
+      if(isTankTrait(d.trait)) r=Math.max(1,r-1);
+      if(d.trait==='Sniper'){
+        r += (s.tLv.Sniper===2?2:s.tLv.Sniper===1?1:0) + state.mods.sniperRange;
+      }
+      return Math.max(1,Math.round(r));
+    }
+
+    function renderShop(animate=false){
+      const shop=el('shop');
+      const seq=++state.shopAnimSeq;
+      const build=()=>{
+        if(seq!==state.shopAnimSeq) return;
+        shop.innerHTML='';
+        state.shop.forEach((id,idx)=>{
+          const d=UMAP[id];
+          const c=document.createElement('div');c.className='card t'+(d?d.tier:1)+' reelIn';
+          c.style.animationDelay=(idx*70)+'ms';
+          if(!d){c.innerHTML='<div class="small">No stock</div>';shop.appendChild(c);return;}
+          const cost=buyCost(d);
+          const canBuyNow = ()=>!(state.energy<cost||state.inBattle);
+          const canBuy = canBuyNow();
+          const opp=shopMergeOpportunity(d.id);
+          if(opp) c.classList.add('shopPulse','star'+opp.star);
+          c.innerHTML=`
+            ${opp?`<div class="shopMergeTag">${'★'.repeat(opp.star)}</div>`:''}
+            <div class="cardBanner"><div class="shopCostOverlay">${cost} 🪙</div>${unitImgTag(d.id,'',d.name)}</div>
+            <div class="cardInner">
+            <div class="shopNameRow"><span class="name">${d.name}</span><span class="small">${{Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️'}[d.class]||''} ${{Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'}[d.trait]||''}</span></div>
+            </div>`;
+          c.style.cursor=canBuy?'pointer':'not-allowed';
+          c.style.opacity=canBuy?'1':'0.45';
+          c.style.filter=canBuy?'none':'grayscale(.55)';
+          c.onclick=()=>{
+            if(canBuyNow()) buyShop(idx);
+            else if(!state.inBattle && state.energy<cost){c.classList.remove('shopShake');void c.offsetWidth;c.classList.add('shopShake');}
+          };
+          shop.appendChild(c);
+        });
+      };
+      const old=[...shop.children];
+      if(animate && old.length){
+        old.forEach(c=>c.classList.add('reelOut'));
+        setTimeout(build,180);
+      }else build();
+    }
+    function shopMergeOpportunity(defId){
+      const counts={1:0,2:0,3:0,4:0};
+      for(const uid of state.bench){if(uid&&state.units[uid]?.defId===defId) counts[state.units[uid].star]++;}
+      for(let r=0;r<10;r++)for(let c=0;c<5;c++){const uid=state.grid[r][c];if(uid&&state.units[uid]?.defId===defId) counts[state.units[uid].star]++;}
+      counts[1]++;
+      let merged=false;
+      for(let s=1;s<=3;s++){
+        const pairs=Math.floor(counts[s]/2);
+        if(pairs>0){merged=true;counts[s]-=pairs*2;counts[s+1]+=pairs;}
+      }
+      if(!merged) return null;
+      for(let s=4;s>=2;s--) if(counts[s]>0) return {star:s};
+      return {star:2};
+    }
+
+    function renderTop(){
+      if(!state.enemyPreview || state.enemyPreviewStage!==state.stage) refreshEnemyPreview();
+      if(actorLayer) actorLayer.style.pointerEvents = state.inBattle ? 'auto' : 'none';
+      el('energy').textContent=state.energy;
+      const ptxt=el('playerHpText'), etxt=el('enemyHpText');
+      const pf=el('playerHpFill'), ef=el('enemyHpFill');
+      if(ptxt) ptxt.textContent=`${state.playerHp}/${state.playerMaxHp}`;
+      if(etxt) etxt.textContent=`${state.enemyHp}/${state.enemyMaxHp}`;
+      if(pf) pf.style.width=`${Math.max(0,Math.min(100,Math.round(100*state.playerHp/state.playerMaxHp)))}%`;
+      if(ef) ef.style.width=`${Math.max(0,Math.min(100,Math.round(100*state.enemyHp/state.enemyMaxHp)))}%`;
+      const cap=el('dragCapOverlay'); if(cap){cap.textContent=`${placedPlayerCount()}/${boardCapForStage(state.stage)}`;cap.style.display='block';cap.style.opacity=state.dragging?'0.92':'0.2';}
+      const track=[]; for(let i=1;i<=10;i++){track.push(`<span class="stageNode ${i<state.stage?'done':''} ${i===state.stage?'current':''} ${i===5||i===10?'boss':''}" data-stage="${i}">${i}</span>`); if(i<10) track.push('<span class="stageLine"></span>');}
+      el('stageTrack').innerHTML=track.join('');
+      el('stageTrack').querySelectorAll('.stageNode').forEach(n=>n.onclick=()=>openBossModal(+n.dataset.stage));
+      renderSynergy();
+      renderDailyMod();
+      renderEnemyIntent();
+      renderRelics();
+      renderChimeraInfo();
+      renderBattleRecap();
+      renderLeaderboard();
+      renderBag();
+      renderSelectedInfo();
+      const logBox=el('log'); if(logBox) logBox.style.display=state.logVisible?'block':'none';
+      const tLog=el('toggleLogBtn'); if(tLog) tLog.textContent=state.logVisible?'Hide':'Show';
+      const tRecap=el('toggleRecapBtn'); if(tRecap) tRecap.textContent=state.recapVisible?'Hide':'Show';
+      const tDebug=el('toggleDebugBtn'); if(tDebug) tDebug.textContent=state.debugVisible?'Hide Debug':'Show Debug';
+      const tAdv=el('toggleAdvancedBtn'); if(tAdv) tAdv.textContent=state.advancedOpen?'Hide Advanced':'Advanced';
+      const tRender=el('toggleRenderModeBtn'); if(tRender) tRender.textContent=`Render: ${state.settings.renderMode==='model'?'Model':'Classic'}`;
+      const aw=el('advancedWrap'); if(aw) aw.style.display=state.advancedOpen?'block':'none';
+      updateDebugHud();
+      el('endlessBtn').style.display=state.endlessUnlocked&&!state.endlessMode?'inline-block':'none';
+    }
+
+    function getPlayerPlacedUnits(){
+      const units = [];
+      for(let r=5;r<10;r++)for(let c=0;c<5;c++){const uid=state.grid[r][c];if(uid)units.push(state.units[uid]);}
+      return units;
+    }
+
+    function getSynergyState(){
+      const units = getPlayerPlacedUnits();
+      const clsSets={Aqua:new Set(),Plant:new Set(),Beast:new Set(),Bird:new Set()};
+      const trSets={Assassin:new Set(),Bastion:new Set(),Vanguard:new Set(),Mage:new Set(),Spikes:new Set(),Sniper:new Set()};
+      units.forEach(u=>{const d=UMAP[u.defId];if(clsSets[d.class])clsSets[d.class].add(d.id);if(trSets[d.trait])trSets[d.trait].add(d.id);});
+      const cls={Aqua:clsSets.Aqua.size,Plant:clsSets.Plant.size,Beast:clsSets.Beast.size,Bird:clsSets.Bird.size};
+      const tr={Assassin:trSets.Assassin.size,Bastion:trSets.Bastion.size,Vanguard:trSets.Vanguard.size,Mage:trSets.Mage.size,Spikes:trSets.Spikes.size,Sniper:trSets.Sniper.size};
+      const lvl=(n,a,b)=>n>=b?2:n>=a?1:0;
+      return {
+        units,cls,tr,
+        cLv:{Aqua:lvl(cls.Aqua,2,4),Plant:lvl(cls.Plant,2,4),Beast:lvl(cls.Beast,2,4),Bird:lvl(cls.Bird,2,4)},
+        tLv:{Assassin:lvl(tr.Assassin,2,3),Bastion:lvl(tr.Bastion,2,3),Vanguard:lvl(tr.Vanguard,2,3),Mage:lvl(tr.Mage,2,3),Spikes:lvl(tr.Spikes,2,3),Sniper:lvl(tr.Sniper,2,3)}
+      };
+    }
+
+    function renderSynergy(){
+      const s=getSynergyState();
+      const icons={Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️',Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'};
+      const tips={
+        Aqua:'Lv1 +10% attack speed, Lv2 +25% attack speed',
+        Plant:'Lv1 +15% max HP, Lv2 +35% max HP',
+        Beast:'Lv1 +10% attack, Lv2 +25% attack',
+        Bird:'Lv1 +10% crit chance, Lv2 +25% crit chance',
+        Assassin:'Lv1 15% lifesteal, Lv2 30% lifesteal',
+        Bastion:'Lv1 15% damage reduction, Lv2 35% damage reduction',
+        Vanguard:'Lv1 +20 start energy, Lv2 +45 start energy',
+        Mage:'Lv1 +20% skill power, Lv2 +45% skill power',
+        Spikes:'Lv1 15% reflect, Lv2 30% reflect',
+        Sniper:'Lv1 +1 range, Lv2 +2 range'
+      };
+      const badges=[];
+      for(const k of ['Aqua','Plant','Beast','Bird']) if(s.cls[k]>0) badges.push(`<button class="synBadge synBtn ${s.cLv[k]===0?'off':''}" data-syn="${k}" title="${tips[k]}">${icons[k]} ${k} Lv${s.cLv[k]}</button>`);
+      for(const k of ['Assassin','Bastion','Vanguard','Mage','Spikes','Sniper']) if(s.tr[k]>0) badges.push(`<button class="synBadge synBtn ${s.tLv[k]===0?'off':''}" data-syn="${k}" title="${tips[k]}">${icons[k]} ${k} Lv${s.tLv[k]}</button>`);
+      el('synergyActive').innerHTML = badges.join('');
+      el('boardSynergy').innerHTML = badges.join('');
+      el('synergy').innerHTML = '';
+      document.querySelectorAll('.synBtn').forEach(b=>b.onclick=()=>openSynergyModal(b.dataset.syn));
+    }
+
+    function renderSelectedInfo(){
+      const slot = el('unitInfoFloating');
+      if(!slot) return;
+      const sel=el('selectedOverlay');
+      const pick=selectedUnitFromState();
+      if(!pick){slot.innerHTML='<span class="small">Select a unit on board, enemy preview, or bench</span>';if(sel)sel.classList.remove('show');return;}
+      const {u,d,enemy,preview,boss}=pick;
+      const mult = STAR_MULT[u.star] || 1, castsIn = attacksToCast(d);
+      const atk=Math.round(d.atk*mult), hp=Math.round(d.hp*mult), castScore=Math.max(1,7-castsIn);
+      const atkPct=Math.min(100,Math.round((atk/450)*100));
+      const hpPct=Math.min(100,Math.round((hp/5000)*100));
+      const castPct=Math.min(100,Math.round((castScore/6)*100));
+      slot.innerHTML = `
+        <div style="font-weight:700;display:flex;gap:6px;align-items:center">${boss?`<img class="unitArt lg" src="${BOSS_ASSETS.phase1}" alt="Chimera">`:unitImgTag(d.id,'unitArt lg',d.name)} ${d.name}</div>
+        <div class="small">${enemy?'Enemy':'Ally'}${preview?' Preview':''} • ${{Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️'}[d.class]||''} ${d.class} / ${{Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'}[d.trait]||''} ${d.trait} • ${'★'.repeat(u.star)}</div>
+        <div class="small">ATK: ${atk}</div><div class="statBar"><span style="width:${atkPct}%"></span></div>
+        <div class="small">HP: ${hp}</div><div class="statBar"><span style="width:${hpPct}%"></span></div>
+        <div class="small">Cast Speed: ${castsIn} attacks</div><div class="statBar"><span style="width:${castPct}%"></span></div>
+        <div class="small">${d.attack} <span style="color:#ffdca1">(${d.atk})</span></div>
+        <div class="small">${d.skill}</div>
+      `;
+      if(sel){
+        const br=el('boardWrap').getBoundingClientRect();
+        sel.style.left=(br.right-340)+'px';
+        sel.style.top=(br.top+12)+'px';
+        const stroke={1:'#5e6f8a',2:'#4e8bb7',3:'#5da56a',4:'#b08448',5:'#b14d67',6:'#b35a5a'}[d.tier]||'#5e6f8a';
+        const md=sel.querySelector('.modal'); if(md) md.style.borderColor=stroke;
+        sel.classList.add('show');
+      }
+    }
+
+    function updateDebugHud(dt=16){
+      state.fps = state.fps ? (state.fps*0.9 + (1000/Math.max(1,dt))*0.1) : (1000/Math.max(1,dt));
+      const playerCount = state.inBattle && state.combat ? state.combat.units.filter(u=>u.owner==='player'&&!u.dead).length : state.grid.slice(5).flat().filter(Boolean).length;
+      const enemyCount = state.inBattle && state.combat ? state.combat.units.filter(u=>u.owner==='enemy'&&!u.dead).length : 0;
+      const hud = el('debugHud');
+      if(!hud) return;
+      hud.style.display = state.debugVisible ? 'block' : 'none';
+      if(!state.debugVisible) return;
+      hud.innerHTML = `Debug HUD<br>FPS: ${Math.round(state.fps)}<br>In Battle: ${state.inBattle?'Yes':'No'}<br>Player Units: ${playerCount}<br>Enemy Units: ${enemyCount}`;
+    }
+
+    function renderRelics(){
+      const rl=el('relicList'); if(rl) rl.innerHTML = state.relics.length?state.relics.map(r=>`<div>${RELIC_ICONS[r.id]||'🔹'} <b>${r.name}</b> <span class="small">${r.desc}</span></div>`).join(''):'<span class="small">None yet</span>';
+      const br=el('boardRelics');
+      if(br){
+        br.innerHTML = state.relics.length?state.relics.map(r=>`<span class="badge" title="${r.desc}">${RELIC_ICONS[r.id]||'🔹'} ${r.name}</span>`).join(''):'';
+        br.style.cursor=state.relics.length?'pointer':'default';
+        if(state.relics.length) br.onclick=()=>openSideInfo('Active Relics',state.relics.map(r=>`<div>${RELIC_ICONS[r.id]||'🔹'} <b>${r.name}</b><div class="small">${r.desc}</div></div>`).join('<hr style="border-color:#36457f66">'));
+      }
+    }
+    function openSynergyModal(key){
+      const title=el('synergyModalTitle'), body=el('synergyUnitsBody'); if(!title||!body) return;
+      const isClass=['Aqua','Plant','Beast','Bird'].includes(key);
+      const tips={
+        Aqua:'Lv1 +10% attack speed, Lv2 +25% attack speed',
+        Plant:'Lv1 +15% max HP, Lv2 +35% max HP',
+        Beast:'Lv1 +10% attack, Lv2 +25% attack',
+        Bird:'Lv1 +10% crit chance, Lv2 +25% crit chance',
+        Assassin:'Lv1 15% lifesteal, Lv2 30% lifesteal',
+        Bastion:'Lv1 15% damage reduction, Lv2 35% damage reduction',
+        Vanguard:'Lv1 +20 start energy, Lv2 +45 start energy',
+        Mage:'Lv1 +20% skill power, Lv2 +45% skill power',
+        Spikes:'Lv1 15% reflect, Lv2 30% reflect',
+        Sniper:'Lv1 +1 range, Lv2 +2 range'
+      };
+      const s=getSynergyState();
+      const lv = isClass ? s.cLv[key] : s.tLv[key];
+      const defs=UNIT_DEFS.filter(u=>isClass?u.class===key:u.trait===key);
+      const have=new Set(getPlayerPlacedUnits().map(u=>u.defId));
+      title.textContent=`${key} • Lv${lv}`;
+      body.style.display='grid';
+      body.innerHTML = `<div style="grid-column:1/-1" class="small">${tips[key]}</div>` + defs.map(d=>`<div class="unitMini ${have.has(d.id)?'':'off'}">${unitImgTag(d.id,'unitArt lg',d.name)} <span>${d.name}</span></div>`).join('');
+      const so=el('synergyOverlay'), br=el('boardWrap').getBoundingClientRect();
+      if(so){so.style.left=(br.right-710)+'px';so.style.top=(br.top+12)+'px';so.classList.add('show');}
+    }
+    function renderChimeraInfo(){
+      const box=el('chimeraInfo'); if(!box) return;
+      if(state.stage===5 || state.stage===10){
+        const c=getChimeraConfig(state.stage);
+        box.innerHTML = `
+          <div style="display:flex;gap:8px;align-items:center"><img class="unitArt lg" src="${BOSS_ASSETS.phase1}" alt="Chimera"><b>${c.emoji} ${c.name}</b> <span class="badge">Stage ${state.stage}</span></div>
+          <div class="small">${c.class} / ${c.trait} • Boss</div>
+          <div class="small">HP: ${Math.round(c.maxHp)} • ATK: ${Math.round(c.atk)} • Range: ${c.range}</div>
+          <div class="small">Cast: ${Math.ceil(c.maxEnergy/20)} attacks • DR: ${Math.round(c.dr*100)}%</div>
+        `;
+      }else{
+        const next = state.stage<5 ? 5 : (state.stage<10 ? 10 : null);
+        if(next){
+          const c=getChimeraConfig(next);
+          box.innerHTML = `
+            <div style="display:flex;gap:8px;align-items:center"><img class="unitArt lg" src="${BOSS_ASSETS.phase1}" alt="Chimera"><b>${c.emoji} ${c.name}</b> <span class="badge">Stage ${next}</span></div>
+            <div class="small">Upcoming boss preview</div>
+            <div class="small">HP: ${Math.round(c.maxHp)} • ATK: ${Math.round(c.atk)} • Range: ${c.range}</div>
+            <div class="small">Cast: ${Math.ceil(c.maxEnergy/20)} attacks • DR: ${Math.round(c.dr*100)}%</div>
+          `;
+        } else box.innerHTML = `<span class="small">All Chimera stages cleared.</span>`;
+      }
+    }
+    function renderBag(){
+      const rows=[1,2,3,4,5].map(t=>{
+        const arr=UNIT_DEFS.filter(u=>u.tier===t).map(u=>`${u.name}:${state.bag[u.id]}`).join(' | ');
+        return `<div><b>Tier ${t}</b> (${TIER_POOL[t]} base ea): <span class="small">${arr}</span></div>`;
+      }).join('');
+      el('bagList').innerHTML=rows;
+    }
+
+    function rollShopSlot(){
+      for(let tries=0;tries<40;tries++){
+        const t=weightedTier(state.stage);
+        const choices=UNIT_DEFS.filter(u=>u.tier===t && state.bag[u.id]>0);
+        if(choices.length) return rnd(choices).id;
+      }
+      const fallback=UNIT_DEFS.filter(u=>state.bag[u.id]>0);
+      return fallback.length?rnd(fallback).id:null;
+    }
+    function refreshShop(){state.shop=[rollShopSlot(),rollShopSlot(),rollShopSlot()];renderShop(true);renderTop();}
+    function firstBench(){for(let i=0;i<5;i++)if(!state.bench[i])return i;return -1}
+    function createUnit(defId,star=1){const uid='u'+(state.nextUid++);state.units[uid]={uid,defId,star};return uid}
+    function grantStarterUnit(){
+      const defs=UNIT_DEFS.filter(u=>u.tier===1 && state.bag[u.id]>0);
+      if(!defs.length) return;
+      const bi=firstBench(); if(bi<0) return;
+      const d=rnd(defs), uid=createUnit(d.id,1);
+      state.bench[bi]=uid; state.bag[d.id]--;
+      log(`<b>Starter Unit</b>: ${d.name}`);
+    }
+
+    function buyShop(i){
+      if(state.inBattle) return;
+      const id=state.shop[i], d=UMAP[id];
+      if(!d) return;
+      const cost=buyCost(d);
+      if(state.energy<cost){log('Not enough energy');return;}
+      const bi=firstBench(); if(bi<0){log('Bench full (5 slots)');return;}
+      if(state.bag[id]<=0){log('Bag empty for '+d.name);return;}
+      state.energy-=cost; state.bag[id]--;
+      const uid=createUnit(id,1); state.bench[bi]=uid;
+      log(`Bought <b>${d.name}</b>. Shop volatile refresh triggered.`);
+      refreshShop();
+      autoMergeLoop();
+      renderPrepUnits();renderTop();
+    }
+
+    function onBenchClick(i){
+      if(state.inBattle) return;
+      if(state.selected && state.selected.type==='bench' && state.selected.i===i){state.selected=null;renderPrepUnits();return;}
+      if(state.bench[i]) selectBench(i);
+      else if(state.selected && state.selected.type==='grid'){
+        const uid=state.grid[state.selected.r][state.selected.c];
+        if(uid){state.grid[state.selected.r][state.selected.c]=null;state.bench[i]=uid;state.selected=null;autoMergeLoop();renderPrepUnits();renderTop();}
+      }
+    }
+    function onHexClick(r,c){
+      if(state.inBattle) return;
+      if(r<5){
+        const p=(state.enemyPreview||[]).find(x=>x.row===r&&x.col===c);
+        if(p){state.selected={type:'enemy_preview',r,c};renderPrepUnits();renderTop();return;}
+        log('Player deploys only rows 6-10');return;
+      }
+      if(state.selected && state.selected.type==='bench'){
+        const uid=state.bench[state.selected.i];
+        if(!uid) return;
+        if(!state.grid[r][c] && placedPlayerCount()>=boardCapForStage(state.stage)){
+          log(`Board cap reached (${boardCapForStage(state.stage)}) for Stage ${state.stage}.`);
+          return;
+        }
+        if(state.grid[r][c]){
+          const tmp=state.grid[r][c];
+          state.grid[r][c]=uid;state.bench[state.selected.i]=tmp;
+        } else {state.grid[r][c]=uid;state.bench[state.selected.i]=null;}
+        state.selected=null;autoMergeLoop();renderPrepUnits();renderTop();return;
+      }
+      if(state.selected && state.selected.type==='grid'){
+        const {r:sr,c:sc}=state.selected; if(sr===r && sc===c){state.selected=null;renderPrepUnits();return;}
+        const a=state.grid[sr][sc], b=state.grid[r][c]; state.grid[r][c]=a; state.grid[sr][sc]=b; state.selected=null;
+        autoMergeLoop();renderPrepUnits();renderTop();return;
+      }
+      if(state.grid[r][c]) selectGrid(r,c);
+    }
+    function selectBench(i){state.selected={type:'bench',i};renderPrepUnits()}
+    function selectGrid(r,c){state.selected={type:'grid',r,c};renderPrepUnits()}
+
+    function removePlaced(uid){
+      for(let i=0;i<5;i++)if(state.bench[i]===uid)state.bench[i]=null;
+      for(let r=0;r<10;r++)for(let c=0;c<5;c++)if(state.grid[r][c]===uid)state.grid[r][c]=null;
+    }
+
+    function autoMergeLoop(){
+      let changed=true;
+      while(changed){
+        changed=false;
+        const groups={};
+        for(let i=0;i<5;i++){const uid=state.bench[i];if(uid){const u=state.units[uid],k=u.defId+'|'+u.star;(groups[k]??=[]).push({type:'bench',i,uid});}}
+        for(let r=0;r<10;r++)for(let c=0;c<5;c++){const uid=state.grid[r][c];if(uid){const u=state.units[uid],k=u.defId+'|'+u.star;(groups[k]??=[]).push({type:'grid',r,c,uid});}}
+        for(const k in groups){
+          const arr=groups[k];
+          if(arr.length>=2){
+            const a=arr[0],b=arr[1],ua=state.units[a.uid],star=ua.star;
+            if(star>=4) continue;
+            const boardTarget = arr.find(x=>x.type==='grid');
+            removePlaced(a.uid);removePlaced(b.uid);delete state.units[a.uid];delete state.units[b.uid];
+            const nu=createUnit(ua.defId,star+1);
+            if(boardTarget){ state.grid[boardTarget.r][boardTarget.c]=nu; starUpFx(boardTarget.r,boardTarget.c,star+1); }
+            else if(a.type==='bench') state.bench[a.i]=nu;
+            else state.grid[a.r][a.c]=nu;
+            state.mergePulseUid=nu;
+            log(`<b>Merge!</b> ${UMAP[ua.defId].name} became ${star+1}★`);
+            playCue('merge');
+            changed=true;break;
+          }
+        }
+      }
+    }
+
+    function sellSelected(){
+      if(state.inBattle || !state.selected) return;
+      let uid=null;
+      if(state.selected.type==='bench') uid=state.bench[state.selected.i];
+      else uid=state.grid[state.selected.r][state.selected.c];
+      if(!uid) return;
+      sellUid(uid);
+      state.selected=null;
+      autoMergeLoop(); renderPrepUnits(); renderTop(); renderShop(false);
+    }
+    function sellUid(uid){
+      const u=state.units[uid]; if(!u) return;
+      const d=UMAP[u.defId], copies=Math.pow(2,u.star-1), gain=sellGainForUid(uid);
+      state.energy+=gain; state.bag[u.defId]+=copies;
+      removePlaced(uid); delete state.units[uid];
+      log(`Sold <b>${d.name} ${'★'.repeat(u.star)}</b> for ${gain} energy. Returned ${copies} to bag.`);
+    }
+    function sellGainForUid(uid){
+      const u=state.units[uid]; if(!u) return 0;
+      const d=UMAP[u.defId], copies=Math.pow(2,u.star-1);
+      return Math.max(0,d.tier*copies + state.mods.sellBonusEnergy);
+    }
+    function sellDraggedFromSource(src){
+      if(!src||state.inBattle) return;
+      let uid=null;
+      if(src.type==='bench') uid=state.bench[src.i];
+      else if(src.type==='grid') uid=state.grid[src.r][src.c];
+      if(!uid) return;
+      sellUid(uid);
+      autoMergeLoop(); renderPrepUnits(); renderTop(); renderShop(false);
+    }
+
+    function hexNeighbors(r,c){
+      const odd = r%2===1;
+      const dirs = odd ? [[-1,0],[-1,1],[0,-1],[0,1],[1,0],[1,1]] : [[-1,-1],[-1,0],[0,-1],[0,1],[1,-1],[1,0]];
+      return dirs.map(([dr,dc])=>[r+dr,c+dc]).filter(([nr,nc])=>nr>=0&&nr<10&&nc>=0&&nc<5);
+    }
+    function oddrToCube(r,c){const x=c-(r-(r&1))/2,z=r,y=-x-z;return{x,y,z}}
+    function hexDist(a,b){
+      const ar = (a.r ?? a.row), ac = (a.c ?? a.col);
+      const br = (b.r ?? b.row), bc = (b.c ?? b.col);
+      const A=oddrToCube(ar,ac),B=oddrToCube(br,bc);
+      return Math.max(Math.abs(A.x-B.x),Math.abs(A.y-B.y),Math.abs(A.z-B.z));
+    }
+    function nearest(units,u,enemyOwner){
+      let best=null,bd=999;
+      for(const t of units){if(t.dead||t.owner!==enemyOwner||t.untargetable>0)continue;
+        const d=hexDist(u,t); if(!Number.isFinite(d)) continue; if(d<bd){bd=d;best=t;}
+      } return best;
+    }
+
+    function synergiesForBattle(playerUnits){
+      const clsSets={Aqua:new Set(),Plant:new Set(),Beast:new Set(),Bird:new Set()};
+      const trSets={Assassin:new Set(),Bastion:new Set(),Vanguard:new Set(),Mage:new Set(),Spikes:new Set(),Sniper:new Set()};
+      playerUnits.forEach(u=>{clsSets[u.class]?.add(u.defId);trSets[u.trait]?.add(u.defId);});
+      const cls={Aqua:clsSets.Aqua.size,Plant:clsSets.Plant.size,Beast:clsSets.Beast.size,Bird:clsSets.Bird.size};
+      const tr={Assassin:trSets.Assassin.size,Bastion:trSets.Bastion.size,Vanguard:trSets.Vanguard.size,Mage:trSets.Mage.size,Spikes:trSets.Spikes.size,Sniper:trSets.Sniper.size};
+      const lv=(n,a,b)=>n>=b?2:n>=a?1:0;
+      return {
+        classes:{Aqua:lv(cls.Aqua,2,4),Plant:lv(cls.Plant,2,4),Beast:lv(cls.Beast,2,4),Bird:lv(cls.Bird,2,4)},
+        traits:{Assassin:lv(tr.Assassin,2,3),Bastion:lv(tr.Bastion,2,3),Vanguard:lv(tr.Vanguard,2,3),Mage:lv(tr.Mage,2,3),Spikes:lv(tr.Spikes,2,3),Sniper:lv(tr.Sniper,2,3)}
+      };
+    }
+
+    function makeCombatUnit(uid,owner,r,c){
+      const pu=state.units[uid], d=UMAP[pu.defId], mult=STAR_MULT[pu.star], hpBase=d.hp*mult, atkBase=d.atk*mult;
+      const tank = isTankTrait(d.trait);
+      const maxEnergy = unitMaxEnergy(d);
+      const hpAdj = tank ? 1.45 : 1;
+      const rangeAdj = tank ? Math.max(1,(d.range+1)-1) : (d.range+1);
+      const asAdj = tank ? 0.9 : 1.35;
+      return {
+        id:uid,owner,row:r,col:c,defId:d.id,name:d.name,emoji:d.emoji,tier:d.tier,class:d.class,trait:d.trait,star:pu.star,
+        hp:hpBase*hpAdj,maxHp:hpBase*hpAdj,atk:atkBase,range:rangeAdj,mystic:d.mystic,maxEnergy,energy:0,attackCd:0,moveCd:0,
+        stunned:0,rooted:0,charmed:0,shield:0,immuneCC:0,armorShred:0,dr:0,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,
+        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:d.id==='lotus',targetId:null,damageDone:0,healingDone:0
+      };
+    }
+    function makeEnemy(defId,star,r,c,powerScale=1.05){
+      const d=UMAP[defId], mult=STAR_MULT[star]||1;
+      const tank = isTankTrait(d.trait);
+      const maxEnergy = unitMaxEnergy(d);
+      const hpAdj = tank ? 1.45 : 1;
+      const rangeAdj = tank ? Math.max(1,(d.range+1)-1) : (d.range+1);
+      const asAdj = tank ? 0.9 : 1.35;
+      return {
+        id:'e'+(state.nextUid++),owner:'enemy',row:r,col:c,defId:d.id,name:d.name,emoji:d.emoji,tier:d.tier,class:d.class,trait:d.trait,star,
+        hp:d.hp*mult*powerScale*hpAdj,maxHp:d.hp*mult*powerScale*hpAdj,atk:d.atk*mult*powerScale,range:rangeAdj,mystic:d.mystic,maxEnergy,energy:0,attackCd:0,moveCd:0,
+        stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:0,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,
+        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:false,targetId:null,damageDone:0,healingDone:0
+      };
+    }
+    function makeChimera(stage){
+      const cfg=getChimeraConfig(stage);
+      return {
+        id:'boss'+state.nextUid++,owner:'enemy',row:2,col:2,defId:'chimera',name:'Chimera Elite',emoji:'🐉',tier:6,class:'Beast',trait:'Vanguard',star:1,
+        hp:cfg.maxHp,maxHp:cfg.maxHp,atk:cfg.atk,range:cfg.range,mystic:false,maxEnergy:cfg.maxEnergy,energy:0,attackCd:0,moveCd:0,
+        stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:cfg.dr,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,attackSpeed:cfg.attackSpeed,crit:0.1,resUsed:false,auraLotus:false,boss:true,targetId:null,damageDone:0,healingDone:0
+      };
+    }
+
+    function generateEnemies(stage){
+      const used = new Set(), list = [];
+      const count = stage===1 ? 2 : Math.min(8, 3 + Math.floor(stage*0.7));
+      if(stage===5 || stage===10){list.push(makeChimera(stage)); used.add('2|2');}
+      for(let i=0;i<count;i++){
+        const t = weightedTier(clamp(stage+1,1,10));
+        const maxTier = stage===1 ? 1 : Math.min(5,Math.max(1,t+1));
+        const defs = UNIT_DEFS.filter(u=>u.tier<=maxTier);
+        const d = rnd(defs);
+        let r,c,key,tries=0;
+        do{r=Math.floor(rand()*5);c=Math.floor(rand()*5);key=r+'|'+c;tries++;}while(used.has(key)&&tries<50);
+        used.add(key);
+        const star = stage>=8 && rand()<0.32 ? 2 : (stage>=10&&rand()<0.15?3:1);
+        const scale = stage===1 ? 0.68 : (stage===2 ? 0.88 : 1.05);
+        list.push(makeEnemy(d.id,star,r,c,scale));
+      }
+      return list;
+    }
+
+    function getCellCenter(r,c){
+      const cell=document.querySelector(`.hex[data-r="${r}"][data-c="${c}"]`);
+      const wr=el('boardWrap').getBoundingClientRect();
+      if(!cell) return {x:wr.width/2,y:wr.height/2};
+      const cr=cell.getBoundingClientRect();
+      return {x:cr.left-wr.left+cr.width/2,y:cr.top-wr.top+cr.height/2};
+    }
+
+    function applyBattleBuffs(units){
+      const p = units.filter(u=>u.owner==='player');
+      const s = synergiesForBattle(p);
+      for(const u of p){
+        u.energy = Math.min(u.maxEnergy, u.energy + state.mods.startEnergy);
+        u.maxHp *= (1 + state.mods.globalHP);
+        if(u.trait==='Bastion') u.maxHp *= (1 + state.mods.guardianHP);
+        if(u.class==='Plant'){u.maxHp *= s.classes.Plant===2?1.35:s.classes.Plant===1?1.15:1;}
+        u.hp=u.maxHp;
+
+        if(u.class==='Beast') u.atk += state.mods.beastFlatAtk;
+        if(u.class==='Beast') u.atk *= s.classes.Beast===2?1.25:s.classes.Beast===1?1.10:1;
+        if(u.class==='Bird') u.crit += s.classes.Bird===2?0.25:s.classes.Bird===1?0.10:0;
+        if(u.class==='Bird') u.moveBonus=(u.moveBonus||0)+state.mods.birdMove;
+        if(u.class==='Aqua') u.attackSpeed += s.classes.Aqua===2?0.25:s.classes.Aqua===1?0.10:0;
+        if(u.class==='Aqua') u.attackSpeed += state.mods.aquaAS;
+
+        if(u.trait==='Assassin') u.lifesteal = (s.traits.Assassin===2?0.30:s.traits.Assassin===1?0.15:0);
+        if(u.trait==='Assassin') u.crit += state.mods.rogueCrit;
+        if(u.trait==='Bastion') u.dr += s.traits.Bastion===2?0.35:s.traits.Bastion===1?0.15:0;
+        if(u.trait==='Vanguard') u.energy += s.traits.Vanguard===2?45:s.traits.Vanguard===1?20:0;
+        if(u.trait==='Mage') u.skillPow = (u.skillPow||1) * (s.traits.Mage===2?1.45:s.traits.Mage===1?1.2:1);
+        if(u.trait==='Spikes') u.reflect += (s.traits.Spikes===2?0.30:s.traits.Spikes===1?0.15:0) + state.mods.thornReflect;
+        if(u.trait==='Sniper'){u.range += (s.traits.Sniper===2?2:s.traits.Sniper===1?1:0) + state.mods.sniperRange; u.atk *= 1+state.mods.sniperDmg;}
+        u.attackSpeed += state.mods.globalAS;
+      }
+    }
+
+    function startBattle(){
+      if(state.inBattle) return;
+      try{
+        ensureAudio();
+        const player = [];
+        for(let r=5;r<10;r++)for(let c=0;c<5;c++){const uid=state.grid[r][c];if(uid)player.push(makeCombatUnit(uid,'player',r,c));}
+        if(!player.length){log('Deploy units on rows 6-10 first.');return;}
+        if(player.length>boardCapForStage(state.stage)){log(`Too many units deployed (${player.length}/${boardCapForStage(state.stage)}).`);return;}
+        if(!state.enemyPreview) refreshEnemyPreview();
+        const scale = state.stage===1 ? 0.68 : (state.stage===2 ? 0.88 : 1.05);
+        const enemies=(state.enemyPreview||[]).map(p=>p.boss?makeChimera(state.stage):makeEnemy(p.defId,p.star,p.row,p.col,scale));
+        const units=[...player,...enemies];
+        applyBattleBuffs(units);
+        if(state.daily && state.daily.apply) state.daily.apply(units);
+        state.combat={units,last:performance.now(),secondWindUsed:false};
+        state.inBattle=true;state.selected=null;
+        state.stallMs=0;state.lastLoopAt=performance.now();state.loopRunning=false;
+        if(state.raf) cancelAnimationFrame(state.raf);
+        if(state.battleTimer) clearInterval(state.battleTimer);
+        releaseActorNodes(); fxLayer.innerHTML='';
+        units.forEach(u=>{
+          const a=acquireActorNode();
+          a.className='actor class-'+classSlug(u.class)+' '+(u.owner==='enemy'?'enemy':'');
+          a.id='actor-'+u.id;
+          a.innerHTML=`${u.defId==='chimera'?`<img class="actorArt" src="${BOSS_ASSETS.token}" alt="Chimera">`:renderUnitVisual(u.defId,{anim:'idle'},{className:'actorArt',alt:u.name,surface:'combat'})}<div class="actorShade"></div><div class="actorStars">${'★'.repeat(u.star||1)}</div><div class="actorHp"><div class="actorHpFill"></div></div><div class="actorMana"><div class="actorManaFill"></div></div>`;
+          a.onclick=(e)=>{e.stopPropagation();state.selected={type:'combat',id:u.id};renderSelectedInfo();};
+          actorLayer.appendChild(a);
+        });
+        renderActorPositions(true);
+        log(`<b>Battle started</b> on Stage ${state.stage}${state.stage===5||state.stage===10?' vs Chimera Elite':''}.`);
+        if(state.stage===5||state.stage===10) playCue('boss');
+        state.raf=requestAnimationFrame(loopBattle);
+        state.battleTimer=setInterval(()=>{
+          if(!state.inBattle) return;
+          const now=performance.now();
+          if(now - state.lastLoopAt > 220) loopBattle(now);
+        }, 120);
+        renderPrepUnits();renderShop();
+      }catch(err){
+        state.inBattle=false;
+        clearInterval(state.battleTimer);state.battleTimer=0;
+        cancelAnimationFrame(state.raf);state.raf=0;
+        log(`<span style="color:#ff9ab0">Start battle error: ${String(err && err.message ? err.message : err)}</span>`);
+      }
+    }
+
+    function renderActorPositions(initial=false){
+      const units=state.combat.units;
+      for(const u of units){
+        const a=el('actor-'+u.id); if(!a) continue;
+        if(u.dead){a.style.display='none';continue;}
+        const p=getCellCenter(u.row,u.col);
+        a.style.transform=`translate(${p.x-36}px,${p.y-33}px)`;
+        if(initial) a.style.transition='none'; else a.style.transition='transform .18s linear';
+        const w=Math.max(0,Math.round(100*u.hp/u.maxHp)); a.querySelector('.actorHpFill').style.width=w+'%';
+        const mw=Math.max(0,Math.round(100*u.energy/u.maxEnergy)); const mana=a.querySelector('.actorManaFill'); if(mana) mana.style.width=mw+'%';
+      }
+    }
+
+    function canAct(u){return !u.dead && u.stunned<=0 && u.untargetable<=0}
+    function applyDamage(src,t,amt,type='physical'){
+      if(t.dead) return 0;
+      if(type==='physical' && t.physImmune>0) return 0;
+      let dmg=amt;
+      const shred = t.armorShred>0 ? 0.5 : 0;
+      const dr = clamp((t.dr||0)-shred,-0.5,0.85);
+      dmg *= (1-dr);
+      if(t.shield>0){
+        const s=Math.min(t.shield,dmg);t.shield-=s;dmg-=s;
+      }
+      if(dmg<=0) return 0;
+      t.hp -= dmg;
+      setCombatAnim(t,'hit',180);
+      if(src) src.damageDone = (src.damageDone||0) + dmg;
+      floatNum(t.row,t.col,'-'+Math.round(dmg),'dmg');
+      if(src && src.owner===t.owner && dmg<0) return 0;
+      if(src && src.lifesteal && dmg>0){heal(src,dmg*src.lifesteal,src);}
+      if(src && src.trait==='Spikes' && t.reflect>0 && src!==t){applyDamage(null,src,dmg*t.reflect,'magic')}
+      if(t.hp<=0){
+        t.dead=true; t.hp=0;
+        setCombatAnim(t,'death',500);
+        if(src && src.owner!==t.owner && src.owner==='player'){
+          if(state.mods.killHeal) heal(src,src.maxHp*state.mods.killHeal);
+        }
+      }
+      return dmg;
+    }
+    function heal(u,val,src=null){
+      if(u.dead) return;
+      u.hp=Math.min(u.maxHp,u.hp+val);
+      if(src) src.healingDone = (src.healingDone||0) + val;
+      floatNum(u.row,u.col,'+'+Math.round(val),'heal');
+    }
+    function floatNum(r,c,text,type){
+      const p=getCellCenter(r,c),f=document.createElement('div');f.className='float '+type;f.style.left=p.x+'px';f.style.top=p.y+'px';f.textContent=text;fxLayer.appendChild(f);setTimeout(()=>f.remove(),900);
+    }
+    function starUpFx(r,c,star){
+      const p=getCellCenter(r,c),f=document.createElement('div');
+      f.className='float heal';f.style.left=p.x+'px';f.style.top=p.y+'px';f.textContent=`${star}★`;
+      fxLayer.appendChild(f);setTimeout(()=>f.remove(),900);
+      const sparks = star===4?14:star===3?9:6;
+      for(let i=0;i<sparks;i++){
+        const s=document.createElement('div');
+        s.className='impact';
+        const ang=(Math.PI*2*i)/sparks,dist=star===4?34:star===3?26:20;
+        s.style.left=(p.x+Math.cos(ang)*dist)+'px'; s.style.top=(p.y+Math.sin(ang)*dist)+'px';
+        s.style.borderColor=star===4?'#fff':star===3?'#ffe08a':'#9fe8ff';
+        fxLayer.appendChild(s); setTimeout(()=>s.remove(),280);
+      }
+    }
+    function projectile(from,to,color='#69d0ff'){
+      const a=getCellCenter(from.row,from.col),b=getCellCenter(to.row,to.col),p=document.createElement('div');
+      p.className='projectile'; p.style.background=`radial-gradient(circle at 30% 30%,#fff,${color} 45%,#2d5cab 75%)`; p.style.left=(a.x-7)+'px'; p.style.top=(a.y-7)+'px';
+      fxLayer.appendChild(p);
+      const t0=performance.now(),dur=180;
+      function step(t){
+        const k=Math.min(1,(t-t0)/dur);
+        p.style.left=(a.x+(b.x-a.x)*k-7)+'px';
+        p.style.top=(a.y+(b.y-a.y)*k-7)+'px';
+        if(k<1 && Math.random()<0.35){
+          const tr=document.createElement('div'); tr.className='impact'; tr.style.left=(a.x+(b.x-a.x)*k)+'px'; tr.style.top=(a.y+(b.y-a.y)*k)+'px'; tr.style.borderColor=color; tr.style.transform='translate(-50%,-50%) scale(.5)'; fxLayer.appendChild(tr); setTimeout(()=>tr.remove(),140);
+        }
+        if(k<1)requestAnimationFrame(step);
+        else{
+          p.remove();
+          const im=document.createElement('div');im.className='impact';im.style.left=b.x+'px';im.style.top=b.y+'px';im.style.borderColor=color;fxLayer.appendChild(im);setTimeout(()=>im.remove(),260);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+    function slashFx(r,c,color='#9ed4ff'){
+      const p=getCellCenter(r,c),s=document.createElement('div');
+      s.className='impact'; s.style.left=p.x+'px'; s.style.top=p.y+'px'; s.style.borderColor=color; s.style.transform='translate(-50%,-50%) scale(1.6) rotate(-18deg)';
+      fxLayer.appendChild(s); setTimeout(()=>s.remove(),220);
+      for(let i=0;i<2;i++){
+        const s2=document.createElement('div'); s2.className='impact'; s2.style.left=(p.x+(i?8:-8))+'px'; s2.style.top=(p.y+(i?4:-4))+'px'; s2.style.borderColor=color; s2.style.transform=`translate(-50%,-50%) scale(${1.2+i*.25}) rotate(${i?24:-30}deg)`; fxLayer.appendChild(s2); setTimeout(()=>s2.remove(),220);
+      }
+      arenaShake(3,110);
+    }
+    function castBurst(r,c,color='#8fe3ff'){
+      const p=getCellCenter(r,c);
+      for(let i=0;i<7;i++){
+        const im=document.createElement('div'); im.className='impact'; im.style.left=p.x+'px'; im.style.top=p.y+'px'; im.style.borderColor=color; im.style.transform=`translate(-50%,-50%) scale(${0.6+i*0.22})`; fxLayer.appendChild(im); setTimeout(()=>im.remove(),240+i*20);
+      }
+      arenaShake(6,180);
+    }
+    function arenaShake(intensity=4,dur=120){
+      const w=el('boardWrap'); if(!w) return;
+      const t0=performance.now();
+      function step(t){
+        const k=(t-t0)/dur;
+        if(k>=1){w.style.transform='';return;}
+        const dx=(Math.random()*2-1)*intensity, dy=(Math.random()*2-1)*intensity*0.5;
+        w.style.transform=`translate(${dx}px,${dy}px)`;
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    function traitFx(u,kind='attack'){
+      const a=el('actor-'+u.id); if(!a) return;
+      a.classList.remove('traitFxDash','traitFxPulse');
+      if(u.trait==='Assassin' && kind==='cast') a.classList.add('traitFxDash');
+      else if(u.trait==='Mage' && kind==='cast') a.classList.add('traitFxPulse');
+      else if(u.trait==='Sniper') a.classList.add('traitFxPulse');
+      setTimeout(()=>a.classList.remove('traitFxDash','traitFxPulse'),220);
+    }
+
+    function occupiedMap(units){
+      const m=new Map();
+      units.filter(x=>!x.dead).forEach(x=>m.set(x.row+'|'+x.col,x.id));
+      return m;
+    }
+
+    function findFreeCellNear(r,c,units,ignoreId=null){
+      const occ=occupiedMap(units);
+      if(ignoreId){
+        for(const [k,v] of occ.entries()) if(v===ignoreId) occ.delete(k);
+      }
+      const rings=[[r,c],...hexNeighbors(r,c)];
+      for(const [cr,cc] of rings){
+        if(cr<0||cr>9||cc<0||cc>4) continue;
+        if(!occ.has(cr+'|'+cc)) return {r:cr,c:cc};
+      }
+      for(const [n1r,n1c] of hexNeighbors(r,c)){
+        for(const [cr,cc] of hexNeighbors(n1r,n1c)){
+          if(cr<0||cr>9||cc<0||cc>4) continue;
+          if(!occ.has(cr+'|'+cc)) return {r:cr,c:cc};
+        }
+      }
+      return null;
+    }
+
+    function stepToward(u,target,units){
+      const occ=occupiedMap(units);
+      let best=null,b=999;
+      for(const [nr,nc] of hexNeighbors(u.row,u.col)){
+        const key=nr+'|'+nc;
+        if(occ.has(key)) continue;
+        const d=hexDist({r:nr,c:nc},target);
+        if(d<b){b=d;best={r:nr,c:nc};}
+      }
+      if(best){u.row=best.r;u.col=best.c;}
+      return !!best;
+    }
+
+    function chooseTarget(u,units){
+      const enemyOwner = u.owner==='player' ? 'enemy' : 'player';
+      if(u.tauntedBy){
+        const t=units.find(x=>x.id===u.tauntedBy && !x.dead && x.owner===enemyOwner);
+        if(t){u.targetId=t.id;return t;}
+      }
+      if(u.targetId){
+        const prev=units.find(x=>x.id===u.targetId && x.owner===enemyOwner && !x.dead && x.untargetable<=0);
+        if(prev){
+          const d=hexDist(u,prev);
+          if(Number.isFinite(d) && d<=u.range) return prev;
+        }
+      }
+      const next = nearest(units,u,enemyOwner) || units.find(x=>x.owner===enemyOwner && !x.dead && x.untargetable<=0) || null;
+      u.targetId = next ? next.id : null;
+      return next;
+    }
+
+    function forceUnstall(units){
+      let moved=0;
+      for(const u of units){
+        if(u.dead) continue;
+        const enemyOwner = u.owner==='player' ? 'enemy' : 'player';
+        const t = nearest(units,u,enemyOwner);
+        if(!t) continue;
+        if(stepToward(u,t,units)) moved++;
+      }
+      return moved;
+    }
+
+    function resolveCollisions(units){
+      const byCell={};
+      for(const u of units){
+        if(u.dead) continue;
+        const k=u.row+'|'+u.col;
+        (byCell[k]??=[]).push(u);
+      }
+      for(const k in byCell){
+        const arr=byCell[k];
+        if(arr.length<=1) continue;
+        for(let i=1;i<arr.length;i++){
+          const u=arr[i];
+          const free=findFreeCellNear(u.row,u.col,units,u.id);
+          if(free){u.row=free.r;u.col=free.c;}
+        }
+      }
+    }
+
+    function castSkill(u,units,target){
+      playCue('cast');
+      castBurst(u.row,u.col,u.owner==='player'?'#8fe3ff':'#ff9fb4');
+      setCombatAnim(u,'cast',320);
+      traitFx(u,'cast');
+      const a=el('actor-'+u.id); if(a){a.classList.add('castPop');setTimeout(()=>a.classList.remove('castPop'),350);}
+      floatNum(u.row,u.col,'CAST!','energy');
+      const sp = (u.skillPow||1) * (1+state.mods.skillPower);
+      const doubleCast = u.owner==='player' && rand()<state.mods.doubleCastChance;
+      const times = doubleCast?2:1;
+      for(let rep=0;rep<times;rep++){
+        switch(u.defId){
+          case 'peon':{
+            const enemies=units.filter(x=>x.owner!==u.owner&&!x.dead); if(!enemies.length) break;
+            const t=enemies.sort((a,b)=> (u.owner==='player'?a.row-b.row:b.row-a.row))[0];
+            const landing=findFreeCellNear(t.row,Math.max(0,Math.min(4,t.col+(u.owner==='player'?-1:1))),units,u.id);
+            if(landing){u.row=landing.r;u.col=landing.c;}
+            const dmg=150*sp;const dealt=applyDamage(u,t,dmg,'magic');heal(u,dealt);
+            break;
+          }
+          case 'sprout':{
+            u.rooted=1200;u.shield+=150*sp;
+            const ally=nearest(units,u,u.owner); if(ally) ally.shield+=150*sp;
+            break;
+          }
+          case 'nut':{
+            const dir=u.owner==='player'?-1:1, cells=[[u.row+dir,u.col],[u.row+dir,u.col-1],[u.row+dir,u.col+1]];
+            units.filter(x=>x.owner!==u.owner&&!x.dead).forEach(e=>{if(cells.some(([r,c])=>e.row===r&&e.col===c))applyDamage(u,e,110*sp,'physical')});
+            break;
+          }
+          case 'pips':{
+            units.filter(a=>a.owner===u.owner&&!a.dead&&hexDist(a,u)<=1&&a.id!==u.id).forEach(a=>{a.energy=Math.min(a.maxEnergy,a.energy+40);floatNum(a.row,a.col,'+40E','energy')});
+            break;
+          }
+          case 'bubbles':{
+            const ally=units.filter(a=>a.owner===u.owner&&!a.dead).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0];
+            if(ally){ally.shield+=200*sp;ally.immuneCC=2500;}
+            break;
+          }
+          case 'cactus':{
+            units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=1).forEach(e=>applyDamage(u,e,75*sp,'magic')); break;
+          }
+          case 'gnasher':{
+            if(target){applyDamage(u,target,120*sp,'physical');target.armorShred=4000;} break;
+          }
+          case 'kestrel':{
+            const t=units.filter(e=>e.owner!==u.owner&&!e.dead).sort((a,b)=>a.hp-b.hp)[0];
+            if(t){u.untargetable=600;const landing=findFreeCellNear(t.row,t.col,units,u.id);if(landing){u.row=landing.r;u.col=landing.c;}applyDamage(u,t,160*sp,'physical')}
+            break;
+          }
+          case 'nemo':{
+            if(target){for(let i=0;i<3;i++)applyDamage(u,target,50*sp,'physical');u.reflect+=0.25;}
+            break;
+          }
+          case 'pumpkin':{
+            u.dr += 0.50;
+            units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=2).forEach(e=>e.tauntedBy=u.id);
+            setTimeout(()=>{u.dr=Math.max(0,u.dr-0.50);},2200);
+            break;
+          }
+          case 'zoro':{
+            if(target){const landing=findFreeCellNear(target.row,Math.max(0,Math.min(4,target.col+(u.owner==='player'?-1:1))),units,u.id);if(landing){u.row=landing.r;u.col=landing.c;}applyDamage(u,target,140*sp,'physical')}
+            break;
+          }
+          case 'falcon':{
+            if(target){applyDamage(u,target,130*sp,'physical');const dir=u.owner==='player'?-1:1;target.row=clamp(target.row+2*dir,0,9);}
+            break;
+          }
+          case 'siren':{
+            const t=nearest(units,u,u.owner==='player'?'enemy':'player'); if(t&&t.immuneCC<=0)t.charmed=3500; break;
+          }
+          case 'yggdrasil':{
+            units.filter(e=>e.owner!==u.owner&&!e.dead).forEach(e=>{if(e.immuneCC<=0){e.rooted=1200;e.stunned=1200;}applyDamage(u,e,150*sp,'magic')});break;
+          }
+          case 'goliath':{
+            units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,target||u)<=1).forEach(e=>{if(e.immuneCC<=0)e.stunned=2500;applyDamage(u,e,100*sp,'true')});break;
+          }
+          case 'raven':{
+            units.filter(e=>e.owner!==u.owner&&!e.dead&&e.row===u.row).forEach(e=>{applyDamage(u,e,200*sp,'physical');if(e.hp/e.maxHp<0.25)e.dead=true;});
+            break;
+          }
+          case 'immanuel':{
+            units.filter(a=>a.owner===u.owner&&!a.dead).forEach(a=>heal(a,300*sp));
+            units.filter(e=>e.owner!==u.owner&&!e.dead).forEach(e=>e.row=clamp(e.row+(u.owner==='player'?-2:2),0,9));
+            break;
+          }
+          case 'lotus': break;
+          case 'chonky':{
+            if(target){applyDamage(u,target,150*sp + target.maxHp*0.25*sp,'physical')}break;
+          }
+          case 'kallaway':{
+            u.physImmune=3000;u.bladeStorm=3000;u.bladeTick=0;break;
+          }
+          default:{
+            if(u.boss){
+              units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=1).forEach(e=>{if(e.immuneCC<=0)e.stunned=1000;applyDamage(u,e,260*sp,'magic')});
+            }
+          }
+        }
+      }
+    }
+
+    function doAttack(u,t,units){
+      if(!t) return;
+      setCombatAnim(u,'attack',220);
+      traitFx(u,'attack');
+      if(u.range<=1) slashFx(t.row,t.col,u.owner==='player'?'#9ed4ff':'#ffadbc');
+      else projectile(u,t,u.owner==='player'?'#68dfff':'#ff8ea1');
+      const crit=rand()<u.crit, dmg=(u.atk*(crit?1.55:1));
+      if(crit){ playCue('crit'); setCombatAnim(u,'crit',260); }
+      applyDamage(u,t,dmg,'physical');
+      if(u.defId==='cactus' && rand()<0.3) units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,t)<=1).forEach(e=>applyDamage(u,e,75,'magic'));
+      u.energy=Math.min(u.maxEnergy,u.energy+20);
+      if(u.energy>=u.maxEnergy){u.energy=0;castSkill(u,units,t);}
+      u.attackCd = 1000/Math.max(0.3, u.attackSpeed + ((u.hp/u.maxHp<0.5&&u.owner==='player')?state.mods.lowHpAS:0));
+    }
+
+    function reviveCheck(units){
+      if(!state.mods.secondWind || state.combat.secondWindUsed) return;
+      const dead=units.filter(u=>u.owner==='player'&&u.dead);
+      const alive=units.some(u=>u.owner==='player'&&!u.dead);
+      if(dead.length && !alive){
+        const x=rnd(dead);x.dead=false;x.hp=x.maxHp*0.35;state.combat.secondWindUsed=true;log('<b>Second Wind Charm</b> revived '+x.name);return;
+      }
+    }
+    function showBoardOutcome(win){
+      const b=el('battleBanner'); if(!b) return;
+      b.className=''; b.id='battleBanner';
+      b.textContent = win ? 'VICTORY!' : 'DEFEAT';
+      b.classList.add(win?'win':'lose');
+      if(win){
+        for(let i=0;i<22;i++){
+          setTimeout(()=>{
+            const p=getCellCenter(Math.floor(rand()*10),Math.floor(rand()*5));
+            const f=document.createElement('div'); f.className='float heal'; f.style.left=p.x+'px'; f.style.top=p.y+'px'; f.textContent=rand()<0.5?'🎉':'✨';
+            fxLayer.appendChild(f); setTimeout(()=>f.remove(),900);
+          },i*70);
+        }
+      }
+      setTimeout(()=>{b.className='';b.textContent='';},2800);
+    }
+    function loopBattle(ts){
+      if(state.loopRunning) return;
+      state.loopRunning=true;
+      try{
+        if(!state.inBattle || !state.combat) return;
+        state.lastLoopAt = performance.now();
+        const c=state.combat, dt=Math.min(80,ts-c.last); c.last=ts;
+        const units=c.units;
+        let actions=0;
+        for(const u of units){
+          if(u.dead) continue;
+          u.attackCd=Math.max(0,u.attackCd-dt);
+          u.moveCd=Math.max(0,u.moveCd-dt);
+          u.stunned=Math.max(0,u.stunned-dt);
+          u.rooted=Math.max(0,u.rooted-dt);
+          u.charmed=Math.max(0,u.charmed-dt);
+          u.immuneCC=Math.max(0,u.immuneCC-dt);
+          u.armorShred=Math.max(0,u.armorShred-dt);
+          u.untargetable=Math.max(0,u.untargetable-dt);
+          u.physImmune=Math.max(0,u.physImmune-dt);
+          if(u.auraLotus){const allies=units.filter(a=>a.owner===u.owner&&!a.dead);allies.forEach(a=>heal(a,a.maxHp*0.05*(dt/1000)));}
+          if(u.boss && !u.phase2 && u.hp/u.maxHp<=0.5){u.phase2=true;u.attackSpeed+=0.25;const av=el('actor-'+u.id);const im=av&&av.querySelector('img.unitArt.actor');if(im) im.src=BOSS_ASSETS.phase2;playCue('boss');log('<b>Chimera enrages at 50% HP!</b>');}
+          if(u.defId==='kallaway'&&u.bladeStorm>0){u.bladeStorm-=dt;u.bladeTick=(u.bladeTick||0)+dt;if(u.bladeTick>=250){u.bladeTick=0;units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=1).forEach(e=>applyDamage(u,e,20,'magic')); actions++;}}
+          if(u.defId==='lotus' && !u.resUsed && u.hp<=0){u.resUsed=true;u.dead=false;u.hp=u.maxHp*0.5;actions++;}
+        }
+
+        reviveCheck(units);
+
+        for(const u of units){
+          if(u.dead||!canAct(u)) continue;
+          const target=chooseTarget(u,units); if(!target) continue;
+          const dist=hexDist(u,target);
+          const r = u.range;
+          if(Number.isFinite(dist) && dist<=r){
+            if(u.attackCd<=0){ doAttack(u,target,units); actions++; }
+          } else if(u.moveCd<=0 && u.rooted<=0 && u.stunned<=0){
+            if(stepToward(u,target,units)){ setCombatAnim(u,'move',260); actions++; }
+            u.moveCd = 760 / (1 + (u.moveBonus||0));
+          }
+        }
+
+        state.stallMs = actions===0 ? state.stallMs + dt : 0;
+        if(state.stallMs > 1200){
+          const nudged = forceUnstall(units);
+          if(nudged>0) actions += nudged;
+          state.stallMs = 0;
+        }
+
+        resolveCollisions(units);
+        renderActorPositions();
+        updateDebugHud(dt);
+        const pAlive=units.some(u=>u.owner==='player'&&!u.dead), eAlive=units.some(u=>u.owner==='enemy'&&!u.dead);
+        if(!pAlive||!eAlive){endBattle(pAlive&&!eAlive);return;}
+        if(state.inBattle) state.raf=requestAnimationFrame(loopBattle);
+      }catch(err){
+        log(`<span style="color:#ff9ab0">Battle runtime error: ${String(err && err.message ? err.message : err)}</span>`);
+        state.inBattle=false;
+        cancelAnimationFrame(state.raf);
+        clearInterval(state.battleTimer);
+        state.raf=0; state.battleTimer=0;
+        renderPrepUnits();
+        renderShop();
+      }finally{
+        state.loopRunning=false;
+      }
+    }
+
+    function openRelicChoice(){
+      const pool=RELICS.filter(r=>!state.relicTaken[r.id]);
+      const picks=[]; while(picks.length<3&&pool.length){const i=Math.floor(rand()*pool.length);picks.push(pool.splice(i,1)[0]);}
+      el('relicChoices').innerHTML='';
+      picks.forEach(r=>{
+        const c=document.createElement('div');c.className='relicCard';
+        c.innerHTML=`<div class="augIcon">${RELIC_ICONS[r.id]||'🔹'}</div><div style="font-weight:800;margin-bottom:4px">${r.name}</div><div class="small" style="margin-bottom:10px">${r.desc}</div><button class="btn" style="width:100%">Choose Augment</button>`;
+        c.querySelector('button').onclick=()=>{
+          state.relics.push({id:r.id,name:r.name,desc:r.desc});state.relicTaken[r.id]=1;r.apply(state);
+          el('relicOverlay').classList.remove('show');
+          if(state.pendingAdvance){state.stage++;state.pendingAdvance=false;state.pendingClearStage=null;}
+          state.energy += baseIncomeForStage(state.stage) + state.mods.incomeBonus;
+          refreshShop();renderTop();renderPrepUnits();
+        };
+        el('relicChoices').appendChild(c);
+      });
+      el('relicOverlay').classList.add('show');
+    }
+
+    function endBattle(win,fromTimeout=false){
+      cancelAnimationFrame(state.raf);
+      clearInterval(state.battleTimer);
+      state.raf=0; state.battleTimer=0; state.loopRunning=false;
+      state.inBattle=false;
+      if(state.combat && state.combat.units) updateRunStatsFromBattle(state.combat.units,win);
+      releaseActorNodes();fxLayer.innerHTML='';
+      showBoardOutcome(win);
+      if(win){
+        const cleared=state.stage;
+        state.bestStage=Math.max(state.bestStage,cleared);
+        log(`<b style="color:#80ffc9">Victory</b> on Stage ${cleared}`);
+        if(!fromTimeout){
+          const survivors=(state.combat?.units||[]).filter(u=>u.owner==='player'&&!u.dead).length;
+          state.enemyHp=Math.max(0,state.enemyHp-survivors);
+          log(`Enemy chessplayer takes <b>${survivors}</b> damage (${state.enemyHp}/${state.enemyMaxHp} HP left).`);
+        }
+        state.energy += baseIncomeForStage(state.stage) + state.mods.incomeBonus + state.mods.winBonusEnergy;
+        if(state.enemyHp<=0){
+          state.endlessUnlocked=true;
+          log('<b style="color:#ffe38e">Enemy chessplayer defeated!</b>');
+          openSummary(true);
+        } else if(cleared===10 && !state.endlessMode){
+          state.endlessUnlocked=true;
+          log('<b style="color:#ffe38e">Wave 10 complete. Keep fighting until enemy HP reaches 0.</b>');
+        } else if([2,5,7].includes(cleared)){
+          state.pendingAdvance=true;state.pendingClearStage=cleared;
+          openRelicChoice();
+        } else {
+          state.stage=Math.min(10,state.stage+1);
+        }
+      } else {
+        if(!fromTimeout){
+          const enemyLeft=(state.combat?.units||[]).filter(u=>u.owner==='enemy'&&!u.dead).length;
+          state.playerHp=Math.max(0,state.playerHp-enemyLeft);
+          log(`Enemy remaining units deal <b>${enemyLeft}</b> damage to you (${state.playerHp}/${state.playerMaxHp}).`);
+        }
+        state.energy += baseIncomeForStage(state.stage) + state.mods.incomeBonus + state.mods.lossBonusEnergy;
+        log(`<b style="color:#ff9ab0">Defeat.</b> Retry Stage ${state.stage}.`);
+        if(state.playerHp<=0){ log('<b style="color:#ff7d96">Run failed. Press Reset Run.</b>'); openSummary(false); }
+      }
+      if(win && !el('relicOverlay').classList.contains('show')) refreshShop();
+      renderPrepUnits();renderTop();renderShop();
+    }
+
+    function resetRun(){
+      state.stage=1;state.playerHp=state.playerMaxHp;state.energy=4;state.enemyHp=state.enemyMaxHp;state.bench=[null,null,null,null,null];
+      state.grid=Array.from({length:10},()=>Array(5).fill(null));state.units={};state.nextUid=1;state.shop=[null,null,null];
+      state.bag=Object.fromEntries(UNIT_DEFS.map(u=>[u.id,TIER_POOL[u.tier]]));
+      state.selected=null;state.dragging=null;state.mergePulseUid=null;state.inBattle=false;state.relics=[];state.relicTaken={};state.pendingAdvance=false;state.pendingClearStage=null;state.enemyPreview=null;state.enemyPreviewStage=null;state.lastBattleBreakdown=[];state.runStats={wins:0,losses:0,damageByDef:{},fieldCounts:{}};state.endlessMode=false;state.endlessUnlocked=false;state.bestStage=0;state.runSeed=null;state.seedRng=null;state.recapVisible=false;state.logVisible=false;state.advancedOpen=false;
+      state.mods={incomeBonus:0,aquaAS:0,beastFlatAtk:0,birdMove:0,rogueCrit:0,thornReflect:0,guardianHP:0,sniperDmg:0,skillPower:0,sniperRange:0,startEnergy:0,globalAS:0,sellBonusEnergy:0,killHeal:0,doubleCastChance:0,globalHP:0,lowHpAS:0,secondWind:false,winBonusEnergy:0,lossBonusEnergy:0};
+      initDailyModifier();
+      grantStarterUnit();
+      el('selectedOverlay').classList.remove('show');
+      logEl.innerHTML='';log('New run started.');
+      refreshShop();renderPrepUnits();renderTop();
+    }
+
+    function startEndless(){
+      if(!state.endlessUnlocked || state.inBattle) return;
+      state.endlessMode=true;
+      state.stage=Math.max(11,state.stage+1);
+      state.playerHp=Math.max(state.playerHp,1);
+      log('<b style="color:#9bd8ff">Endless Mode started.</b>');
+      refreshEnemyPreview();
+      refreshShop();
+      renderPrepUnits();renderTop();
+    }
+    el('startBtn').onclick=startBattle;
+    el('endlessBtn').onclick=startEndless;
+    el('resetBtnBottom').onclick=resetRun;
+    el('openGlossaryBtn').onclick=()=>el('glossaryOverlay').classList.add('show');
+    el('openGlossaryBtn2').onclick=()=>el('glossaryOverlay').classList.add('show');
+    el('closeGlossaryBtn').onclick=()=>el('glossaryOverlay').classList.remove('show');
+    el('closeSummaryBtn').onclick=()=>el('summaryOverlay').classList.remove('show');
+    el('openLeaderboardBtn').onclick=()=>{renderLeaderboard();el('leaderboardOverlay').classList.add('show');};
+    el('closeLeaderboardBtn').onclick=()=>el('leaderboardOverlay').classList.remove('show');
+    el('openBagBtn').onclick=()=>{renderBag();el('bagOverlay').classList.add('show');};
+    el('closeBagBtn').onclick=()=>el('bagOverlay').classList.remove('show');
+    el('closeResultBtn').onclick=()=>el('resultOverlay').classList.remove('show');
+    el('toggleRecapBtn').onclick=()=>{state.recapVisible=!state.recapVisible;renderTop();};
+    el('toggleLogBtn').onclick=()=>{state.logVisible=!state.logVisible;renderTop();};
+    el('toggleDebugBtn').onclick=()=>{state.debugVisible=!state.debugVisible;renderTop();};
+    el('toggleRenderModeBtn').onclick=()=>{
+      state.settings.renderMode = state.settings.renderMode==='model'?'classic':'model';
+      renderPrepUnits();renderTop();if(state.inBattle) renderActorPositions(true);renderShop();
+    };
+    el('toggleAdvancedBtn').onclick=()=>{state.advancedOpen=!state.advancedOpen;renderTop();};
+    el('openOddsBtn2').onclick=()=>{renderOddsModal();el('oddsOverlay').classList.add('show');};
+    el('closeOddsBtn').onclick=()=>el('oddsOverlay').classList.remove('show');
+    el('closeBossBtn').onclick=()=>el('bossOverlay').classList.remove('show');
+    el('closeSynergyBtn').onclick=()=>el('synergyOverlay').classList.remove('show');
+    el('startSeededBtn').onclick=startSeededRun;
+    el('copySeedBtn').onclick=copySeed;
+    const shopRow=el('shopRow'), shopSellOverlay=el('shopSellOverlay');
+    const handleShopSellDrop=(e)=>{
+      e.preventDefault();
+      const src=state.dragging; state.dragging=null; endDragPreview(); sellDraggedFromSource(src);
+    };
+    if(shopRow){shopRow.ondragover=(e)=>{if(state.dragging)e.preventDefault();}; shopRow.ondrop=handleShopSellDrop;}
+    if(shopSellOverlay){shopSellOverlay.ondragover=(e)=>{e.preventDefault();}; shopSellOverlay.ondrop=handleShopSellDrop;}
+    document.querySelectorAll('.overlay').forEach(ov=>{
+      ov.addEventListener('click',(e)=>{if(e.target===ov) ov.classList.remove('show');});
+    });
+    document.addEventListener('mousedown',(e)=>{
+      const so=el('selectedOverlay'), sm=so&&so.querySelector('.modal');
+      if(so&&so.classList.contains('show')&&sm&&!sm.contains(e.target)){so.classList.remove('show');state.selected=null;renderPrepUnits();}
+      const sy=el('synergyOverlay'), sym=sy&&sy.querySelector('.modal');
+      if(sy&&sy.classList.contains('show')&&sym&&!sym.contains(e.target)){sy.classList.remove('show');}
+    });
+
+    renderGlossaryBody();
+    buildBoard();
+    primeModelCache();
+    resetRun();
+    log('Welcome. Buy units, place them on your field, and merge identical twins automatically.');
+    log('Stages 5 and 10 contain Chimera Elite bosses. Losses cost 1 life and keep stage.');
+  </script>
+</body>
+</html>
