@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Axie Tactics CMS</title>
+  <style>
+    body{margin:0;background:#0f1410;color:#e9f3e6;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    .wrap{max-width:1100px;margin:0 auto;padding:14px;display:grid;gap:12px}
+    .card{background:#1a2318;border:1px solid #3f543a;border-radius:12px;padding:12px}
+    h1,h2{margin:0 0 10px 0}
+    .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    label{font-size:12px;color:#b8ccb3;display:flex;flex-direction:column;gap:4px}
+    input,select,textarea,button{border-radius:8px;border:1px solid #475d42;background:#11170f;color:#e9f3e6;padding:8px}
+    button{cursor:pointer;background:#2b4f2c}
+    table{width:100%;border-collapse:collapse;font-size:12px}
+    th,td{border-bottom:1px solid #354733;padding:6px;text-align:left}
+    .row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Axie Tactics CMS</h1>
+      <div class="row3">
+        <button id="exportBtn">Export JSON</button>
+        <input id="importFile" type="file" accept="application/json">
+        <button id="clearBtn">Reset CMS Data</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Add / Update Unit</h2>
+      <div class="row">
+        <label>ID<input id="uId" placeholder="peon"></label>
+        <label>Name<input id="uName" placeholder="Peon"></label>
+        <label>Emoji<input id="uEmoji" placeholder="💧"></label>
+        <label>Tier<input id="uTier" type="number" min="1" max="5" value="1"></label>
+        <label>Class<input id="uClass" placeholder="Aqua"></label>
+        <label>Trait<input id="uTrait" placeholder="Assassin"></label>
+        <label>Attack<input id="uAtk" type="number" value="45"></label>
+        <label>HP<input id="uHp" type="number" value="480"></label>
+        <label>Range<input id="uRange" type="number" value="1"></label>
+        <label>Mystic<select id="uMystic"><option value="false">false</option><option value="true">true</option></select></label>
+        <label>Attack Name<input id="uAttack" placeholder="Aqua Nip"></label>
+        <label>Skill Description<input id="uSkill" placeholder="Infiltrate backline..."></label>
+        <label style="grid-column:1/-1">Image URL<input id="uImage" placeholder="https://...png"></label>
+      </div>
+      <div class="row3" style="margin-top:8px">
+        <button id="saveUnitBtn">Save Unit</button>
+        <button id="deleteUnitBtn">Delete Unit</button>
+        <button id="clearUnitBtn">Clear Form</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Synergy Effects</h2>
+      <div class="row">
+        <label>Key (Class/Trait)<input id="sKey" placeholder="Aqua"></label>
+        <label>Lv1 Effect<textarea id="sLv1"></textarea></label>
+        <label>Lv2 Effect<textarea id="sLv2"></textarea></label>
+      </div>
+      <div class="row3" style="margin-top:8px">
+        <button id="saveSynBtn">Save Synergy</button>
+        <button id="deleteSynBtn">Delete Synergy</button>
+        <button id="clearSynBtn">Clear Form</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Units</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Tier</th><th>Class</th><th>Trait</th><th>Stats</th><th>Action</th></tr></thead>
+        <tbody id="unitRows"></tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Synergies</h2>
+      <table>
+        <thead><tr><th>Key</th><th>Lv1</th><th>Lv2</th><th>Action</th></tr></thead>
+        <tbody id="synRows"></tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    const STORAGE_NAMESPACE='cms_data_v1';
+    const empty={units:[],synergies:{}};
+    const state=JSON.parse(localStorage.getItem(STORAGE_NAMESPACE)||JSON.stringify(empty));
+    const $=id=>document.getElementById(id);
+    const save=()=>localStorage.setItem(STORAGE_NAMESPACE,JSON.stringify(state));
+    function render(){
+      $('unitRows').innerHTML=state.units.map(u=>`<tr><td>${u.id}</td><td>${u.name}</td><td>${u.tier}</td><td>${u.class}</td><td>${u.trait}</td><td>ATK ${u.atk} / HP ${u.hp} / R ${u.range}</td><td><button onclick="editUnit('${u.id}')">Edit</button></td></tr>`).join('');
+      $('synRows').innerHTML=Object.entries(state.synergies).map(([k,v])=>`<tr><td>${k}</td><td>${v.lv1||''}</td><td>${v.lv2||''}</td><td><button onclick="editSyn('${k}')">Edit</button></td></tr>`).join('');
+    }
+    window.editUnit=id=>{
+      const u=state.units.find(x=>x.id===id); if(!u) return;
+      $('uId').value=u.id;$('uName').value=u.name;$('uEmoji').value=u.emoji;$('uTier').value=u.tier;$('uClass').value=u.class;$('uTrait').value=u.trait;
+      $('uAtk').value=u.atk;$('uHp').value=u.hp;$('uRange').value=u.range;$('uMystic').value=String(!!u.mystic);$('uAttack').value=u.attack;$('uSkill').value=u.skill;$('uImage').value=u.image||'';
+    };
+    window.editSyn=k=>{const s=state.synergies[k]||{};$('sKey').value=k;$('sLv1').value=s.lv1||'';$('sLv2').value=s.lv2||'';};
+    $('saveUnitBtn').onclick=()=>{
+      const u={id:$('uId').value.trim(),name:$('uName').value.trim(),emoji:$('uEmoji').value.trim(),tier:+$('uTier').value,class:$('uClass').value.trim(),trait:$('uTrait').value.trim(),atk:+$('uAtk').value,hp:+$('uHp').value,range:+$('uRange').value,mystic:$('uMystic').value==='true',attack:$('uAttack').value.trim(),skill:$('uSkill').value.trim(),image:$('uImage').value.trim()};
+      if(!u.id) return;
+      const i=state.units.findIndex(x=>x.id===u.id); if(i>=0) state.units[i]=u; else state.units.push(u);
+      save();render();
+    };
+    $('deleteUnitBtn').onclick=()=>{const id=$('uId').value.trim();state.units=state.units.filter(u=>u.id!==id);save();render();};
+    $('clearUnitBtn').onclick=()=>['uId','uName','uEmoji','uTier','uClass','uTrait','uAtk','uHp','uRange','uMystic','uAttack','uSkill','uImage'].forEach(id=>$(id).value='');
+    $('saveSynBtn').onclick=()=>{const k=$('sKey').value.trim();if(!k)return;state.synergies[k]={lv1:$('sLv1').value.trim(),lv2:$('sLv2').value.trim()};save();render();};
+    $('deleteSynBtn').onclick=()=>{delete state.synergies[$('sKey').value.trim()];save();render();};
+    $('clearSynBtn').onclick=()=>['sKey','sLv1','sLv2'].forEach(id=>$(id).value='');
+    $('exportBtn').onclick=()=>{
+      const b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+      const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='axie-tactics-cms.json';a.click();
+    };
+    $('importFile').onchange=e=>{
+      const f=e.target.files?.[0]; if(!f) return;
+      const r=new FileReader(); r.onload=()=>{try{const d=JSON.parse(r.result);state.units=d.units||[];state.synergies=d.synergies||{};save();render();}catch{}};
+      r.readAsText(f);
+    };
+    $('clearBtn').onclick=()=>{localStorage.removeItem(STORAGE_NAMESPACE);location.reload();};
+    render();
+  </script>
+</body>
+</html>

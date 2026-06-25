@@ -21,10 +21,10 @@
     }
     .app{max-width:1480px;margin:0 auto;padding:14px;display:block}
     .panel{background:linear-gradient(180deg,#2a3424,#1b2318);border:1px solid #46563c;border-radius:14px;box-shadow:0 8px 25px #0008}
-    .header{padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+    .header{padding:5px 8px;display:flex;align-items:center;justify-content:space-between}
     h1{margin:0;font-size:18px;letter-spacing:.6px}
     .titleWord{
-      font-size:32px;font-weight:900;letter-spacing:1px;line-height:1;
+      font-size:16px;font-weight:900;letter-spacing:.8px;line-height:1;
       background:linear-gradient(180deg,#ffe8a1,#ffd86a 45%,#c98734);
       -webkit-background-clip:text;background-clip:text;color:transparent;
       text-shadow:0 2px 0 #5f3d14,0 10px 24px #0008;
@@ -35,8 +35,8 @@
     .hpWidget{min-width:220px;padding:8px 10px;border-radius:12px;border:1px solid #46563c;background:#182018;display:flex;gap:8px;align-items:center}
     .avatar{width:34px;height:34px;border-radius:50%;border:2px solid #6f8b66;object-fit:cover}
     .hpWrap{flex:1}
-    .hpTop{font-size:11px;color:#d7e6ce;display:flex;justify-content:space-between}
-    .hpBar{height:9px;border-radius:99px;background:#0d1410;border:1px solid #476046;overflow:hidden}
+    .hpTop{font-size:10px;color:#d7e6ce;display:flex;justify-content:space-between}
+    .hpBar{height:5px;border-radius:99px;background:#0d1410;border:1px solid #476046;overflow:hidden}
     .hpFill{height:100%;background:linear-gradient(90deg,#62db95,#a7ffc7)}
     .hpFill.enemy{background:linear-gradient(90deg,#ff7d92,#ffb2bf)}
     #boardHpHud{
@@ -45,7 +45,7 @@
     #boardHpHud .hpWidget{min-width:176px;padding:6px 8px;background:#101813da;border-color:#4b5f45}
     #boardHpHud .avatar{width:24px;height:24px}
     #boardHpHud .hpTop{font-size:10px}
-    #boardHpHud .hpBar{height:8px}
+    #boardHpHud .hpBar{height:4px}
     .pill{padding:6px 10px;border-radius:999px;background:#182018;border:1px solid #46563c;font-size:12px}
     .pill.big{border-radius:14px;padding:8px 12px;display:flex;flex-direction:column;min-width:92px;background:linear-gradient(180deg,#263022,#1a2218)}
     .statLabel{font-size:10px;color:#9fb0dd;text-transform:uppercase;letter-spacing:.5px}
@@ -55,11 +55,11 @@
     .benchAttached{margin-top:0;border-top-left-radius:0;border-top-right-radius:0;border-top:0}
     .subTitle{font-size:12px;color:#aab3d5;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
     #stageTrack{display:flex;gap:6px;margin-top:8px;align-items:center;flex-wrap:wrap}
-    .stageNode{width:22px;height:22px;border-radius:999px;border:1px solid #475a9f;background:#111731;display:flex;align-items:center;justify-content:center;font-size:10px;color:#9eb0e5}
+    .stageNode{width:12px;height:12px;border-radius:999px;border:1px solid #475a9f;background:#111731;display:flex;align-items:center;justify-content:center;font-size:7px;color:#9eb0e5}
     .stageNode.done{background:linear-gradient(180deg,#2a8b5f,#1a5a3d);border-color:#5ce3a2;color:#e7fff5}
     .stageNode.current{background:linear-gradient(180deg,#4b62d6,#2e43ad);border-color:#88a3ff;color:#fff;font-weight:800;box-shadow:0 0 0 2px #6d86f555}
     .stageNode.boss{border-color:#c86a86}
-    .stageLine{width:14px;height:2px;background:#3b4d8d}
+    .stageLine{width:8px;height:2px;background:#3b4d8d}
     .heart.full{color:#ff5e7d;text-shadow:0 0 8px #ff5e7d99}
     .heart.empty{color:#4b536f}
     #boardWrap{position:relative;padding:8px;background:#10180f;border:1px solid #46563c;border-radius:14px;overflow:hidden}
@@ -133,10 +133,10 @@
     .uName{font-weight:700;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .uBody{display:flex;justify-content:space-between;align-items:center}
     .unitArt{width:26px;height:26px;border-radius:6px;object-fit:cover;border:1px solid #6a7bb3;box-shadow:0 0 10px #0008}
-    .unitBg{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 31%;transform:scale(1.18)}
+    .unitBg{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 40%;transform:scale(1.18)}
     .unitModel{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);overflow:hidden;transform:scale(1.18);transform-origin:center 68%;z-index:1}
-    .unitModel .modelFallback{width:100%;height:100%;object-fit:cover;object-position:center 31%;filter:saturate(1.05)}
-    .unitModel.model-board .modelFallback{transform:scale(1.04);object-position:center 22%;filter:saturate(1.12) contrast(1.06) drop-shadow(0 2px 6px #0008)}
+    .unitModel .modelFallback{width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:saturate(1.05)}
+    .unitModel.model-board .modelFallback{transform:scale(1.04);object-position:center 30%;filter:saturate(1.12) contrast(1.06) drop-shadow(0 2px 6px #0008)}
     .unitModel.model-combat{inset:0;width:100%;height:100%;transform:none;transform-origin:center center;z-index:1}
     .unitModel.model-combat .modelFallback{object-position:center 22%;filter:saturate(1.1) contrast(1.06)}
     .unitModel[data-anim="idle"]{animation:modelIdle 1.2s ease-in-out infinite}
@@ -229,7 +229,7 @@
     .actor.class-plant{background:linear-gradient(180deg,#3b7a45,#275933)}
     .actor.class-beast{background:linear-gradient(180deg,#8a5c35,#613f24)}
     .actor.class-bird{background:linear-gradient(180deg,#866f29,#5f501f)}
-    .actor .actorArt{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 18%;transform:scale(1.17);z-index:1}
+    .actor .actorArt{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 33%;transform:scale(1.17);z-index:1}
     .actor .actorShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 42%,#0006 74%,#000a);z-index:2}
     .actor .actorStars{position:absolute;left:50%;top:2px;transform:translateX(-50%);font-size:12px;color:#ffd86a;text-shadow:0 1px 2px #000;z-index:4}
     .actor .actorHp{position:absolute;left:6px;right:6px;bottom:12px;height:6px;border-radius:99px;background:#000a;border:1px solid #35507a;overflow:hidden;z-index:5}
@@ -300,13 +300,13 @@
         position:absolute;left:6px;right:6px;top:6px;z-index:45;
         padding:4px 6px;gap:4px;flex-wrap:wrap;background:#101814cc;border:1px solid #3f5a4e;border-radius:10px;backdrop-filter:blur(2px)
       }
-      .titleWord{font-size:20px}
+      .titleWord{font-size:12px}
       .stats{gap:6px}
       .hpWidget{min-width:108px;padding:3px 5px}
       .avatar{width:24px;height:24px}
       #stageTrack{width:100%;justify-content:center;margin-top:2px}
-      .stageNode{width:17px;height:17px;font-size:9px}
-      .stageLine{width:8px}
+      .stageNode{width:10px;height:10px;font-size:6px}
+      .stageLine{width:6px}
       .mainBoard{padding:40px 4px 6px 4px}
       #boardWrap{padding:5px}
       .boardRow{height:var(--hexh)}
@@ -728,7 +728,7 @@
       enemyPreview:null,enemyPreviewStage:null,lastBattleBreakdown:[],audioCtx:null,
       daily:null,endlessUnlocked:false,endlessMode:false,bestStage:0,runSeed:null,seedRng:null,recapVisible:false,logVisible:false,debugVisible:false,advancedOpen:false,shopAnimSeq:0,pendingAutoReset:false,
       settings:{renderMode:'classic'},
-      modelCache:new Map(),modelActorPool:[],
+      modelCache:new Map(),
       leaderboard:[
         {name:'AegisFox',stage:27},{name:'Lunacian',stage:24},{name:'HexMancer',stage:22},{name:'CrimsonMint',stage:19},{name:'SeaRogue',stage:17}
       ],
@@ -777,7 +777,7 @@
     }
     function renderUnitVisual(defId,viewState={anim:'idle'},opts={}){
       const cls=opts.className||'unitBg', alt=opts.alt||'unit', anim=viewState.anim||'idle', surface=opts.surface||'board';
-      const useModel = state.settings.renderMode==='model' && surface!=='shop';
+      const useModel = state.settings.renderMode==='model' && surface==='board';
       const a = useModel ? modelAsset(defId,anim) : null;
       if(!a) return unitImgTag(defId,cls,alt);
       const perf = a.manifest.performanceTier||'low';
@@ -796,10 +796,10 @@
       }
     }
     function acquireActorNode(){
-      return state.modelActorPool.pop() || document.createElement('div');
+      return document.createElement('div');
     }
     function releaseActorNodes(){
-      [...actorLayer.children].forEach(n=>{n.onclick=null; if(n._animBackTimer) clearTimeout(n._animBackTimer); state.modelActorPool.push(n);});
+      [...actorLayer.children].forEach(n=>{n.onclick=null; if(n._animBackTimer) clearTimeout(n._animBackTimer);});
       actorLayer.innerHTML='';
     }
     function isTankTrait(trait){return trait==='Bastion' || trait==='Vanguard';}
@@ -1068,12 +1068,11 @@
     function unitChip(u,enemy=false,mode='board'){
       const d = UMAP[u.defId];
       const hp = u.hp && u.maxHp ? Math.max(0,Math.round(100*u.hp/u.maxHp)) : 100;
-      const star = '★'.repeat(u.star||1);
-      return `<div class="slotUnit class-${classSlug(d.class)} ${enemy?'enemy':''}" data-uid="${u.uid||''}">
+      const stroke = {1:'#4b515a',2:'#b9c2cf',3:'#f2cc57',4:'#ffffff'}[u.star||1]||'#4b515a';
+      const sw = {1:2,2:3,3:4,4:5}[u.star||1]||2;
+      return `<div class="slotUnit class-${classSlug(d.class)} ${enemy?'enemy':''}" data-uid="${u.uid||''}" style="border-color:${stroke};border-width:${sw}px">
           ${renderUnitVisual(d.id,{anim:'idle'},{className:'unitBg',alt:d.name,surface:'board'})}
           <div class="unitShade"></div>
-          <div class="starOverlay">${star}</div>
-          <div class="unitNameOverlay">${d.name}</div>
           <div class="hpbar"><div class="hpfill" style="width:${hp}%"></div></div>
       </div>`;
     }
@@ -1312,6 +1311,7 @@
           const cost=buyCost(d);
           const canBuyNow = ()=>!(state.energy<cost||state.inBattle);
           const canBuy = canBuyNow();
+          const visualReady = canBuy || !!opp;
           const opp=shopMergeOpportunity(d.id);
           if(opp) c.classList.add('shopPulse','star'+opp.star);
           c.innerHTML=`
@@ -1321,8 +1321,8 @@
             <div class="shopNameRow"><span class="name">${d.name}</span><span class="small">${{Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️'}[d.class]||''} ${{Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'}[d.trait]||''}</span></div>
             </div>`;
           c.style.cursor=canBuy?'pointer':'not-allowed';
-          c.style.opacity=canBuy?'1':'0.42';
-          c.style.filter=canBuy?'none':'grayscale(.75) brightness(.85)';
+          c.style.opacity=visualReady?'1':'0.42';
+          c.style.filter=visualReady?'none':'grayscale(.75) brightness(.85)';
           c.onclick=()=>{
             if(canBuyNow()) buyShop(idx);
             else if(!state.inBattle && state.energy<cost){c.classList.remove('shopShake');void c.offsetWidth;c.classList.add('shopShake');}
@@ -1411,16 +1411,16 @@
       const s=getSynergyState();
       const icons={Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️',Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'};
       const tips={
-        Aqua:'Lv1 +10% attack speed, Lv2 +25% attack speed',
-        Plant:'Lv1 +15% max HP, Lv2 +35% max HP',
-        Beast:'Lv1 +10% attack, Lv2 +25% attack',
-        Bird:'Lv1 +10% crit chance, Lv2 +25% crit chance',
-        Assassin:'Lv1 15% lifesteal, Lv2 30% lifesteal',
-        Bastion:'Lv1 15% damage reduction, Lv2 35% damage reduction',
-        Vanguard:'Lv1 +20 start energy, Lv2 +45 start energy',
-        Mage:'Lv1 +20% skill power, Lv2 +45% skill power',
-        Spikes:'Lv1 15% reflect, Lv2 30% reflect',
-        Sniper:'Lv1 +1 range, Lv2 +2 range'
+        Aqua:'Lv1 +20% AS and 12% splash, Lv2 +40% AS and 22% splash',
+        Plant:'Lv1 +20% HP and 1.5% regen/s, Lv2 +50% HP and 3% regen/s',
+        Beast:'Lv1 +20% ATK and 12% execute, Lv2 +45% ATK and 22% execute',
+        Bird:'Lv1 +18% crit and 8% dodge, Lv2 +35% crit and 16% dodge',
+        Assassin:'Lv1 22% lifesteal and 18% backstab, Lv2 40% lifesteal and 35% backstab',
+        Bastion:'Lv1 22% DR and +70 cast shield, Lv2 45% DR and +150 cast shield',
+        Vanguard:'Lv1 +30 start energy + taunt pulse, Lv2 +65 start energy + wider taunt pulse',
+        Mage:'Lv1 +30% skill power + 12 mana burn, Lv2 +65% skill power + 24 mana burn',
+        Spikes:'Lv1 22% reflect + 45 thorn burst, Lv2 45% reflect + 95 thorn burst',
+        Sniper:'Lv1 +1 range + 25% pierce, Lv2 +3 range + 50% pierce'
       };
       const badges=[];
       for(const k of ['Aqua','Plant','Beast','Bird']) if(s.cls[k]>0) badges.push(`<button class="synBadge synBtn lv${s.cLv[k]}" data-syn="${k}" title="${tips[k]}">${icons[k]}</button>`);
@@ -1493,16 +1493,16 @@
       const title=el('synergyModalTitle'), body=el('synergyUnitsBody'); if(!title||!body) return;
       const isClass=['Aqua','Plant','Beast','Bird'].includes(key);
       const tips={
-        Aqua:'Lv1 +10% attack speed, Lv2 +25% attack speed',
-        Plant:'Lv1 +15% max HP, Lv2 +35% max HP',
-        Beast:'Lv1 +10% attack, Lv2 +25% attack',
-        Bird:'Lv1 +10% crit chance, Lv2 +25% crit chance',
-        Assassin:'Lv1 15% lifesteal, Lv2 30% lifesteal',
-        Bastion:'Lv1 15% damage reduction, Lv2 35% damage reduction',
-        Vanguard:'Lv1 +20 start energy, Lv2 +45 start energy',
-        Mage:'Lv1 +20% skill power, Lv2 +45% skill power',
-        Spikes:'Lv1 15% reflect, Lv2 30% reflect',
-        Sniper:'Lv1 +1 range, Lv2 +2 range'
+        Aqua:'Lv1 +20% AS and 12% splash, Lv2 +40% AS and 22% splash',
+        Plant:'Lv1 +20% HP and 1.5% regen/s, Lv2 +50% HP and 3% regen/s',
+        Beast:'Lv1 +20% ATK and 12% execute, Lv2 +45% ATK and 22% execute',
+        Bird:'Lv1 +18% crit and 8% dodge, Lv2 +35% crit and 16% dodge',
+        Assassin:'Lv1 22% lifesteal and 18% backstab, Lv2 40% lifesteal and 35% backstab',
+        Bastion:'Lv1 22% DR and +70 cast shield, Lv2 45% DR and +150 cast shield',
+        Vanguard:'Lv1 +30 start energy + taunt pulse, Lv2 +65 start energy + wider taunt pulse',
+        Mage:'Lv1 +30% skill power + 12 mana burn, Lv2 +65% skill power + 24 mana burn',
+        Spikes:'Lv1 22% reflect + 45 thorn burst, Lv2 45% reflect + 95 thorn burst',
+        Sniper:'Lv1 +1 range + 25% pierce, Lv2 +3 range + 50% pierce'
       };
       const s=getSynergyState();
       const lv = isClass ? s.cLv[key] : s.tLv[key];
@@ -1791,23 +1791,64 @@
         u.energy = Math.min(u.maxEnergy, u.energy + state.mods.startEnergy);
         u.maxHp *= (1 + state.mods.globalHP);
         if(u.trait==='Bastion') u.maxHp *= (1 + state.mods.guardianHP);
-        if(u.class==='Plant'){u.maxHp *= s.classes.Plant===2?1.35:s.classes.Plant===1?1.15:1;}
+        if(u.class==='Plant'){
+          const pLv=s.classes.Plant;
+          u.maxHp *= pLv===2?1.5:pLv===1?1.2:1;
+          u.plantRegen = pLv===2?0.03:pLv===1?0.015:0;
+        }
         u.hp=u.maxHp;
 
         if(u.class==='Beast') u.atk += state.mods.beastFlatAtk;
-        if(u.class==='Beast') u.atk *= s.classes.Beast===2?1.25:s.classes.Beast===1?1.10:1;
-        if(u.class==='Bird') u.crit += s.classes.Bird===2?0.25:s.classes.Bird===1?0.10:0;
+        if(u.class==='Beast'){
+          const bLv=s.classes.Beast;
+          u.atk *= bLv===2?1.45:bLv===1?1.20:1;
+          u.executePct = bLv===2?0.22:bLv===1?0.12:0;
+        }
+        if(u.class==='Bird'){
+          const bLv=s.classes.Bird;
+          u.crit += bLv===2?0.35:bLv===1?0.18:0;
+          u.evasion = bLv===2?0.16:bLv===1?0.08:0;
+        }
         if(u.class==='Bird') u.moveBonus=(u.moveBonus||0)+state.mods.birdMove;
-        if(u.class==='Aqua') u.attackSpeed += s.classes.Aqua===2?0.25:s.classes.Aqua===1?0.10:0;
+        if(u.class==='Aqua'){
+          const aLv=s.classes.Aqua;
+          u.attackSpeed += aLv===2?0.40:aLv===1?0.20:0;
+          u.aquaSplash = aLv===2?0.22:aLv===1?0.12:0;
+        }
         if(u.class==='Aqua') u.attackSpeed += state.mods.aquaAS;
 
-        if(u.trait==='Assassin') u.lifesteal = (s.traits.Assassin===2?0.30:s.traits.Assassin===1?0.15:0);
+        if(u.trait==='Assassin'){
+          const aLv=s.traits.Assassin;
+          u.lifesteal = (aLv===2?0.40:aLv===1?0.22:0);
+          u.backstab = (aLv===2?0.35:aLv===1?0.18:0);
+        }
         if(u.trait==='Assassin') u.crit += state.mods.rogueCrit;
-        if(u.trait==='Bastion') u.dr += s.traits.Bastion===2?0.35:s.traits.Bastion===1?0.15:0;
-        if(u.trait==='Vanguard') u.energy += s.traits.Vanguard===2?45:s.traits.Vanguard===1?20:0;
-        if(u.trait==='Mage') u.skillPow = (u.skillPow||1) * (s.traits.Mage===2?1.45:s.traits.Mage===1?1.2:1);
-        if(u.trait==='Spikes') u.reflect += (s.traits.Spikes===2?0.30:s.traits.Spikes===1?0.15:0) + state.mods.thornReflect;
-        if(u.trait==='Sniper'){u.range += (s.traits.Sniper===2?2:s.traits.Sniper===1?1:0) + state.mods.sniperRange; u.atk *= 1+state.mods.sniperDmg;}
+        if(u.trait==='Bastion'){
+          const bLv=s.traits.Bastion;
+          u.dr += bLv===2?0.45:bLv===1?0.22:0;
+          u.castShield = bLv===2?150:bLv===1?70:0;
+        }
+        if(u.trait==='Vanguard'){
+          const vLv=s.traits.Vanguard;
+          u.energy += vLv===2?65:vLv===1?30:0;
+          u.tauntPulse = vLv===2?2:vLv===1?1:0;
+        }
+        if(u.trait==='Mage'){
+          const mLv=s.traits.Mage;
+          u.skillPow = (u.skillPow||1) * (mLv===2?1.65:mLv===1?1.30:1);
+          u.mageBurn = mLv===2?24:mLv===1?12:0;
+        }
+        if(u.trait==='Spikes'){
+          const sLv=s.traits.Spikes;
+          u.reflect += (sLv===2?0.45:sLv===1?0.22:0) + state.mods.thornReflect;
+          u.thornBurst = sLv===2?95:sLv===1?45:0;
+        }
+        if(u.trait==='Sniper'){
+          const sLv=s.traits.Sniper;
+          u.range += (sLv===2?3:sLv===1?1:0) + state.mods.sniperRange;
+          u.pierceShot = sLv===2?0.50:sLv===1?0.25:0;
+          u.atk *= 1+state.mods.sniperDmg;
+        }
         u.attackSpeed += state.mods.globalAS;
       }
     }
@@ -1836,7 +1877,9 @@
           const a=acquireActorNode();
           a.className='actor class-'+classSlug(u.class)+' '+(u.owner==='enemy'?'enemy':'');
           a.id='actor-'+u.id;
-          a.innerHTML=`${u.defId==='chimera'?`<img class="actorArt" src="${BOSS_ASSETS.token}" alt="Chimera">`:renderUnitVisual(u.defId,{anim:'idle'},{className:'actorArt',alt:u.name,surface:'combat'})}<div class="actorShade"></div><div class="actorStars">${'★'.repeat(u.star||1)}</div><div class="actorHp"><div class="actorHpFill"></div></div><div class="actorMana"><div class="actorManaFill"></div></div>`;
+          const artSrc = u.defId==='chimera' ? BOSS_ASSETS.token : UNIT_ASSETS[u.defId];
+          const fallback = u.defId==='chimera' ? BOSS_ASSETS.phase1 : UNIT_ASSETS[u.defId];
+          a.innerHTML=`<img class="actorArt" src="${artSrc}" alt="${u.name}" loading="eager" decoding="sync" onerror="this.src='${fallback}'"><div class="actorShade"></div><div class="actorStars">${'★'.repeat(u.star||1)}</div><div class="actorHp"><div class="actorHpFill"></div></div><div class="actorMana"><div class="actorManaFill"></div></div>`;
           a.onclick=(e)=>{e.stopPropagation();state.selected={type:'combat',id:u.id};renderSelectedInfo();};
           actorLayer.appendChild(a);
         });
@@ -1876,6 +1919,7 @@
     function applyDamage(src,t,amt,type='physical'){
       if(t.dead) return 0;
       if(type==='physical' && t.physImmune>0) return 0;
+      if(type==='physical' && t.evasion && rand()<t.evasion){floatNum(t.row,t.col,'MISS','energy');return 0;}
       let dmg=amt;
       const shred = t.armorShred>0 ? 0.5 : 0;
       const dr = clamp((t.dr||0)-shred,-0.5,0.85);
@@ -1891,6 +1935,7 @@
       if(src && src.owner===t.owner && dmg<0) return 0;
       if(src && src.lifesteal && dmg>0){heal(src,dmg*src.lifesteal,src);}
       if(src && src.trait==='Spikes' && t.reflect>0 && src!==t){applyDamage(null,src,dmg*t.reflect,'magic')}
+      if(src && t.thornBurst && src.owner!==t.owner && !src.dead){applyDamage(null,src,t.thornBurst,'magic');}
       if(t.hp<=0){
         t.dead=true; t.hp=0;
         setCombatAnim(t,'death',500);
@@ -2075,6 +2120,12 @@
       const a=el('actor-'+u.id); if(a){a.classList.add('castPop');setTimeout(()=>a.classList.remove('castPop'),350);}
       floatNum(u.row,u.col,'CAST!','energy');
       const sp = (u.skillPow||1) * (1+state.mods.skillPower);
+      if(u.castShield) u.shield=(u.shield||0)+u.castShield*sp;
+      if(u.tauntPulse){
+        const rad=u.tauntPulse===2?2:1;
+        units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=rad).forEach(e=>e.tauntedBy=u.id);
+      }
+      if(u.mageBurn && target && !target.dead){target.energy=Math.max(0,target.energy-u.mageBurn);}
       const doubleCast = u.owner==='player' && rand()<state.mods.doubleCastChance;
       const times = doubleCast?2:1;
       for(let rep=0;rep<times;rep++){
@@ -2175,9 +2226,18 @@
       traitFx(u,'attack');
       if(u.range<=1) slashFx(t.row,t.col,u.owner==='player'?'#9ed4ff':'#ffadbc');
       else projectile(u,t,u.owner==='player'?'#68dfff':'#ff8ea1');
-      const crit=rand()<u.crit, dmg=(u.atk*(crit?1.55:1));
+      const behind = (u.owner==='player' && u.row>t.row) || (u.owner==='enemy' && u.row<t.row);
+      const backstabMul = (behind && u.backstab)?(1+u.backstab):1;
+      const crit=rand()<u.crit, dmg=(u.atk*(crit?1.75:1))*backstabMul;
       if(crit){ playCue('crit'); setCombatAnim(u,'crit',260); }
       applyDamage(u,t,dmg,'physical');
+      if(u.executePct && !t.dead && t.hp/t.maxHp<=u.executePct) applyDamage(u,t,t.maxHp,'true');
+      if(u.aquaSplash){
+        units.filter(e=>e.owner!==u.owner&&!e.dead&&e.id!==t.id&&hexDist(e,t)<=1).forEach(e=>applyDamage(u,e,dmg*u.aquaSplash,'magic'));
+      }
+      if(u.pierceShot){
+        units.filter(e=>e.owner!==u.owner&&!e.dead&&e.id!==t.id&&hexDist(e,t)<=1).forEach(e=>applyDamage(u,e,dmg*u.pierceShot,'physical'));
+      }
       if(u.defId==='cactus' && rand()<0.3) units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,t)<=1).forEach(e=>applyDamage(u,e,75,'magic'));
       u.energy=Math.min(u.maxEnergy,u.energy+20);
       if(u.energy>=u.maxEnergy){u.energy=0;castSkill(u,units,t);}
@@ -2229,7 +2289,8 @@
           u.untargetable=Math.max(0,u.untargetable-dt);
           u.physImmune=Math.max(0,u.physImmune-dt);
           if(u.auraLotus){const allies=units.filter(a=>a.owner===u.owner&&!a.dead);allies.forEach(a=>heal(a,a.maxHp*0.05*(dt/1000)));}
-          if(u.boss && !u.phase2 && u.hp/u.maxHp<=0.5){u.phase2=true;u.attackSpeed+=0.25;const av=el('actor-'+u.id);const im=av&&av.querySelector('img.unitArt.actor');if(im) im.src=BOSS_ASSETS.phase2;playCue('boss');log('<b>Chimera enrages at 50% HP!</b>');}
+          if(u.plantRegen) heal(u,u.maxHp*u.plantRegen*(dt/1000));
+          if(u.boss && !u.phase2 && u.hp/u.maxHp<=0.5){u.phase2=true;u.attackSpeed+=0.25;const av=el('actor-'+u.id);const im=av&&av.querySelector('img.actorArt');if(im) im.src=BOSS_ASSETS.phase2;playCue('boss');log('<b>Chimera enrages at 50% HP!</b>');}
           if(u.defId==='kallaway'&&u.bladeStorm>0){u.bladeStorm-=dt;u.bladeTick=(u.bladeTick||0)+dt;if(u.bladeTick>=250){u.bladeTick=0;units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=1).forEach(e=>applyDamage(u,e,20,'magic')); actions++;}}
           if(u.defId==='lotus' && !u.resUsed && u.hp<=0){u.resUsed=true;u.dead=false;u.hp=u.maxHp*0.5;actions++;}
         }
