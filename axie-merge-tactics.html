@@ -39,6 +39,13 @@
     .hpBar{height:9px;border-radius:99px;background:#0d1410;border:1px solid #476046;overflow:hidden}
     .hpFill{height:100%;background:linear-gradient(90deg,#62db95,#a7ffc7)}
     .hpFill.enemy{background:linear-gradient(90deg,#ff7d92,#ffb2bf)}
+    #boardHpHud{
+      position:absolute;right:10px;top:8px;z-index:30;display:flex;flex-direction:column;gap:6px;max-width:250px
+    }
+    #boardHpHud .hpWidget{min-width:220px;padding:6px 8px;background:#101813da;border-color:#4b5f45}
+    #boardHpHud .avatar{width:24px;height:24px}
+    #boardHpHud .hpTop{font-size:10px}
+    #boardHpHud .hpBar{height:8px}
     .pill{padding:6px 10px;border-radius:999px;background:#182018;border:1px solid #46563c;font-size:12px}
     .pill.big{border-radius:14px;padding:8px 12px;display:flex;flex-direction:column;min-width:92px;background:linear-gradient(180deg,#263022,#1a2218)}
     .statLabel{font-size:10px;color:#9fb0dd;text-transform:uppercase;letter-spacing:.5px}
@@ -88,6 +95,8 @@
     .hex .coord{display:none}
     .hex.selected{box-shadow:0 0 0 2px #7aa2ff,inset 0 0 0 1px #7aa2ff}
     .hex.inRange{filter:grayscale(1) brightness(.9);box-shadow:inset 0 0 0 2px #8e95afaa}
+    .hex.dragRange{box-shadow:inset 0 0 0 2px #7ec7ffcc;background:linear-gradient(180deg,#29454c,#1c2d31)}
+    .hex.dragOrigin{box-shadow:inset 0 0 0 3px #ffd87a}
     .spawnGhost{
       position:absolute;left:7px;top:7px;width:80px;height:66px;border-radius:12px;overflow:hidden;
       border:2px dashed #ff9bb3;background:#7e334a4d;color:#ffd6e1;font-size:12px;display:flex;align-items:center;justify-content:center
@@ -146,7 +155,7 @@
     .secTitle{font-size:12px;color:#aab3d5;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
     #shopRow{display:flex;gap:8px;align-items:stretch;position:relative}
     #shop{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:1}
-    #shopSide{display:flex;flex-direction:column;gap:8px;min-width:96px}
+    #shopSide{display:flex;flex-direction:column;gap:8px;min-width:108px}
     #shopSellOverlay{
       position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;text-align:center;
       border-radius:12px;border:2px dashed #a55562;background:linear-gradient(180deg,#53232cee,#35171eee);color:#ffd4dc;
@@ -155,7 +164,7 @@
     #shopSellOverlay.show{display:flex}
     .card{background:linear-gradient(180deg,#1a2142,#131834);border:1px solid #344172;border-radius:12px;padding:0;overflow:hidden}
     .cardInner{padding:7px 8px}
-    .cardBanner{height:154px;background:#10152d;border-bottom:1px solid #2f3c70;position:relative;overflow:hidden}
+    .cardBanner{height:108px;background:#10152d;border-bottom:1px solid #2f3c70;position:relative;overflow:hidden}
     .cardBanner img{width:100%;height:100%;object-fit:cover;object-position:center 10%}
     .cardBanner .unitModel{inset:0;width:100%;height:100%;transform:none}
     .cardBanner .unitModel .modelFallback{object-position:center 10%}
@@ -269,6 +278,9 @@
       position:absolute;right:-4px;bottom:-3px;background:#0d1730;border:1px solid #4862b2;border-radius:999px;padding:2px 7px;
       font-size:18px;font-weight:900;color:#fff
     }
+    #shopFightBtn{width:100%;padding:10px 8px;font-size:15px;font-weight:900;background:linear-gradient(180deg,#5cff8f,#20b95a);color:#082a16;border:1px solid #a3ffbf}
+    #toggleAdvancedBtn{width:100%;padding:8px 8px;font-size:18px;line-height:1.1}
+    #toggleAdvancedBtn.open{background:linear-gradient(180deg,#4468e1,#3450af)}
     .slotUnit img,.unitBg,.cardBanner img,.actor img{-webkit-user-drag:none;user-drag:none;user-select:none;-webkit-touch-callout:none}
     @media (max-width: 520px){
       :root{--hexw:47px;--hexh:41px}
@@ -286,12 +298,9 @@
       #stageTrack{width:100%;justify-content:center;margin-top:2px}
       .stageNode{width:17px;height:17px;font-size:9px}
       .stageLine{width:8px}
-      .mainBoard{padding:72px 4px 4px 4px}
+      .mainBoard{padding:40px 4px 4px 4px}
       #boardWrap{padding:5px}
       .boardRow{height:calc(var(--hexh) * .75)}
-      .battleCtas{right:6px;bottom:6px}
-      #startBtn{min-width:112px;padding:7px 9px;font-size:12px}
-      #endlessBtn{padding:8px 10px;font-size:12px}
       .zoneLabel{font-size:9px;padding:2px 4px}
       #boardSynergy .synBadge{padding:4px 6px;font-size:9px}
       #dragCapOverlay{font-size:26px !important}
@@ -299,21 +308,33 @@
       #bench{gap:4px}
       .benchSlot{height:44px}
       #shop{gap:4px}
-      .cardBanner{height:77px}
+      .cardBanner{height:54px}
       .shopCostOverlay{font-size:13px;padding:1px 5px}
       .cardInner{padding:4px 6px}
       .shopNameRow{font-size:11px}
-      #shopSide{min-width:62px;gap:4px}
+      #shopSide{min-width:72px;gap:4px}
       .energyCoin{width:36px;height:36px;font-size:19px}
       .energyCoin .num{font-size:12px;padding:1px 5px;right:-3px;bottom:-2px}
+      #shopFightBtn{padding:6px 4px;font-size:11px}
+      #toggleAdvancedBtn{padding:6px 4px;font-size:14px}
       .slotUnit{width:40px;height:34px}
       .actor{width:40px;height:34px;border-width:3px}
       .right{padding:4px;gap:4px}
       .section{padding:6px}
       .secTitle{font-size:10px;margin-bottom:4px}
       #log{max-height:64px;padding:5px}
+      #advancedWrap{
+        position:fixed;left:8px;right:8px;bottom:8px;z-index:80;max-height:46vh;overflow:auto;
+        padding:6px;background:#111925ee;border:1px solid #395177;border-radius:10px
+      }
       #advancedWrap .panel.section{margin-bottom:4px}
       #selectedOverlay .modal{width:260px;max-width:260px}
+      .overlay .modal{width:min(96vw,420px);max-height:78vh;overflow:auto}
+      #boardHpHud{right:6px;top:6px;max-width:178px}
+      #boardHpHud .hpWidget{min-width:170px;padding:4px 6px}
+      #boardHpHud .avatar{width:18px;height:18px}
+      #boardHpHud .hpTop{font-size:9px}
+      #dailyOnBoard,#boardRelics{max-width:46% !important}
     }
     #boardSynergy{position:absolute;left:10px;bottom:8px;z-index:30;display:flex;flex-direction:column;gap:6px;max-width:46%}
     #boardSynergy .synBadge{padding:7px 10px;font-size:12px}
@@ -334,6 +355,9 @@
     @keyframes castPop{0%{box-shadow:0 0 0 0 #8fe3ff00}40%{box-shadow:0 0 0 10px #8fe3ff88}100%{box-shadow:0 0 0 0 #8fe3ff00}}
     .card.t1{border:3px solid #5e6f8a}.card.t2{border:3px solid #4e8bb7}.card.t3{border:3px solid #5da56a}.card.t4{border:3px solid #b08448}.card.t5{border:3px solid #b14d67}
     .synBadge.off{opacity:.45;filter:grayscale(1)}
+    .synBadge.lv0{opacity:.45;filter:grayscale(1)}
+    .synBadge.lv1{background:linear-gradient(180deg,#233f86,#1a2d63);border-color:#77a2ff;color:#d5e4ff}
+    .synBadge.lv2{background:linear-gradient(180deg,#5a4a1f,#3a2f14);border-color:#ffd670;color:#ffe9b1}
     .card.shake{animation:shake .28s ease}
     @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
     .shopPulse{position:relative}
@@ -389,22 +413,8 @@
           <h1 class="titleWord">Axie Tactics</h1>
         </div>
         <div class="stats">
-          <div class="hpWidget">
-            <img class="avatar" src="assets/extracted/units/peon.png" alt="Player">
-            <div class="hpWrap">
-              <div class="hpTop"><span>You</span><span id="playerHpText"></span></div>
-              <div class="hpBar"><div id="playerHpFill" class="hpFill"></div></div>
-            </div>
-          </div>
-          <div class="hpWidget">
-            <img class="avatar" src="assets/extracted/boss/chimera_token.png" alt="Enemy">
-            <div class="hpWrap">
-              <div class="hpTop"><span>Enemy</span><span id="enemyHpText"></span></div>
-              <div class="hpBar"><div id="enemyHpFill" class="hpFill enemy"></div></div>
-            </div>
-          </div>
+          <div id="stageTrack"></div>
         </div>
-        <div id="stageTrack"></div>
       </div>
       <div class="mainBoard">
         <div id="boardWrap">
@@ -412,14 +422,26 @@
           <div id="battleBanner"></div>
           <div id="dragCapOverlay" class="zoneLabel" style="left:50%;top:22%;transform:translateX(-50%);font-size:42px;padding:10px 16px;background:#2d333655;border-color:#8f969d55;opacity:.25;display:block"></div>
           <div id="debugHud"></div>
-          <div id="dailyOnBoard" class="zoneLabel" style="right:10px;left:auto;top:8px;max-width:260px;display:flex;gap:6px;align-items:center"></div>
-          <div id="boardRelics" class="zoneLabel" style="right:10px;left:auto;top:58px;max-width:300px;display:flex;gap:6px;align-items:center;flex-wrap:wrap"></div>
+          <div id="dailyOnBoard" class="zoneLabel" style="left:10px;top:8px;max-width:260px;display:flex;gap:6px;align-items:center"></div>
+          <div id="boardRelics" class="zoneLabel" style="left:10px;top:58px;max-width:300px;display:flex;gap:6px;align-items:center;flex-wrap:wrap"></div>
+          <div id="boardHpHud">
+            <div class="hpWidget">
+              <img class="avatar" src="assets/extracted/units/peon.png" alt="Player">
+              <div class="hpWrap">
+                <div class="hpTop"><span>You</span><span id="playerHpText"></span></div>
+                <div class="hpBar"><div id="playerHpFill" class="hpFill"></div></div>
+              </div>
+            </div>
+            <div class="hpWidget">
+              <img class="avatar" src="assets/extracted/boss/chimera_token.png" alt="Enemy">
+              <div class="hpWrap">
+                <div class="hpTop"><span>Enemy</span><span id="enemyHpText"></span></div>
+                <div class="hpBar"><div id="enemyHpFill" class="hpFill enemy"></div></div>
+              </div>
+            </div>
+          </div>
           <div id="boardSynergy"></div>
           <div id="dragGhost"></div>
-          <div class="battleCtas">
-            <button id="startBtn" class="btn">Start Battle</button>
-            <button id="endlessBtn" class="btn alt" style="display:none">Start Endless</button>
-          </div>
           <div id="board"></div>
           <div id="actorLayer"></div>
           <div id="fxLayer"></div>
@@ -439,6 +461,9 @@
           <div id="shop"></div>
           <div id="shopSide">
             <div class="energyCoin">🪙<span id="energy" class="num">4</span></div>
+            <button id="shopFightBtn" class="btn">FIGHT</button>
+            <button id="endlessBtn" class="btn alt" style="display:none">∞</button>
+            <button id="toggleAdvancedBtn" class="btn alt">⚙️</button>
           </div>
           <div id="shopSellOverlay"></div>
         </div>
@@ -446,9 +471,6 @@
     </div>
 
     <div class="right">
-      <div class="panel section">
-        <button id="toggleAdvancedBtn" class="btn alt" style="width:100%">Advanced</button>
-      </div>
       <div id="advancedWrap">
       <div id="dailyPanel" class="panel section" style="display:none">
         <div class="secTitle">Daily Challenge</div>
@@ -588,8 +610,8 @@
   <script>
     const TIER_POOL = {1:10,2:8,3:6,4:4,5:3};
     const STAGE_ODDS = {
-      1:{1:98.5,2:1,3:0.5,4:0,5:0},
-      2:{1:62,2:28,3:6,4:3,5:1},
+      1:{1:80,2:12,3:5,4:2,5:1},
+      2:{1:50,2:24,3:14,4:8,5:4},
       3:{1:45,2:30,3:18,4:5,5:2},
       4:{1:40,2:30,3:20,4:8,5:2},
       5:{1:30,2:35,3:25,4:8,5:2},
@@ -1083,6 +1105,7 @@
       const d=UMAP[state.units[uid].defId];
       g.innerHTML=unitImgTag(d.id,'unitBg',d.name);
       g.style.display='block';
+      showDragRangeHint(uid);
       const sellOverlay=el('shopSellOverlay');
       if(sellOverlay){
         sellOverlay.classList.add('show');
@@ -1108,8 +1131,26 @@
     function endDragPreview(){
       const g=el('dragGhost'); if(g) g.style.display='none';
       el('shopSellOverlay')?.classList.remove('show');
+      clearDragRangeHint();
       const cap=el('dragCapOverlay'); if(cap) cap.style.opacity='0.2';
       const wrap=el('boardWrap'); if(wrap){wrap.ondragover=null;wrap.ondragleave=null;}
+    }
+    function clearDragRangeHint(){
+      document.querySelectorAll('.hex.dragRange,.hex.dragOrigin').forEach(h=>h.classList.remove('dragRange','dragOrigin'));
+    }
+    function showDragRangeHint(uid){
+      clearDragRangeHint();
+      const src=state.dragging || state.touchDrag?.src;
+      if(!src || src.type!=='grid') return;
+      const srcUid=state.grid[src.r]?.[src.c];
+      if(!srcUid || srcUid!==uid) return;
+      const range=getPreviewRange(srcUid);
+      document.querySelectorAll('.hex').forEach(h=>{
+        const rr=+h.dataset.r,cc=+h.dataset.c;
+        if(rr<5) return;
+        if(rr===src.r && cc===src.c) h.classList.add('dragOrigin');
+        if(hexDist({r:src.r,c:src.c},{r:rr,c:cc})<=range) h.classList.add('dragRange');
+      });
     }
     function startTouchDrag(e,src,uid){
       if(state.inBattle) return;
@@ -1283,7 +1324,7 @@
       const tLog=el('toggleLogBtn'); if(tLog) tLog.textContent=state.logVisible?'Hide':'Show';
       const tRecap=el('toggleRecapBtn'); if(tRecap) tRecap.textContent=state.recapVisible?'Hide':'Show';
       const tDebug=el('toggleDebugBtn'); if(tDebug) tDebug.textContent=state.debugVisible?'Hide Debug':'Show Debug';
-      const tAdv=el('toggleAdvancedBtn'); if(tAdv) tAdv.textContent=state.advancedOpen?'Hide Advanced':'Advanced';
+      const tAdv=el('toggleAdvancedBtn'); if(tAdv){tAdv.textContent=state.advancedOpen?'🧰':'⚙️';tAdv.classList.toggle('open',state.advancedOpen);}
       const tRender=el('toggleRenderModeBtn'); if(tRender) tRender.textContent=`Render: ${state.settings.renderMode==='model'?'Model':'Classic'}`;
       const aw=el('advancedWrap'); if(aw) aw.style.display=state.advancedOpen?'block':'none';
       updateDebugHud();
@@ -1327,8 +1368,8 @@
         Sniper:'Lv1 +1 range, Lv2 +2 range'
       };
       const badges=[];
-      for(const k of ['Aqua','Plant','Beast','Bird']) if(s.cls[k]>0) badges.push(`<button class="synBadge synBtn ${s.cLv[k]===0?'off':''}" data-syn="${k}" title="${tips[k]}">${icons[k]} ${k} Lv${s.cLv[k]}</button>`);
-      for(const k of ['Assassin','Bastion','Vanguard','Mage','Spikes','Sniper']) if(s.tr[k]>0) badges.push(`<button class="synBadge synBtn ${s.tLv[k]===0?'off':''}" data-syn="${k}" title="${tips[k]}">${icons[k]} ${k} Lv${s.tLv[k]}</button>`);
+      for(const k of ['Aqua','Plant','Beast','Bird']) if(s.cls[k]>0) badges.push(`<button class="synBadge synBtn lv${s.cLv[k]}" data-syn="${k}" title="${tips[k]}">${icons[k]}</button>`);
+      for(const k of ['Assassin','Bastion','Vanguard','Mage','Spikes','Sniper']) if(s.tr[k]>0) badges.push(`<button class="synBadge synBtn lv${s.tLv[k]}" data-syn="${k}" title="${tips[k]}">${icons[k]}</button>`);
       el('synergyActive').innerHTML = badges.join('');
       el('boardSynergy').innerHTML = badges.join('');
       el('synergy').innerHTML = '';
@@ -1358,8 +1399,15 @@
       `;
       if(sel){
         const br=el('boardWrap').getBoundingClientRect();
-        sel.style.left=(br.right-340)+'px';
-        sel.style.top=(br.top+12)+'px';
+        if(window.innerWidth<=520){
+          sel.style.left=(br.left+br.width/2)+'px';
+          sel.style.top=(br.top+br.height/2)+'px';
+          sel.style.transform='translate(-50%,-50%)';
+        }else{
+          sel.style.left=(br.right-340)+'px';
+          sel.style.top=(br.top+12)+'px';
+          sel.style.transform='none';
+        }
         const stroke={1:'#5e6f8a',2:'#4e8bb7',3:'#5da56a',4:'#b08448',5:'#b14d67',6:'#b35a5a'}[d.tier]||'#5e6f8a';
         const md=sel.querySelector('.modal'); if(md) md.style.borderColor=stroke;
         sel.classList.add('show');
@@ -1409,7 +1457,18 @@
       body.style.display='grid';
       body.innerHTML = `<div style="grid-column:1/-1" class="small">${tips[key]}</div>` + defs.map(d=>`<div class="unitMini ${have.has(d.id)?'':'off'}">${unitImgTag(d.id,'unitArt lg',d.name)} <span>${d.name}</span></div>`).join('');
       const so=el('synergyOverlay'), br=el('boardWrap').getBoundingClientRect();
-      if(so){so.style.left=(br.right-710)+'px';so.style.top=(br.top+12)+'px';so.classList.add('show');}
+      if(so){
+        if(window.innerWidth<=520){
+          so.style.left=(br.left+br.width/2)+'px';
+          so.style.top=(br.top+br.height/2)+'px';
+          so.style.transform='translate(-50%,-50%)';
+        }else{
+          so.style.left=(br.right-710)+'px';
+          so.style.top=(br.top+12)+'px';
+          so.style.transform='none';
+        }
+        so.classList.add('show');
+      }
     }
     function renderChimeraInfo(){
       const box=el('chimeraInfo'); if(!box) return;
@@ -2254,7 +2313,7 @@
       refreshShop();
       renderPrepUnits();renderTop();
     }
-    el('startBtn').onclick=startBattle;
+    el('shopFightBtn').onclick=startBattle;
     el('endlessBtn').onclick=startEndless;
     el('resetBtnBottom').onclick=resetRun;
     el('openGlossaryBtn').onclick=()=>el('glossaryOverlay').classList.add('show');
