@@ -8,7 +8,7 @@
     :root{
       --bg:#0f140f;--panel:#1d231b;--panel2:#232c1f;--ink:#eef6e7;--muted:#b4c3a9;
       --good:#5fdd9a;--bad:#ff7c90;--gold:#ffd76a;--vio:#9a85ff;--cyan:#67e8ff;
-      --hexw:94px;--hexh:82px;
+      --hexw:94px;--hexh:90px;
     }
     *{box-sizing:border-box}
     body{
@@ -42,7 +42,7 @@
     #boardHpHud{
       position:absolute;right:10px;top:8px;z-index:30;display:flex;flex-direction:column;gap:6px;max-width:250px
     }
-    #boardHpHud .hpWidget{min-width:220px;padding:6px 8px;background:#101813da;border-color:#4b5f45}
+    #boardHpHud .hpWidget{min-width:176px;padding:6px 8px;background:#101813da;border-color:#4b5f45}
     #boardHpHud .avatar{width:24px;height:24px}
     #boardHpHud .hpTop{font-size:10px}
     #boardHpHud .hpBar{height:8px}
@@ -50,7 +50,7 @@
     .pill.big{border-radius:14px;padding:8px 12px;display:flex;flex-direction:column;min-width:92px;background:linear-gradient(180deg,#263022,#1a2218)}
     .statLabel{font-size:10px;color:#9fb0dd;text-transform:uppercase;letter-spacing:.5px}
     .statValue{font-size:19px;font-weight:800;line-height:1.05}
-    .mainBoard{padding:10px;position:relative}
+    .mainBoard{padding:12px 10px;position:relative}
     .subSection{margin:10px;border:1px solid #2a3258;border-radius:12px;background:linear-gradient(180deg,#151a30,#101428);padding:10px}
     .benchAttached{margin-top:0;border-top-left-radius:0;border-top-right-radius:0;border-top:0}
     .subTitle{font-size:12px;color:#aab3d5;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
@@ -80,7 +80,7 @@
     .zoneLabel.enemy{top:8px;border-color:#ad6380;background:#3a1f2ec9}
     .zoneLabel.player{bottom:8px;border-color:#5f7ce0;background:#1a2346c9}
     #board{display:flex;flex-direction:column;align-items:center;position:relative;z-index:3}
-    .boardRow{display:flex;height:calc(var(--hexh) * .75)}
+    .boardRow{display:flex;height:var(--hexh)}
     .boardRow.odd{margin-left:calc(var(--hexw)/2)}
     .hex{
       width:var(--hexw);height:var(--hexh);position:relative;margin-right:0;cursor:pointer;
@@ -101,6 +101,10 @@
       position:absolute;left:7px;top:7px;width:80px;height:66px;border-radius:12px;overflow:hidden;
       border:2px dashed #ff9bb3;background:#7e334a4d;color:#ffd6e1;font-size:12px;display:flex;align-items:center;justify-content:center
     }
+    .spawnGhost{
+      left:4px;top:4px;width:calc(var(--hexw) - 8px);height:calc(var(--hexh) - 8px);border-radius:0;
+      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+    }
     .spawnGhost img{width:100%;height:100%;object-fit:cover;object-position:center 18%;filter:saturate(1.05)}
     .slotUnit{
       position:absolute;left:7px;top:7px;width:80px;height:66px;border-radius:12px;overflow:hidden;
@@ -111,6 +115,11 @@
     .hex .slotUnit{
       left:4px;top:4px;width:calc(var(--hexw) - 8px);height:calc(var(--hexh) - 8px);border-radius:0;
       clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+    }
+    .hex .slotUnit::after{
+      content:'';position:absolute;inset:0;pointer-events:none;
+      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+      box-shadow:inset 0 0 0 3px #7aa7ffcc;
     }
     .slotUnit.enemy{border-color:#ff6f95;filter:brightness(.9) saturate(.85)}
     .slotUnit.class-aqua{background:linear-gradient(180deg,#1f4d78,#18365c);border-color:#66c7ff}
@@ -124,10 +133,10 @@
     .uName{font-weight:700;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .uBody{display:flex;justify-content:space-between;align-items:center}
     .unitArt{width:26px;height:26px;border-radius:6px;object-fit:cover;border:1px solid #6a7bb3;box-shadow:0 0 10px #0008}
-    .unitBg{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 20%;transform:scale(1.18)}
+    .unitBg{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 31%;transform:scale(1.18)}
     .unitModel{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);overflow:hidden;transform:scale(1.18);transform-origin:center 68%;z-index:1}
-    .unitModel .modelFallback{width:100%;height:100%;object-fit:cover;object-position:center 20%;filter:saturate(1.05)}
-    .unitModel.model-board .modelFallback{transform:scale(1.04);object-position:center 10%;filter:saturate(1.12) contrast(1.06) drop-shadow(0 2px 6px #0008)}
+    .unitModel .modelFallback{width:100%;height:100%;object-fit:cover;object-position:center 31%;filter:saturate(1.05)}
+    .unitModel.model-board .modelFallback{transform:scale(1.04);object-position:center 22%;filter:saturate(1.12) contrast(1.06) drop-shadow(0 2px 6px #0008)}
     .unitModel.model-combat{inset:0;width:100%;height:100%;transform:none;transform-origin:center center;z-index:1}
     .unitModel.model-combat .modelFallback{object-position:center 22%;filter:saturate(1.1) contrast(1.06)}
     .unitModel[data-anim="idle"]{animation:modelIdle 1.2s ease-in-out infinite}
@@ -222,10 +231,10 @@
     .actor.class-bird{background:linear-gradient(180deg,#866f29,#5f501f)}
     .actor .actorArt{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 18%;transform:scale(1.17);z-index:1}
     .actor .actorShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 42%,#0006 74%,#000a);z-index:2}
-    .actor .actorStars{position:absolute;left:50%;top:2px;transform:translateX(-50%);font-size:12px;color:#ffd86a;text-shadow:0 1px 2px #000}
-    .actor .actorHp{position:absolute;left:6px;right:6px;bottom:12px;height:6px;border-radius:99px;background:#000a;border:1px solid #35507a;overflow:hidden}
+    .actor .actorStars{position:absolute;left:50%;top:2px;transform:translateX(-50%);font-size:12px;color:#ffd86a;text-shadow:0 1px 2px #000;z-index:4}
+    .actor .actorHp{position:absolute;left:6px;right:6px;bottom:12px;height:6px;border-radius:99px;background:#000a;border:1px solid #35507a;overflow:hidden;z-index:5}
     .actor .actorHpFill{height:100%;background:linear-gradient(90deg,#53ef95,#90ffc1)}
-    .actor .actorMana{position:absolute;left:6px;right:6px;bottom:4px;height:5px;border-radius:99px;background:#00131f;border:1px solid #2a4a68;overflow:hidden}
+    .actor .actorMana{position:absolute;left:6px;right:6px;bottom:4px;height:5px;border-radius:99px;background:#00131f;border:1px solid #2a4a68;overflow:hidden;z-index:5}
     .actor .actorManaFill{height:100%;background:linear-gradient(90deg,#58bfff,#9cd9ff)}
     .battleCtas{position:absolute;right:10px;bottom:10px;z-index:25;display:flex;gap:8px}
     #startBtn{
@@ -254,7 +263,7 @@
     .float.dmg{color:#ff8ea1}.float.heal{color:#86ffc8}.float.energy{color:#7cc3ff}
     @keyframes floatUp{0%{transform:translate(-50%,0);opacity:1}100%{transform:translate(-50%,-32px);opacity:0}}
     .overlay{
-      position:fixed;inset:0;background:#040712cc;backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:50
+      position:fixed;inset:0;background:#040712cc;backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:95
     }
     .overlay.show{display:flex}
     .modal{
@@ -298,9 +307,9 @@
       #stageTrack{width:100%;justify-content:center;margin-top:2px}
       .stageNode{width:17px;height:17px;font-size:9px}
       .stageLine{width:8px}
-      .mainBoard{padding:40px 4px 4px 4px}
+      .mainBoard{padding:40px 4px 6px 4px}
       #boardWrap{padding:5px}
-      .boardRow{height:calc(var(--hexh) * .75)}
+      .boardRow{height:var(--hexh)}
       .zoneLabel{font-size:9px;padding:2px 4px}
       #boardSynergy .synBadge{padding:4px 6px;font-size:9px}
       #dragCapOverlay{font-size:26px !important}
@@ -331,7 +340,7 @@
       #selectedOverlay .modal{width:260px;max-width:260px}
       .overlay .modal{width:min(96vw,420px);max-height:78vh;overflow:auto}
       #boardHpHud{right:6px;top:6px;max-width:178px}
-      #boardHpHud .hpWidget{min-width:170px;padding:4px 6px}
+      #boardHpHud .hpWidget{min-width:140px;padding:4px 5px}
       #boardHpHud .avatar{width:18px;height:18px}
       #boardHpHud .hpTop{font-size:9px}
       #dailyOnBoard,#boardRelics{max-width:46% !important}
@@ -472,6 +481,9 @@
 
     <div class="right">
       <div id="advancedWrap">
+      <div class="panel section">
+        <button id="closeAdvancedPanelBtn" class="btn alt" style="width:100%">⚙️</button>
+      </div>
       <div id="dailyPanel" class="panel section" style="display:none">
         <div class="secTitle">Daily Challenge</div>
         <div id="dailyMod"></div>
@@ -714,7 +726,7 @@
       bag:Object.fromEntries(UNIT_DEFS.map(u=>[u.id,TIER_POOL[u.tier]])),
       selected:null,dragging:null,touchDrag:null,mergePulseUid:null,inBattle:false,raf:0,battleTimer:0,lastLoopAt:0,loopRunning:false,combat:null,relics:[],relicTaken:{},pendingAdvance:false,pendingClearStage:null,fps:0,stallMs:0,
       enemyPreview:null,enemyPreviewStage:null,lastBattleBreakdown:[],audioCtx:null,
-      daily:null,endlessUnlocked:false,endlessMode:false,bestStage:0,runSeed:null,seedRng:null,recapVisible:false,logVisible:false,debugVisible:false,advancedOpen:false,shopAnimSeq:0,
+      daily:null,endlessUnlocked:false,endlessMode:false,bestStage:0,runSeed:null,seedRng:null,recapVisible:false,logVisible:false,debugVisible:false,advancedOpen:false,shopAnimSeq:0,pendingAutoReset:false,
       settings:{renderMode:'classic'},
       modelCache:new Map(),modelActorPool:[],
       leaderboard:[
@@ -870,6 +882,37 @@
       });
       box.innerHTML = lines.join('<br>');
     }
+    function placeFloatingOverlayNearAnchor(overlayId,anchorEl){
+      const ov=el(overlayId); if(!ov) return;
+      const md=ov.querySelector('.modal'); if(!md) return;
+      const boardRect=el('boardWrap')?.getBoundingClientRect();
+      const ar=anchorEl?.getBoundingClientRect?.()||boardRect;
+      if(!ar || !boardRect) return;
+      const width=Math.min(360,window.innerWidth-20);
+      md.style.position='fixed';
+      md.style.width=width+'px';
+      md.style.maxWidth=width+'px';
+      const prefersLeft = ar.left > window.innerWidth*0.55;
+      let left = prefersLeft ? (ar.left-width-10) : (ar.right+10);
+      let top = ar.top-8;
+      left=Math.max(boardRect.left+6,Math.min(left,boardRect.right-width-6));
+      top=Math.max(boardRect.top+6,Math.min(top,boardRect.bottom-180));
+      md.style.left=left+'px';
+      md.style.top=top+'px';
+      md.style.transform='none';
+    }
+    function placeCenterOverlayOnArena(overlayId){
+      const ov=el(overlayId); if(!ov) return;
+      const md=ov.querySelector('.modal'); const br=el('boardWrap')?.getBoundingClientRect();
+      if(!md||!br) return;
+      const width=Math.min(620,Math.max(300,br.width-18));
+      md.style.position='fixed';
+      md.style.width=width+'px';
+      md.style.maxWidth=width+'px';
+      md.style.left=(br.left+br.width/2)+'px';
+      md.style.top=(br.top+br.height/2)+'px';
+      md.style.transform='translate(-50%,-50%)';
+    }
     function renderDailyMod(){
       const box=el('dailyMod'); if(!box) return;
       if(!state.daily){box.innerHTML='<span class="small">None</span>';return;}
@@ -877,9 +920,9 @@
       box.innerHTML = `<div><b>${state.daily.name}</b></div><div class="small">${state.daily.desc}</div>`;
       const onBoard=el('dailyOnBoard');
       if(onBoard){
-        onBoard.innerHTML = `<img src="${UNIT_ASSETS[artId]}" class="unitArt lg" style="width:34px;height:34px"> <span><b>${DAILY_ART[state.daily.id]||'🌿'} ${state.daily.name}</b></span>`;
+        onBoard.innerHTML = `<span style="font-size:20px">${DAILY_ART[state.daily.id]||'🌿'}</span>`;
         onBoard.style.cursor='pointer';
-        onBoard.onclick=()=>openSideInfo(`Daily Challenge: ${state.daily.name}`,`<div class="small">${state.daily.desc}</div>`);
+        onBoard.onclick=(e)=>openSideInfo(`Daily Challenge: ${state.daily.name}`,`<div class="small">${state.daily.desc}</div>`,e.currentTarget);
       }
     }
     function renderBattleRecap(){
@@ -934,11 +977,14 @@
       const body=el('oddsBody'); if(!body) return;
       body.innerHTML = Object.entries(STAGE_ODDS).map(([st,o])=>`<div>Stage ${st}: T1 ${o[1]}% • T2 ${o[2]}% • T3 ${o[3]}% • T4 ${o[4]}% • T5 ${o[5]}%</div>`).join('');
     }
-    function openSideInfo(title,html){
+    function openSideInfo(title,html,anchorEl=null){
       const t=el('synergyModalTitle'), b=el('synergyUnitsBody'); if(!t||!b) return;
       t.textContent=title; b.style.display='block'; b.innerHTML=html;
-      const sy=el('synergyOverlay'), br=el('boardWrap').getBoundingClientRect();
-      if(sy){sy.style.left=(br.right-710)+'px';sy.style.top=(br.top+12)+'px';sy.classList.add('show');}
+      const sy=el('synergyOverlay');
+      if(sy){
+        placeFloatingOverlayNearAnchor('synergyOverlay',anchorEl||el('boardWrap'));
+        sy.classList.add('show');
+      }
     }
     function openBossModal(stage){
       if(!(stage===5||stage===10)) return;
@@ -1120,13 +1166,20 @@
     function updateDragGhost(e){
       const g=el('dragGhost'); const wrap=el('boardWrap'); if(!g||!wrap) return;
       const wr=wrap.getBoundingClientRect(), x=e.clientX-wr.left, y=e.clientY-wr.top;
-      let best=null,bd=1e9;
+      let best=null,bd=1e9,bestCell=null;
       document.querySelectorAll('.hex').forEach(h=>{
         const r=+h.dataset.r,c=+h.dataset.c; if(r<5) return;
         const cr=h.getBoundingClientRect(),cx=cr.left-wr.left+cr.width/2,cy=cr.top-wr.top+cr.height/2;
-        const d=(cx-x)*(cx-x)+(cy-y)*(cy-y); if(d<bd){bd=d;best={cx,cy};}
+        const d=(cx-x)*(cx-x)+(cy-y)*(cy-y); if(d<bd){bd=d;best={cx,cy};bestCell={r,c};}
       });
-      if(best){g.style.left=(best.cx-40)+'px';g.style.top=(best.cy-33)+'px';g.style.display='block';}
+      if(best){
+        g.style.left=(best.cx-40)+'px';g.style.top=(best.cy-33)+'px';g.style.display='block';
+        const src=state.dragging || state.touchDrag?.src;
+        if(src?.type==='grid'){
+          const uid=state.grid[src.r]?.[src.c];
+          if(uid) showDragRangeHint(uid,bestCell||{r:src.r,c:src.c});
+        }
+      }
     }
     function endDragPreview(){
       const g=el('dragGhost'); if(g) g.style.display='none';
@@ -1138,18 +1191,19 @@
     function clearDragRangeHint(){
       document.querySelectorAll('.hex.dragRange,.hex.dragOrigin').forEach(h=>h.classList.remove('dragRange','dragOrigin'));
     }
-    function showDragRangeHint(uid){
+    function showDragRangeHint(uid,center=null){
       clearDragRangeHint();
       const src=state.dragging || state.touchDrag?.src;
       if(!src || src.type!=='grid') return;
       const srcUid=state.grid[src.r]?.[src.c];
       if(!srcUid || srcUid!==uid) return;
       const range=getPreviewRange(srcUid);
+      const origin=center||{r:src.r,c:src.c};
       document.querySelectorAll('.hex').forEach(h=>{
         const rr=+h.dataset.r,cc=+h.dataset.c;
         if(rr<5) return;
-        if(rr===src.r && cc===src.c) h.classList.add('dragOrigin');
-        if(hexDist({r:src.r,c:src.c},{r:rr,c:cc})<=range) h.classList.add('dragRange');
+        if(rr===origin.r && cc===origin.c) h.classList.add('dragOrigin');
+        if(hexDist(origin,{r:rr,c:cc})<=range) h.classList.add('dragRange');
       });
     }
     function startTouchDrag(e,src,uid){
@@ -1267,8 +1321,8 @@
             <div class="shopNameRow"><span class="name">${d.name}</span><span class="small">${{Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️'}[d.class]||''} ${{Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'}[d.trait]||''}</span></div>
             </div>`;
           c.style.cursor=canBuy?'pointer':'not-allowed';
-          c.style.opacity=canBuy?'1':'0.45';
-          c.style.filter=canBuy?'none':'grayscale(.55)';
+          c.style.opacity=canBuy?'1':'0.42';
+          c.style.filter=canBuy?'none':'grayscale(.75) brightness(.85)';
           c.onclick=()=>{
             if(canBuyNow()) buyShop(idx);
             else if(!state.inBattle && state.energy<cost){c.classList.remove('shopShake');void c.offsetWidth;c.classList.add('shopShake');}
@@ -1329,6 +1383,7 @@
       const aw=el('advancedWrap'); if(aw) aw.style.display=state.advancedOpen?'block':'none';
       updateDebugHud();
       el('endlessBtn').style.display=state.endlessUnlocked&&!state.endlessMode?'inline-block':'none';
+      renderShop(false);
     }
 
     function getPlayerPlacedUnits(){
@@ -1373,7 +1428,7 @@
       el('synergyActive').innerHTML = badges.join('');
       el('boardSynergy').innerHTML = badges.join('');
       el('synergy').innerHTML = '';
-      document.querySelectorAll('.synBtn').forEach(b=>b.onclick=()=>openSynergyModal(b.dataset.syn));
+      document.querySelectorAll('.synBtn').forEach(b=>b.onclick=(e)=>openSynergyModal(b.dataset.syn,e.currentTarget));
     }
 
     function renderSelectedInfo(){
@@ -1429,12 +1484,12 @@
       const rl=el('relicList'); if(rl) rl.innerHTML = state.relics.length?state.relics.map(r=>`<div>${RELIC_ICONS[r.id]||'🔹'} <b>${r.name}</b> <span class="small">${r.desc}</span></div>`).join(''):'<span class="small">None yet</span>';
       const br=el('boardRelics');
       if(br){
-        br.innerHTML = state.relics.length?state.relics.map(r=>`<span class="badge" title="${r.desc}">${RELIC_ICONS[r.id]||'🔹'} ${r.name}</span>`).join(''):'';
+        br.innerHTML = state.relics.length?state.relics.map(r=>`<span class="badge" title="${r.desc}" style="font-size:16px;padding:4px 7px">${RELIC_ICONS[r.id]||'🔹'}</span>`).join(''):'';
         br.style.cursor=state.relics.length?'pointer':'default';
-        if(state.relics.length) br.onclick=()=>openSideInfo('Active Relics',state.relics.map(r=>`<div>${RELIC_ICONS[r.id]||'🔹'} <b>${r.name}</b><div class="small">${r.desc}</div></div>`).join('<hr style="border-color:#36457f66">'));
+        if(state.relics.length) br.onclick=(e)=>openSideInfo('Active Relics',state.relics.map(r=>`<div>${RELIC_ICONS[r.id]||'🔹'} <b>${r.name}</b><div class="small">${r.desc}</div></div>`).join('<hr style="border-color:#36457f66">'),e.currentTarget);
       }
     }
-    function openSynergyModal(key){
+    function openSynergyModal(key,anchorEl=null){
       const title=el('synergyModalTitle'), body=el('synergyUnitsBody'); if(!title||!body) return;
       const isClass=['Aqua','Plant','Beast','Bird'].includes(key);
       const tips={
@@ -1456,17 +1511,9 @@
       title.textContent=`${key} • Lv${lv}`;
       body.style.display='grid';
       body.innerHTML = `<div style="grid-column:1/-1" class="small">${tips[key]}</div>` + defs.map(d=>`<div class="unitMini ${have.has(d.id)?'':'off'}">${unitImgTag(d.id,'unitArt lg',d.name)} <span>${d.name}</span></div>`).join('');
-      const so=el('synergyOverlay'), br=el('boardWrap').getBoundingClientRect();
+      const so=el('synergyOverlay');
       if(so){
-        if(window.innerWidth<=520){
-          so.style.left=(br.left+br.width/2)+'px';
-          so.style.top=(br.top+br.height/2)+'px';
-          so.style.transform='translate(-50%,-50%)';
-        }else{
-          so.style.left=(br.right-710)+'px';
-          so.style.top=(br.top+12)+'px';
-          so.style.transform='none';
-        }
+        placeFloatingOverlayNearAnchor('synergyOverlay',anchorEl||el('boardWrap'));
         so.classList.add('show');
       }
     }
@@ -1684,7 +1731,7 @@
         id:uid,owner,row:r,col:c,defId:d.id,name:d.name,emoji:d.emoji,tier:d.tier,class:d.class,trait:d.trait,star:pu.star,
         hp:hpBase*hpAdj,maxHp:hpBase*hpAdj,atk:atkBase,range:rangeAdj,mystic:d.mystic,maxEnergy,energy:0,attackCd:0,moveCd:0,
         stunned:0,rooted:0,charmed:0,shield:0,immuneCC:0,armorShred:0,dr:0,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,
-        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:d.id==='lotus',targetId:null,damageDone:0,healingDone:0
+        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:d.id==='lotus',targetId:null,damageDone:0,healingDone:0,lastRow:r,lastCol:c
       };
     }
     function makeEnemy(defId,star,r,c,powerScale=1.05){
@@ -1698,7 +1745,7 @@
         id:'e'+(state.nextUid++),owner:'enemy',row:r,col:c,defId:d.id,name:d.name,emoji:d.emoji,tier:d.tier,class:d.class,trait:d.trait,star,
         hp:d.hp*mult*powerScale*hpAdj,maxHp:d.hp*mult*powerScale*hpAdj,atk:d.atk*mult*powerScale,range:rangeAdj,mystic:d.mystic,maxEnergy,energy:0,attackCd:0,moveCd:0,
         stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:0,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,
-        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:false,targetId:null,damageDone:0,healingDone:0
+        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:false,targetId:null,damageDone:0,healingDone:0,lastRow:r,lastCol:c
       };
     }
     function makeChimera(stage){
@@ -1706,7 +1753,7 @@
       return {
         id:'boss'+state.nextUid++,owner:'enemy',row:2,col:2,defId:'chimera',name:'Chimera Elite',emoji:'🐉',tier:6,class:'Beast',trait:'Vanguard',star:1,
         hp:cfg.maxHp,maxHp:cfg.maxHp,atk:cfg.atk,range:cfg.range,mystic:false,maxEnergy:cfg.maxEnergy,energy:0,attackCd:0,moveCd:0,
-        stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:cfg.dr,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,attackSpeed:cfg.attackSpeed,crit:0.1,resUsed:false,auraLotus:false,boss:true,targetId:null,damageDone:0,healingDone:0
+        stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:cfg.dr,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,attackSpeed:cfg.attackSpeed,crit:0.1,resUsed:false,auraLotus:false,boss:true,targetId:null,damageDone:0,healingDone:0,lastRow:2,lastCol:2
       };
     }
 
@@ -1817,7 +1864,8 @@
         const a=el('actor-'+u.id); if(!a) continue;
         if(u.dead){a.style.display='none';continue;}
         const p=getCellCenter(u.row,u.col);
-        a.style.transform=`translate(${p.x-36}px,${p.y-33}px)`;
+        const aw=a.offsetWidth||80, ah=a.offsetHeight||66;
+        a.style.transform=`translate(${p.x-aw/2}px,${p.y-ah/2}px)`;
         if(initial) a.style.transition='none'; else a.style.transition='transform .18s linear';
         const w=Math.max(0,Math.round(100*u.hp/u.maxHp)); a.querySelector('.actorHpFill').style.width=w+'%';
         const mw=Math.max(0,Math.round(100*u.energy/u.maxEnergy)); const mana=a.querySelector('.actorManaFill'); if(mana) mana.style.width=mw+'%';
@@ -1959,14 +2007,15 @@
 
     function stepToward(u,target,units){
       const occ=occupiedMap(units);
-      let best=null,b=999;
+      let best=null,b=999,bPenalty=999;
       for(const [nr,nc] of hexNeighbors(u.row,u.col)){
         const key=nr+'|'+nc;
         if(occ.has(key)) continue;
         const d=hexDist({r:nr,c:nc},target);
-        if(d<b){b=d;best={r:nr,c:nc};}
+        const backtrack = (u.lastRow===nr && u.lastCol===nc) ? 1 : 0;
+        if(d<b || (d===b && backtrack<bPenalty)){b=d;best={r:nr,c:nc};bPenalty=backtrack;}
       }
-      if(best){u.row=best.r;u.col=best.c;}
+      if(best){u.lastRow=u.row;u.lastCol=u.col;u.row=best.r;u.col=best.c;}
       return !!best;
     }
 
@@ -2238,7 +2287,7 @@
           el('relicOverlay').classList.remove('show');
           if(state.pendingAdvance){state.stage++;state.pendingAdvance=false;state.pendingClearStage=null;}
           state.energy += baseIncomeForStage(state.stage) + state.mods.incomeBonus;
-          refreshShop();renderTop();renderPrepUnits();
+          renderTop();renderPrepUnits();renderShop(false);
         };
         el('relicChoices').appendChild(c);
       });
@@ -2264,7 +2313,8 @@
         }
         state.energy += baseIncomeForStage(state.stage) + state.mods.incomeBonus + state.mods.winBonusEnergy;
         if(state.enemyHp<=0){
-          state.endlessUnlocked=true;
+          state.endlessUnlocked=false;
+          state.pendingAutoReset=true;
           log('<b style="color:#ffe38e">Enemy chessplayer defeated!</b>');
           openSummary(true);
         } else if(cleared===10 && !state.endlessMode){
@@ -2279,14 +2329,14 @@
       } else {
         if(!fromTimeout){
           const enemyLeft=(state.combat?.units||[]).filter(u=>u.owner==='enemy'&&!u.dead).length;
-          state.playerHp=Math.max(0,state.playerHp-enemyLeft);
-          log(`Enemy remaining units deal <b>${enemyLeft}</b> damage to you (${state.playerHp}/${state.playerMaxHp}).`);
+          const loss=enemyLeft*2;
+          state.playerHp=Math.max(0,state.playerHp-loss);
+          log(`Enemy remaining units deal <b>${loss}</b> damage to you (${state.playerHp}/${state.playerMaxHp}).`);
         }
         state.energy += baseIncomeForStage(state.stage) + state.mods.incomeBonus + state.mods.lossBonusEnergy;
         log(`<b style="color:#ff9ab0">Defeat.</b> Retry Stage ${state.stage}.`);
         if(state.playerHp<=0){ log('<b style="color:#ff7d96">Run failed. Press Reset Run.</b>'); openSummary(false); }
       }
-      if(win && !el('relicOverlay').classList.contains('show')) refreshShop();
       renderPrepUnits();renderTop();renderShop();
     }
 
@@ -2294,7 +2344,7 @@
       state.stage=1;state.playerHp=state.playerMaxHp;state.energy=4;state.enemyHp=state.enemyMaxHp;state.bench=[null,null,null,null,null];
       state.grid=Array.from({length:10},()=>Array(5).fill(null));state.units={};state.nextUid=1;state.shop=[null,null,null];
       state.bag=Object.fromEntries(UNIT_DEFS.map(u=>[u.id,TIER_POOL[u.tier]]));
-      state.selected=null;state.dragging=null;state.touchDrag=null;state.mergePulseUid=null;state.inBattle=false;state.relics=[];state.relicTaken={};state.pendingAdvance=false;state.pendingClearStage=null;state.enemyPreview=null;state.enemyPreviewStage=null;state.lastBattleBreakdown=[];state.runStats={wins:0,losses:0,damageByDef:{},fieldCounts:{}};state.endlessMode=false;state.endlessUnlocked=false;state.bestStage=0;state.runSeed=null;state.seedRng=null;state.recapVisible=false;state.logVisible=false;state.advancedOpen=false;state.settings.renderMode='classic';
+      state.selected=null;state.dragging=null;state.touchDrag=null;state.mergePulseUid=null;state.inBattle=false;state.relics=[];state.relicTaken={};state.pendingAdvance=false;state.pendingClearStage=null;state.enemyPreview=null;state.enemyPreviewStage=null;state.lastBattleBreakdown=[];state.runStats={wins:0,losses:0,damageByDef:{},fieldCounts:{}};state.endlessMode=false;state.endlessUnlocked=false;state.bestStage=0;state.runSeed=null;state.seedRng=null;state.recapVisible=false;state.logVisible=false;state.advancedOpen=false;state.settings.renderMode='classic';state.pendingAutoReset=false;
       state.mods={incomeBonus:0,aquaAS:0,beastFlatAtk:0,birdMove:0,rogueCrit:0,thornReflect:0,guardianHP:0,sniperDmg:0,skillPower:0,sniperRange:0,startEnergy:0,globalAS:0,sellBonusEnergy:0,killHeal:0,doubleCastChance:0,globalHP:0,lowHpAS:0,secondWind:false,winBonusEnergy:0,lossBonusEnergy:0};
       initDailyModifier();
       grantStarterUnit();
@@ -2310,21 +2360,20 @@
       state.playerHp=Math.max(state.playerHp,1);
       log('<b style="color:#9bd8ff">Endless Mode started.</b>');
       refreshEnemyPreview();
-      refreshShop();
       renderPrepUnits();renderTop();
     }
     el('shopFightBtn').onclick=startBattle;
     el('endlessBtn').onclick=startEndless;
     el('resetBtnBottom').onclick=resetRun;
-    el('openGlossaryBtn').onclick=()=>el('glossaryOverlay').classList.add('show');
-    el('openGlossaryBtn2').onclick=()=>el('glossaryOverlay').classList.add('show');
+    el('openGlossaryBtn').onclick=(e)=>{placeFloatingOverlayNearAnchor('glossaryOverlay',e.currentTarget);el('glossaryOverlay').classList.add('show');};
+    el('openGlossaryBtn2').onclick=()=>{placeCenterOverlayOnArena('glossaryOverlay');el('glossaryOverlay').classList.add('show');};
     el('closeGlossaryBtn').onclick=()=>el('glossaryOverlay').classList.remove('show');
-    el('closeSummaryBtn').onclick=()=>el('summaryOverlay').classList.remove('show');
-    el('openLeaderboardBtn').onclick=()=>{renderLeaderboard();el('leaderboardOverlay').classList.add('show');};
+    el('closeSummaryBtn').onclick=()=>{el('summaryOverlay').classList.remove('show');if(state.pendingAutoReset) resetRun();};
+    el('openLeaderboardBtn').onclick=()=>{renderLeaderboard();placeCenterOverlayOnArena('leaderboardOverlay');el('leaderboardOverlay').classList.add('show');};
     el('closeLeaderboardBtn').onclick=()=>el('leaderboardOverlay').classList.remove('show');
-    el('openBagBtn').onclick=()=>{renderBag();el('bagOverlay').classList.add('show');};
+    el('openBagBtn').onclick=()=>{renderBag();placeCenterOverlayOnArena('bagOverlay');el('bagOverlay').classList.add('show');};
     el('closeBagBtn').onclick=()=>el('bagOverlay').classList.remove('show');
-    el('closeResultBtn').onclick=()=>el('resultOverlay').classList.remove('show');
+    el('closeResultBtn').onclick=()=>{el('resultOverlay').classList.remove('show');if(state.pendingAutoReset) resetRun();};
     el('toggleRecapBtn').onclick=()=>{state.recapVisible=!state.recapVisible;renderTop();};
     el('toggleLogBtn').onclick=()=>{state.logVisible=!state.logVisible;renderTop();};
     el('toggleDebugBtn').onclick=()=>{state.debugVisible=!state.debugVisible;renderTop();};
@@ -2333,7 +2382,8 @@
       renderPrepUnits();renderTop();if(state.inBattle) renderActorPositions(true);renderShop();
     };
     el('toggleAdvancedBtn').onclick=()=>{state.advancedOpen=!state.advancedOpen;renderTop();};
-    el('openOddsBtn2').onclick=()=>{renderOddsModal();el('oddsOverlay').classList.add('show');};
+    el('closeAdvancedPanelBtn').onclick=()=>{state.advancedOpen=false;renderTop();};
+    el('openOddsBtn2').onclick=()=>{renderOddsModal();placeCenterOverlayOnArena('oddsOverlay');el('oddsOverlay').classList.add('show');};
     el('closeOddsBtn').onclick=()=>el('oddsOverlay').classList.remove('show');
     el('closeBossBtn').onclick=()=>el('bossOverlay').classList.remove('show');
     el('closeSynergyBtn').onclick=()=>el('synergyOverlay').classList.remove('show');
@@ -2347,7 +2397,12 @@
     if(shopRow){shopRow.ondragover=(e)=>{if(state.dragging)e.preventDefault();}; shopRow.ondrop=handleShopSellDrop;}
     if(shopSellOverlay){shopSellOverlay.ondragover=(e)=>{e.preventDefault();}; shopSellOverlay.ondrop=handleShopSellDrop;}
     document.querySelectorAll('.overlay').forEach(ov=>{
-      ov.addEventListener('click',(e)=>{if(e.target===ov) ov.classList.remove('show');});
+      ov.addEventListener('click',(e)=>{
+        if(e.target===ov){
+          ov.classList.remove('show');
+          if(ov.id==='summaryOverlay' && state.pendingAutoReset) resetRun();
+        }
+      });
     });
     document.addEventListener('mousedown',(e)=>{
       const so=el('selectedOverlay'), sm=so&&so.querySelector('.modal');
