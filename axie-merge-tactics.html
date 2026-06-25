@@ -73,13 +73,13 @@
     .zoneLabel.enemy{top:8px;border-color:#ad6380;background:#3a1f2ec9}
     .zoneLabel.player{bottom:8px;border-color:#5f7ce0;background:#1a2346c9}
     #board{display:flex;flex-direction:column;align-items:center;position:relative;z-index:3}
-    .boardRow{display:flex;height:74px}
-    .boardRow.odd{margin-left:47px}
+    .boardRow{display:flex;height:calc(var(--hexh) * .75)}
+    .boardRow.odd{margin-left:calc(var(--hexw)/2)}
     .hex{
-      width:var(--hexw);height:var(--hexh);position:relative;margin-right:3px;cursor:pointer;
-      clip-path:polygon(24% 4%,76% 4%,98% 50%,76% 96%,24% 96%,2% 50%);
+      width:var(--hexw);height:var(--hexh);position:relative;margin-right:0;cursor:pointer;
+      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
       background:linear-gradient(180deg,#1f242b,#171d24);
-      border:2px solid #6e7581;
+      border:3px solid #0f1218;
       transition:.15s transform,.15s box-shadow,.15s filter;
     }
     .hex:hover{transform:translateY(-1px);box-shadow:0 0 0 1px #5f71cf,inset 0 0 0 1px #5f71cf}
@@ -97,7 +97,11 @@
       position:absolute;left:7px;top:7px;width:80px;height:66px;border-radius:12px;overflow:hidden;
       background:linear-gradient(180deg,#1f2b54,#151d37);
       border:3px solid #5f86ff;display:flex;flex-direction:column;justify-content:flex-end;
-      box-shadow:0 6px 14px #0007;
+      box-shadow:0 6px 14px #0007;touch-action:none;
+    }
+    .hex .slotUnit{
+      left:4px;top:4px;width:calc(var(--hexw) - 8px);height:calc(var(--hexh) - 8px);border-radius:0;
+      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
     }
     .slotUnit.enemy{border-color:#ff6f95;filter:brightness(.9) saturate(.85)}
     .slotUnit.class-aqua{background:linear-gradient(180deg,#1f4d78,#18365c);border-color:#66c7ff}
@@ -200,6 +204,7 @@
       position:absolute;width:80px;height:66px;border-radius:12px;border:5px solid #61a3ff;
       background:linear-gradient(180deg,#24366e,#18254a);transition:transform .18s linear;
       box-shadow:0 8px 18px #0008;overflow:hidden;
+      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);border-radius:0;
     }
     .actor.enemy{border-color:#ff648f;filter:brightness(.9) saturate(.88)}
     .actor.class-aqua{background:linear-gradient(180deg,#296092,#1d4265)}
@@ -263,6 +268,52 @@
     .energyCoin .num{
       position:absolute;right:-4px;bottom:-3px;background:#0d1730;border:1px solid #4862b2;border-radius:999px;padding:2px 7px;
       font-size:18px;font-weight:900;color:#fff
+    }
+    .slotUnit img,.unitBg,.cardBanner img,.actor img{-webkit-user-drag:none;user-drag:none;user-select:none;-webkit-touch-callout:none}
+    @media (max-width: 520px){
+      :root{--hexw:47px;--hexh:41px}
+      body{overflow:hidden}
+      .app{padding:6px;max-width:100vw}
+      .panel{position:relative}
+      .header{
+        position:absolute;left:6px;right:6px;top:6px;z-index:45;
+        padding:4px 6px;gap:4px;flex-wrap:wrap;background:#101814cc;border:1px solid #3f5a4e;border-radius:10px;backdrop-filter:blur(2px)
+      }
+      .titleWord{font-size:20px}
+      .stats{gap:6px}
+      .hpWidget{min-width:108px;padding:3px 5px}
+      .avatar{width:24px;height:24px}
+      #stageTrack{width:100%;justify-content:center;margin-top:2px}
+      .stageNode{width:17px;height:17px;font-size:9px}
+      .stageLine{width:8px}
+      .mainBoard{padding:72px 4px 4px 4px}
+      #boardWrap{padding:5px}
+      .boardRow{height:calc(var(--hexh) * .75)}
+      .battleCtas{right:6px;bottom:6px}
+      #startBtn{min-width:112px;padding:7px 9px;font-size:12px}
+      #endlessBtn{padding:8px 10px;font-size:12px}
+      .zoneLabel{font-size:9px;padding:2px 4px}
+      #boardSynergy .synBadge{padding:4px 6px;font-size:9px}
+      #dragCapOverlay{font-size:26px !important}
+      #benchSection,#shopSection{margin:4px;padding:6px}
+      #bench{gap:4px}
+      .benchSlot{height:44px}
+      #shop{gap:4px}
+      .cardBanner{height:77px}
+      .shopCostOverlay{font-size:13px;padding:1px 5px}
+      .cardInner{padding:4px 6px}
+      .shopNameRow{font-size:11px}
+      #shopSide{min-width:62px;gap:4px}
+      .energyCoin{width:36px;height:36px;font-size:19px}
+      .energyCoin .num{font-size:12px;padding:1px 5px;right:-3px;bottom:-2px}
+      .slotUnit{width:40px;height:34px}
+      .actor{width:40px;height:34px;border-width:3px}
+      .right{padding:4px;gap:4px}
+      .section{padding:6px}
+      .secTitle{font-size:10px;margin-bottom:4px}
+      #log{max-height:64px;padding:5px}
+      #advancedWrap .panel.section{margin-bottom:4px}
+      #selectedOverlay .modal{width:260px;max-width:260px}
     }
     #boardSynergy{position:absolute;left:10px;bottom:8px;z-index:30;display:flex;flex-direction:column;gap:6px;max-width:46%}
     #boardSynergy .synBadge{padding:7px 10px;font-size:12px}
@@ -639,7 +690,7 @@
       grid:Array.from({length:10},()=>Array(5).fill(null)),
       nextUid:1,units:{},shop:[null,null,null],
       bag:Object.fromEntries(UNIT_DEFS.map(u=>[u.id,TIER_POOL[u.tier]])),
-      selected:null,dragging:null,mergePulseUid:null,inBattle:false,raf:0,battleTimer:0,lastLoopAt:0,loopRunning:false,combat:null,relics:[],relicTaken:{},pendingAdvance:false,pendingClearStage:null,fps:0,stallMs:0,
+      selected:null,dragging:null,touchDrag:null,mergePulseUid:null,inBattle:false,raf:0,battleTimer:0,lastLoopAt:0,loopRunning:false,combat:null,relics:[],relicTaken:{},pendingAdvance:false,pendingClearStage:null,fps:0,stallMs:0,
       enemyPreview:null,enemyPreviewStage:null,lastBattleBreakdown:[],audioCtx:null,
       daily:null,endlessUnlocked:false,endlessMode:false,bestStage:0,runSeed:null,seedRng:null,recapVisible:false,logVisible:false,debugVisible:false,advancedOpen:false,shopAnimSeq:0,
       settings:{renderMode:'classic'},
@@ -973,6 +1024,9 @@
           const su=h.querySelector('.slotUnit');
           if(uid===state.mergePulseUid) su.classList.add('traitFxPulse');
           su.onclick=(e)=>{e.stopPropagation();selectGrid(r,c);};
+          su.onpointerdown=(e)=>{if(e.pointerType==='touch') startTouchDrag(e,{type:'grid',r,c},uid);};
+          su.onpointermove=(e)=>{if(e.pointerType==='touch') moveTouchDrag(e);};
+          su.onpointerup=(e)=>{if(e.pointerType==='touch') endTouchDrag(e);};
           su.draggable=true;
           su.ondragstart=(e)=>{state.dragging={type:'grid',r,c};e.dataTransfer.setData('text/plain','grid');startDragPreview(uid);};
           su.ondragend=()=>{state.dragging=null;endDragPreview();};
@@ -981,6 +1035,7 @@
       const bench=el('bench');bench.innerHTML='';
       for(let i=0;i<5;i++){
         const s=document.createElement('div');s.className='benchSlot'+(state.selected&&state.selected.type==='bench'&&state.selected.i===i?' selected':'');
+        s.dataset.benchIndex=String(i);
         s.onclick=()=>onBenchClick(i);
         s.ondragover=(e)=>{e.preventDefault();};
         s.ondrop=(e)=>{e.preventDefault();onBenchDrop(i);};
@@ -989,6 +1044,9 @@
           const su=s.querySelector('.slotUnit');
           if(state.bench[i]===state.mergePulseUid) su.classList.add('traitFxPulse');
           su.onclick=(e)=>{e.stopPropagation();selectBench(i);};
+          su.onpointerdown=(e)=>{if(e.pointerType==='touch') startTouchDrag(e,{type:'bench',i},state.bench[i]);};
+          su.onpointermove=(e)=>{if(e.pointerType==='touch') moveTouchDrag(e);};
+          su.onpointerup=(e)=>{if(e.pointerType==='touch') endTouchDrag(e);};
           su.draggable=true;
           su.ondragstart=(e)=>{state.dragging={type:'bench',i};e.dataTransfer.setData('text/plain','bench');startDragPreview(state.bench[i]);};
           su.ondragend=()=>{state.dragging=null;endDragPreview();};
@@ -1052,6 +1110,42 @@
       el('shopSellOverlay')?.classList.remove('show');
       const cap=el('dragCapOverlay'); if(cap) cap.style.opacity='0.2';
       const wrap=el('boardWrap'); if(wrap){wrap.ondragover=null;wrap.ondragleave=null;}
+    }
+    function startTouchDrag(e,src,uid){
+      if(state.inBattle) return;
+      e.preventDefault();
+      state.touchDrag={id:e.pointerId,src};
+      state.dragging=src;
+      startDragPreview(uid);
+      const t=e.currentTarget;
+      if(t?.setPointerCapture) t.setPointerCapture(e.pointerId);
+      updateDragGhost(e);
+    }
+    function moveTouchDrag(e){
+      if(!state.touchDrag || state.touchDrag.id!==e.pointerId) return;
+      e.preventDefault();
+      updateDragGhost(e);
+    }
+    function endTouchDrag(e){
+      if(!state.touchDrag || state.touchDrag.id!==e.pointerId) return;
+      e.preventDefault();
+      const src=state.touchDrag.src;
+      const target=document.elementFromPoint(e.clientX,e.clientY);
+      const inShop=target?.closest?.('#shopRow');
+      const hex=target?.closest?.('.hex');
+      const bench=target?.closest?.('.benchSlot');
+      if(inShop){
+        sellDraggedFromSource(src);
+      }else if(hex){
+        const r=+hex.dataset.r,c=+hex.dataset.c;
+        state.dragging=src; onHexDrop(r,c);
+      }else if(bench){
+        const i=+(bench.dataset.benchIndex||-1);
+        if(i>=0){ state.dragging=src; onBenchDrop(i); }
+      }
+      state.touchDrag=null;
+      state.dragging=null;
+      endDragPreview();
     }
 
     function onHexDrop(r,c){
@@ -2141,7 +2235,7 @@
       state.stage=1;state.playerHp=state.playerMaxHp;state.energy=4;state.enemyHp=state.enemyMaxHp;state.bench=[null,null,null,null,null];
       state.grid=Array.from({length:10},()=>Array(5).fill(null));state.units={};state.nextUid=1;state.shop=[null,null,null];
       state.bag=Object.fromEntries(UNIT_DEFS.map(u=>[u.id,TIER_POOL[u.tier]]));
-      state.selected=null;state.dragging=null;state.mergePulseUid=null;state.inBattle=false;state.relics=[];state.relicTaken={};state.pendingAdvance=false;state.pendingClearStage=null;state.enemyPreview=null;state.enemyPreviewStage=null;state.lastBattleBreakdown=[];state.runStats={wins:0,losses:0,damageByDef:{},fieldCounts:{}};state.endlessMode=false;state.endlessUnlocked=false;state.bestStage=0;state.runSeed=null;state.seedRng=null;state.recapVisible=false;state.logVisible=false;state.advancedOpen=false;
+      state.selected=null;state.dragging=null;state.touchDrag=null;state.mergePulseUid=null;state.inBattle=false;state.relics=[];state.relicTaken={};state.pendingAdvance=false;state.pendingClearStage=null;state.enemyPreview=null;state.enemyPreviewStage=null;state.lastBattleBreakdown=[];state.runStats={wins:0,losses:0,damageByDef:{},fieldCounts:{}};state.endlessMode=false;state.endlessUnlocked=false;state.bestStage=0;state.runSeed=null;state.seedRng=null;state.recapVisible=false;state.logVisible=false;state.advancedOpen=false;state.settings.renderMode='classic';
       state.mods={incomeBonus:0,aquaAS:0,beastFlatAtk:0,birdMove:0,rogueCrit:0,thornReflect:0,guardianHP:0,sniperDmg:0,skillPower:0,sniperRange:0,startEnergy:0,globalAS:0,sellBonusEnergy:0,killHeal:0,doubleCastChance:0,globalHP:0,lowHpAS:0,secondWind:false,winBonusEnergy:0,lossBonusEnergy:0};
       initDailyModifier();
       grantStarterUnit();
