@@ -168,6 +168,22 @@ for (const axie of AXIES) {
       failures++;
     }
   }
+
+  // Shop cards, tooltips and the glossary want a plain <img> src, not a strip.
+  // Emit a single high-res idle frame as the portrait.
+  const portrait = await page.evaluate((o) => window.__renderStrip(o), {
+    model: `/.cache/${axie}/${clipsFor(axie).idle}.glb`,
+    texture: null,
+    frames: 1,
+    size: 256,
+    loop: false,
+    bodyTint: BODY_TINTS[axie] || null,
+  });
+  await writeFile(
+    join(OUT, axie, 'portrait.png'),
+    Buffer.from(portrait.png.split(',')[1], 'base64'),
+  );
+  manifest[axie].portrait = `assets/axies/${axie}/portrait.png`;
 }
 
 await mkdir(OUT, { recursive: true });

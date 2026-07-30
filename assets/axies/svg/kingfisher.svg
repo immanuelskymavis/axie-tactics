@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Kingfisher">
+  <title>Kingfisher</title>
+  <defs>
+    <radialGradient id="g_kingfisher" cx="38%" cy="30%" r="78%">
+      <stop offset="0" stop-color="#ffc0da"/>
+      <stop offset="0.62" stop-color="#ff8cbe"/>
+      <stop offset="1" stop-color="#d4568c"/>
+    </radialGradient>
+  </defs>
+
+  <g class="axie" transform="translate(64 84) scale(0.996) translate(-64 -84)">
+    
+    <g fill="#ffc0da" stroke="#d4568c" stroke-width="1.8" stroke-linejoin="round">
+      <path d="M95 80 q20 0 28 10 q-16 8 -28 0 z"/>
+      <path d="M95 88 q18 4 24 14 q-16 4 -26 -6 z"/>
+    </g>
+    
+    <g fill="#ffc0da" stroke="#d4568c" stroke-width="2" stroke-linejoin="round">
+      <path d="M36 68 q-26 2 -30 22 q18 8 32 -6 z"/>
+      <path d="M92 68 q26 2 30 22 q-18 8 -32 -6 z"/>
+    </g>
+
+    <!-- legs -->
+    <g fill="#d4568c">
+      <ellipse cx="42" cy="108" rx="9" ry="7"/>
+      <ellipse cx="57"  cy="111" rx="9" ry="7"/>
+      <ellipse cx="72"  cy="111" rx="9" ry="7"/>
+      <ellipse cx="87" cy="108" rx="9" ry="7"/>
+    </g>
+
+    <!-- body -->
+    <ellipse cx="64" cy="76" rx="37" ry="34" fill="url(#g_kingfisher)"/>
+
+    
+    <g fill="#ffc0da" stroke="#d4568c" stroke-width="2" stroke-linejoin="round">
+      <path d="M54 46 q-4 -24 8 -30 q10 8 6 30 z"/>
+      <path d="M70 46 q8 -20 18 -20 q-4 14 -10 22 z"/>
+    </g>
+
+    <!-- eyes -->
+    <g>
+      <ellipse cx="50" cy="70" rx="10" ry="11" fill="#20242b"/>
+      <ellipse cx="78" cy="70" rx="10" ry="11" fill="#20242b"/>
+      <circle cx="47" cy="66" r="3.6" fill="#fff"/>
+      <circle cx="75" cy="66" r="3.6" fill="#fff"/>
+      <circle cx="54" cy="75" r="1.8" fill="#fff" opacity=".75"/>
+      <circle cx="82" cy="75" r="1.8" fill="#fff" opacity=".75"/>
+    </g>
+    <g stroke="#8f2f57" stroke-width="3.4" stroke-linecap="round">
+      <path d="M41 59 l14 5"/>
+      <path d="M87 59 l-14 5"/>
+    </g>
+
+    <!-- blush -->
+    <g fill="#d4568c" opacity=".38">
+      <ellipse cx="37" cy="83" rx="6" ry="4"/>
+      <ellipse cx="91" cy="83" rx="6" ry="4"/>
+    </g>
+
+    
+    <path d="M55 81 l9 12 l9 -12 z" fill="#8f2f57"/>
+    <path d="M55 81 h18" stroke="#d4568c" stroke-width="1.5"/>
+  </g>
+</svg>

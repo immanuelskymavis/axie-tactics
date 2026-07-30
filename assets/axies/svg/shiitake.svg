@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Shiitake">
+  <title>Shiitake</title>
+  <defs>
+    <radialGradient id="g_shiitake" cx="38%" cy="30%" r="78%">
+      <stop offset="0" stop-color="#cef27e"/>
+      <stop offset="0.62" stop-color="#a8df3d"/>
+      <stop offset="1" stop-color="#6ea622"/>
+    </radialGradient>
+  </defs>
+
+  <g class="axie" transform="translate(64 84) scale(0.900) translate(-64 -84)">
+    <ellipse cx="104" cy="88" rx="8" ry="6" fill="#6ea622"/>
+    
+
+    <!-- legs -->
+    <g fill="#6ea622">
+      <ellipse cx="42" cy="108" rx="9" ry="7"/>
+      <ellipse cx="57"  cy="111" rx="9" ry="7"/>
+      <ellipse cx="72"  cy="111" rx="9" ry="7"/>
+      <ellipse cx="87" cy="108" rx="9" ry="7"/>
+    </g>
+
+    <!-- body -->
+    <ellipse cx="64" cy="76" rx="37" ry="34" fill="url(#g_shiitake)"/>
+
+    
+    <path d="M34 50 a30 20 0 0 1 60 0 z" fill="#6ea622"/>
+    <g fill="#cef27e" opacity=".85">
+      <circle cx="52" cy="43" r="4"/>
+      <circle cx="74" cy="40" r="3"/>
+    </g>
+
+    <!-- eyes -->
+    <g>
+      <ellipse cx="50" cy="70" rx="10" ry="11" fill="#20242b"/>
+      <ellipse cx="78" cy="70" rx="10" ry="11" fill="#20242b"/>
+      <circle cx="47" cy="66" r="3.6" fill="#fff"/>
+      <circle cx="75" cy="66" r="3.6" fill="#fff"/>
+      <circle cx="54" cy="75" r="1.8" fill="#fff" opacity=".75"/>
+      <circle cx="82" cy="75" r="1.8" fill="#fff" opacity=".75"/>
+    </g>
+    
+
+    <!-- blush -->
+    <g fill="#6ea622" opacity=".38">
+      <ellipse cx="37" cy="83" rx="6" ry="4"/>
+      <ellipse cx="91" cy="83" rx="6" ry="4"/>
+    </g>
+
+    <path d="M55 85 q9 9 18 0" fill="none" stroke="#3f6b12" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

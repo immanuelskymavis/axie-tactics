@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Larva">
+  <title>Larva</title>
+  <defs>
+    <radialGradient id="g_larva" cx="38%" cy="30%" r="78%">
+      <stop offset="0" stop-color="#ffa294"/>
+      <stop offset="0.62" stop-color="#ff6b57"/>
+      <stop offset="1" stop-color="#c8412f"/>
+    </radialGradient>
+  </defs>
+
+  <g class="axie" transform="translate(64 84) scale(0.900) translate(-64 -84)">
+    <ellipse cx="104" cy="88" rx="8" ry="6" fill="#c8412f"/>
+    
+
+    <!-- legs -->
+    <g fill="#c8412f">
+      <ellipse cx="42" cy="108" rx="9" ry="7"/>
+      <ellipse cx="57"  cy="111" rx="9" ry="7"/>
+      <ellipse cx="72"  cy="111" rx="9" ry="7"/>
+      <ellipse cx="87" cy="108" rx="9" ry="7"/>
+    </g>
+
+    <!-- body -->
+    <ellipse cx="64" cy="76" rx="37" ry="34" fill="url(#g_larva)"/>
+
+    
+    <g stroke="#c8412f" stroke-width="3" fill="none" stroke-linecap="round">
+      <path d="M52 46 q-8 -16 -18 -20"/>
+      <path d="M76 46 q8 -16 18 -20"/>
+    </g>
+    <circle cx="34" cy="26" r="5" fill="#ffa294"/>
+    <circle cx="94" cy="26" r="5" fill="#ffa294"/>
+
+    <!-- eyes -->
+    <g>
+      <ellipse cx="50" cy="70" rx="10" ry="11" fill="#20242b"/>
+      <ellipse cx="78" cy="70" rx="10" ry="11" fill="#20242b"/>
+      <circle cx="47" cy="66" r="3.6" fill="#fff"/>
+      <circle cx="75" cy="66" r="3.6" fill="#fff"/>
+      <circle cx="54" cy="75" r="1.8" fill="#fff" opacity=".75"/>
+      <circle cx="82" cy="75" r="1.8" fill="#fff" opacity=".75"/>
+    </g>
+    
+
+    <!-- blush -->
+    <g fill="#c8412f" opacity=".38">
+      <ellipse cx="37" cy="83" rx="6" ry="4"/>
+      <ellipse cx="91" cy="83" rx="6" ry="4"/>
+    </g>
+
+    
+    <g stroke="#8a2a1c" stroke-width="3.5" fill="none" stroke-linecap="round">
+      <path d="M61 82 q-10 4 -12 12"/>
+      <path d="M67 82 q10 4 12 12"/>
+    </g>
+  </g>
+</svg>

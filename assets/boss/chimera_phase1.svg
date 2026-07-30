@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="160" height="160" role="img" aria-label="Chimera Elite">
+  <title>Chimera Elite</title>
+  <defs>
+    <radialGradient id="cbody1" cx="40%" cy="28%" r="80%">
+      <stop offset="0" stop-color="#645a86"/>
+      <stop offset="0.6" stop-color="#3a3350"/>
+      <stop offset="1" stop-color="#1e1a2d"/>
+    </radialGradient>
+    <filter id="cglow1" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g transform="translate(64 76) scale(1.08) translate(-64 -76)">
+    <!-- ragged crest -->
+    <g fill="#1e1a2d">
+      <path d="M34 52 l5 -22 l8 22 z"/><path d="M48 52 l7 -31 l11 31 z"/><path d="M63 52 l5 -40 l8 40 z"/><path d="M78 52 l7 -22 l11 22 z"/><path d="M92 52 l5 -31 l8 31 z"/>
+    </g>
+    <!-- twin horns -->
+    <g fill="#645a86" stroke="#1e1a2d" stroke-width="2.5" stroke-linejoin="round">
+      <path d="M38 52 q-20 -18 -14 -34 q16 8 22 32 z"/>
+      <path d="M90 52 q20 -18 14 -34 q-16 8 -22 32 z"/>
+    </g>
+    <!-- legs -->
+    <g fill="#1e1a2d">
+      <ellipse cx="40" cy="110" rx="11" ry="8"/>
+      <ellipse cx="56"  cy="113" rx="11" ry="8"/>
+      <ellipse cx="73"  cy="113" rx="11" ry="8"/>
+      <ellipse cx="89" cy="110" rx="11" ry="8"/>
+    </g>
+    <ellipse cx="64" cy="76" rx="40" ry="36" fill="url(#cbody1)"/>
+    <!-- cracks -->
+    <g stroke="#7cf0ff" stroke-width="1.8" fill="none" opacity=".75" filter="url(#cglow1)">
+      <path d="M44 96 l7 -10 l-4 -8 l9 -6"/>
+      <path d="M86 90 l-8 -8 l3 -9"/>
+    </g>
+    <!-- eyes -->
+    <g filter="url(#cglow1)">
+      <ellipse cx="49" cy="71" rx="9" ry="10" fill="#7cf0ff"/>
+      <ellipse cx="79" cy="71" rx="9" ry="10" fill="#7cf0ff"/>
+      <ellipse cx="49" cy="71" rx="3" ry="7" fill="#1e1a2d"/>
+      <ellipse cx="79" cy="71" rx="3" ry="7" fill="#1e1a2d"/>
+    </g>
+    <g stroke="#1e1a2d" stroke-width="4" stroke-linecap="round">
+      <path d="M39 59 l15 6"/>
+      <path d="M89 59 l-15 6"/>
+    </g>
+    <!-- maw -->
+    <path d="M49 84 q15 16 30 0 z" fill="#1e1a2d"/>
+    <g fill="#f2ecff">
+      <path d="M53 85 l3.5 7 l3.5 -7 z"/><path d="M60 85 l3.5 7 l3.5 -7 z"/><path d="M67 85 l3.5 7 l3.5 -7 z"/><path d="M74 85 l3.5 7 l3.5 -7 z"/>
+    </g>
+  </g>
+</svg>

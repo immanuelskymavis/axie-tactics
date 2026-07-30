@@ -27,7 +27,8 @@
       "w": 128,
       "h": 128,
       "fps": 10
-    }
+    },
+    "portrait": "assets/axies/buba/portrait.png"
   },
   "puffy": {
     "idle": {
@@ -57,7 +58,8 @@
       "w": 128,
       "h": 128,
       "fps": 10
-    }
+    },
+    "portrait": "assets/axies/puffy/portrait.png"
   },
   "pomodoro": {
     "idle": {
@@ -87,6 +89,7 @@
       "w": 128,
       "h": 128,
       "fps": 10
-    }
+    },
+    "portrait": "assets/axies/pomodoro/portrait.png"
   }
 }
