@@ -227,6 +227,45 @@ if (overridden.count !== 30) problems.push(`cms changed roster size to ${overrid
 console.log(`boss: spawned=${boss.hasBoss} phase2=${bossAfter.phase2}`);
 console.log(`cms override: goldfish atk ${overridden.atk}/hp ${overridden.hp}, invalid class rejected -> ${overridden.larvaClass}`);
 
+
+// ---- 8. the sprite-sheet path specifically (random buys rarely hit the 3 rendered axies) ----
+const spritePage = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+spritePage.on('pageerror', (e) => problems.push(`sprite pageerror: ${e.message}`));
+spritePage.on('console', (m) => m.type() === 'error' && problems.push(`sprite console: ${m.text()}`));
+await spritePage.goto(`http://127.0.0.1:${PORT}/axie-merge-tactics.html`, { waitUntil: 'networkidle' });
+const spriteCheck = await spritePage.evaluate(async (ids) => {
+  const g = window.__game;
+  // Place one of each rendered axie directly, bypassing the shop.
+  let r = 9;
+  for (const id of ids) {
+    const uid = 'u' + g.state.nextUid++;
+    g.state.units[uid] = { uid, defId: id, star: 1 };
+    g.state.grid[r][1] = uid;
+    r--;
+  }
+  g.renderPrepUnits();
+  const prep = [...document.querySelectorAll('#board [data-model]')].map((m) => m.dataset.kind);
+  g.state.stage = 3;
+  g.startBattle();
+  await new Promise((res) => setTimeout(res, 400));
+  const actors = [...document.querySelectorAll('.actor [data-model]')];
+  const strips = [...document.querySelectorAll('.actor .spriteAnim')].map((n) => ({
+    img: n.style.backgroundImage.replace(/^url\("?|"?\)$/g, ''),
+    frames: n.style.getPropertyValue('--f'),
+  }));
+  return { prep, kinds: actors.map((a) => a.dataset.kind), strips };
+}, RENDERED);
+const spriteActors = spriteCheck.kinds.filter((k) => k === 'sprite').length;
+if (spriteActors < RENDERED.length) {
+  problems.push(`expected ${RENDERED.length} sprite actors in combat, saw ${spriteActors}`);
+}
+if (spriteCheck.strips.some((s) => !s.img || s.frames !== '8')) {
+  problems.push(`sprite strips malformed: ${JSON.stringify(spriteCheck.strips)}`);
+}
+await spritePage.waitForTimeout(1200);
+await spritePage.screenshot({ path: join(SHOTS, 'smoke-6-sprites.png'), fullPage: true });
+console.log(`sprite path: ${spriteActors}/${RENDERED.length} rendered axies animating from strips`);
+
 console.log(`roster: ${shape.units} units, ${shape.classes.length} classes ${JSON.stringify(shape.perClass)}`);
 console.log(`battle: ${battle.log.join(' | ')}`);
 console.log(`game log: ${(battle.gameLog||[]).join(' // ')}`);
