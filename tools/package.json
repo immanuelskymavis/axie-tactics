@@ -1,0 +1,17 @@
+{
+  "name": "axie-tactics-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Build-time art tooling for Axie Merge Tactics. Nothing here ships to the browser — the game stays a zero-dependency static file.",
+  "scripts": {
+    "fetch:axies": "node fetch-axie-assets.mjs",
+    "render:sprites": "node render-sprites.mjs",
+    "build:art": "npm run fetch:axies && npm run render:sprites",
+    "smoke": "node smoke.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.1",
+    "three": "^0.180.0"
+  }
+}

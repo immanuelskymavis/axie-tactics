@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>axie sprite render harness</title></head>
+<body style="margin:0;background:#222">
+<script type="importmap">
+{
+  "imports": {
+    "three": "/node_modules/three/build/three.module.js",
+    "three/addons/": "/node_modules/three/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+// Probe WebGL up front so the driver can fail loudly instead of producing blank frames.
+try {
+  const probe = document.createElement('canvas').getContext('webgl2')
+             || document.createElement('canvas').getContext('webgl');
+  window.__webgl = probe ? (probe.getParameter(probe.VERSION) || 'webgl') : null;
+} catch (e) {
+  window.__webgl = null;
+}
+
+const loader = new GLTFLoader();
+const texLoader = new THREE.TextureLoader();
+
+// Fixed framing shared by every Axie: each model is normalised to unit height before
+// rendering, so all sprites land at the same on-board scale regardless of source size.
+const FRUSTUM = 1.42;
+const CAM_DIR = new THREE.Vector3(0.42, 0.26, 1);
+
+function buildScene(size) {
+  const scene = new THREE.Scene();
+
+  const aspect = 1;
+  const camera = new THREE.OrthographicCamera(
+    -FRUSTUM * aspect / 2, FRUSTUM * aspect / 2,
+    FRUSTUM / 2, -FRUSTUM / 2,
+    0.01, 100,
+  );
+  camera.position.copy(CAM_DIR).normalize().multiplyScalar(6);
+  camera.lookAt(0, 0, 0);
+
+  // Soft, near-flat lighting to match Axie's pastel look — no harsh speculars.
+  scene.add(new THREE.AmbientLight(0xffffff, 2.1));
+  const key = new THREE.DirectionalLight(0xffffff, 1.5);
+  key.position.set(2, 3, 4);
+  scene.add(key);
+  const fill = new THREE.DirectionalLight(0xdfe9ff, 0.75);
+  fill.position.set(-3, 1, 2);
+  scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.5);
+  rim.position.set(0, 2, -4);
+  scene.add(rim);
+
+  const renderer = new THREE.WebGLRenderer({
+    alpha: true,
+    antialias: true,
+    preserveDrawingBuffer: true,
+  });
+  renderer.setSize(size, size, false);
+  renderer.setPixelRatio(1);
+  renderer.setClearColor(0x000000, 0);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.NoToneMapping;
+
+  return { scene, camera, renderer };
+}
+
+window.__renderStrip = async ({ model, texture, frames, size, loop, bodyTint }) => {
+  const { scene, camera, renderer } = buildScene(size);
+
+  const gltf = await loader.loadAsync(model);
+  const root = gltf.scene;
+
+  // These GLBs come out of an FBX pipeline and arrive partly unpainted: body meshes sit
+  // on Maya's default lambert1 grey with no map, while the shipped 2048px atlas only
+  // covers accessories and its UVs do not address the body. Binding the atlas therefore
+  // smears unrelated patches across the model — so by default we restore the body tint
+  // instead. The atlas path stays behind --atlas for any future model that needs it.
+  const tex = texture ? await texLoader.loadAsync(texture) : null;
+  if (tex) {
+    tex.flipY = false;
+    tex.colorSpace = THREE.SRGBColorSpace;
+  }
+
+  const isDefaultGrey = (m) => m.color && m.color.getHexString() === 'aaaaaa';
+
+  root.traverse((o) => {
+    if (!o.isMesh || !o.material) return;
+    for (const m of (Array.isArray(o.material) ? o.material : [o.material])) {
+      if (tex && (!m.map || (m.map.image && m.map.image.width <= 2))) {
+        m.map = tex;
+        if (m.color) m.color.setHex(0xffffff);
+        m.needsUpdate = true;
+      } else if (bodyTint && isDefaultGrey(m)) {
+        m.color.set(bodyTint);
+        m.needsUpdate = true;
+      }
+      // Never alpha-test: the source alpha is unreliable and clipping on it punches
+      // holes straight through the model.
+      m.alphaTest = 0;
+      m.transparent = false;
+      if ('roughness' in m) m.roughness = 0.9;
+      if ('metalness' in m) m.metalness = 0.0;
+    }
+  });
+
+  // Normalise: centre on origin, scale so the model is exactly 1 unit tall, then sit
+  // it on the ground plane so sprites share a consistent baseline.
+  const mixer = new THREE.AnimationMixer(root);
+  const clip = gltf.animations && gltf.animations[0];
+  let duration = 1;
+  if (clip) {
+    duration = clip.duration || 1;
+    mixer.clipAction(clip).play();
+  }
+  mixer.update(0);
+
+  const box = new THREE.Box3().setFromObject(root);
+  const span = new THREE.Vector3();
+  box.getSize(span);
+  const scale = 1 / Math.max(span.y, 1e-4);
+  root.scale.setScalar(scale);
+
+  root.updateMatrixWorld(true);
+  const box2 = new THREE.Box3().setFromObject(root);
+  const centre = new THREE.Vector3();
+  box2.getCenter(centre);
+  root.position.sub(centre);
+
+  scene.add(root);
+
+  const strip = document.createElement('canvas');
+  strip.width = size * frames;
+  strip.height = size;
+  const ctx = strip.getContext('2d');
+
+  // Looping clips stop one step short of the end so frame N-1 wraps onto frame 0.
+  const step = loop ? duration / frames : duration / Math.max(frames - 1, 1);
+
+  for (let i = 0; i < frames; i++) {
+    mixer.setTime(0);
+    mixer.update(i * step);
+    root.updateMatrixWorld(true);
+    renderer.render(scene, camera);
+    ctx.drawImage(renderer.domElement, i * size, 0, size, size);
+  }
+
+  // Report how much of the strip is actually inked so the caller can catch a model
+  // rendered off-camera (near 0%) or a missing alpha channel (near 100%).
+  const data = ctx.getImageData(0, 0, strip.width, strip.height).data;
+  let opaque = 0;
+  for (let i = 3; i < data.length; i += 4) if (data[i] > 16) opaque++;
+  const alphaCoverage = opaque / (strip.width * strip.height);
+
+  renderer.dispose();
+  return { png: strip.toDataURL('image/png'), duration, alphaCoverage };
+};
+
+window.__ready = true;
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+{
+  "buba": {
+    "idle": {
+      "file": "assets/axies/buba/idle.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 6
+    },
+    "move": {
+      "file": "assets/axies/buba/move.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 17
+    },
+    "attack": {
+      "file": "assets/axies/buba/attack.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 7
+    },
+    "cast": {
+      "file": "assets/axies/buba/cast.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 10
+    }
+  },
+  "puffy": {
+    "idle": {
+      "file": "assets/axies/puffy/idle.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 12
+    },
+    "move": {
+      "file": "assets/axies/puffy/move.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 17
+    },
+    "attack": {
+      "file": "assets/axies/puffy/attack.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 7
+    },
+    "cast": {
+      "file": "assets/axies/puffy/cast.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 10
+    }
+  },
+  "pomodoro": {
+    "idle": {
+      "file": "assets/axies/pomodoro/idle.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 6
+    },
+    "move": {
+      "file": "assets/axies/pomodoro/move.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 17
+    },
+    "attack": {
+      "file": "assets/axies/pomodoro/attack.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 7
+    },
+    "cast": {
+      "file": "assets/axies/pomodoro/cast.png",
+      "frames": 8,
+      "w": 128,
+      "h": 128,
+      "fps": 10
+    }
+  }
+}
