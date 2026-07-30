@@ -1,0 +1,173 @@
+// End-to-end smoke test. There is no unit-test suite, so this is the safety net:
+// boots the real page, asserts no console errors and no failed asset requests, then
+// drives a full prep -> battle cycle and screenshots the result.
+//
+//   node tools/smoke.mjs [--keep-open]
+
+import { createServer } from 'node:http';
+import { readFile, mkdir, readdir } from 'node:fs/promises';
+import { dirname, join, extname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { chromium } from 'playwright';
+import { ROSTER, RENDERED } from './roster.mjs';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(HERE, '..');
+const SHOTS = join(HERE, 'out');
+const PORT = 8735;
+
+const MIME = {
+  '.html': 'text/html', '.js': 'text/javascript', '.svg': 'image/svg+xml',
+  '.png': 'image/png', '.json': 'application/json', '.css': 'text/css',
+};
+
+const server = await new Promise((r) => {
+  const s = createServer(async (req, res) => {
+    const path = decodeURIComponent(req.url.split('?')[0]);
+    try {
+      const body = await readFile(join(ROOT, path === '/' ? '/axie-merge-tactics.html' : path));
+      res.writeHead(200, { 'Content-Type': MIME[extname(path)] || 'application/octet-stream' });
+      res.end(body);
+    } catch {
+      if (!res.headersSent) res.writeHead(404);
+      res.end();
+    }
+  });
+  s.listen(PORT, () => r(s));
+});
+
+const browser = await chromium.launch({
+  executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+  args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'],
+});
+
+const problems = [];
+const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+page.on('console', (m) => {
+  if (m.type() === 'error') problems.push(`console: ${m.text()}`);
+});
+page.on('pageerror', (e) => problems.push(`pageerror: ${e.message}`));
+page.on('response', (r) => {
+  const u = r.url().replace(`http://127.0.0.1:${PORT}`, '');
+  if (r.status() >= 400 && !u.includes('favicon')) problems.push(`http ${r.status()}: ${u}`);
+});
+
+await mkdir(SHOTS, { recursive: true });
+await page.goto(`http://127.0.0.1:${PORT}/axie-merge-tactics.html`, { waitUntil: 'networkidle' });
+
+// ---- 1. every roster id resolves to art that exists ----
+const artProbe = await page.evaluate(async () => {
+  const g = window.__game;
+  const out = [];
+  for (const u of g.UNIT_DEFS) {
+    const src = g.UNIT_ASSETS[u.id];
+    const ok = await new Promise((res) => {
+      const i = new Image();
+      i.onload = () => res(true);
+      i.onerror = () => res(false);
+      i.src = src;
+    });
+    if (!ok) out.push(`${u.id} -> ${src}`);
+  }
+  return out;
+});
+if (artProbe.length) problems.push(`missing unit art: ${artProbe.join(', ')}`);
+
+// ---- 2. roster shape ----
+const shape = await page.evaluate(() => { const g = window.__game; return ({
+  units: g.UNIT_DEFS.length,
+  classes: [...new Set(g.UNIT_DEFS.map((u) => u.class))],
+  traits: [...new Set(g.UNIT_DEFS.map((u) => u.trait))],
+  perClass: Object.fromEntries(
+    [...new Set(g.UNIT_DEFS.map((u) => u.class))].map((c) => [
+      c, g.UNIT_DEFS.filter((u) => u.class === c).length,
+    ]),
+  ),
+  noSkill: g.UNIT_DEFS.filter((u) => !u.skillKey).map((u) => u.id),
+}); });
+if (shape.units !== ROSTER.length) problems.push(`roster size ${shape.units}, expected ${ROSTER.length}`);
+if (shape.classes.length !== 6) problems.push(`classes ${shape.classes.length}, expected 6`);
+if (shape.noSkill.length) problems.push(`units without skillKey: ${shape.noSkill.join(', ')}`);
+
+await page.screenshot({ path: join(SHOTS, 'smoke-1-prep.png'), fullPage: true });
+
+// ---- 3. drive a battle: grant energy, buy out the shop, place, fight ----
+const battle = await page.evaluate(async () => {
+  const g = window.__game;
+  const log = [];
+  g.state.energy = 999;
+  // Buy whatever the shop offers, rerolling to gather a few units.
+  for (let round = 0; round < 6; round++) {
+    for (let i = 0; i < 3; i++) {
+      if (g.state.shop[i]) { try { g.buyShop(i); } catch (e) { log.push('buy: ' + e.message); } }
+    }
+    try { g.refreshShop(); } catch {}
+    g.state.energy = 999;
+  }
+  // Place everything on the bench onto the player half.
+  let placed = 0;
+  const cap = g.boardCapForStage(g.state.stage);
+  for (let b = 0; b < g.state.bench.length && placed < cap; b++) {
+    const uid = g.state.bench[b];
+    if (!uid) continue;
+    outer: for (let r = 9; r >= 5; r--) {
+      for (let c = 0; c < 5; c++) {
+        if (!g.state.grid[r][c]) {
+          g.state.grid[r][c] = uid;
+          g.state.bench[b] = null;
+          placed++;
+          break outer;
+        }
+      }
+    }
+  }
+  g.renderPrepUnits(); g.renderTop();
+  log.push(`placed ${placed} (cap ${cap})`);
+  const syn = g.getSynergyState();
+  log.push(`synergies: ${Object.entries(syn.cls).filter(([, n]) => n > 0).map(([k, n]) => k + ':' + n).join(' ')}`);
+  g.startBattle();
+  const gameLog=[...document.querySelectorAll('#log div')].slice(0,4).map(d=>d.textContent);
+  return { log, gameLog, inBattle: g.state.inBattle, actors: document.querySelectorAll('.actor').length };
+});
+if (!battle.inBattle) problems.push('startBattle did not enter combat');
+if (!battle.actors) problems.push('no combat actors rendered');
+
+await page.waitForTimeout(2500);
+await page.screenshot({ path: join(SHOTS, 'smoke-2-combat.png'), fullPage: true });
+
+// ---- 4. animation hooks actually reach the DOM ----
+const anim = await page.evaluate(() => {
+  const models = [...document.querySelectorAll('.actor [data-model]')];
+  const sprites = models.filter((m) => m.dataset.kind === 'sprite');
+  return {
+    models: models.length,
+    sprites: sprites.length,
+    animStates: [...new Set(models.map((m) => m.dataset.anim))],
+  };
+});
+if (!anim.models) problems.push('combat actors have no [data-model] element — setCombatAnim would be a no-op');
+
+// ---- 5. mobile breakpoint ----
+const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
+mobile.on('pageerror', (e) => problems.push(`mobile pageerror: ${e.message}`));
+await mobile.goto(`http://127.0.0.1:${PORT}/axie-merge-tactics.html`, { waitUntil: 'networkidle' });
+await mobile.screenshot({ path: join(SHOTS, 'smoke-3-mobile.png') });
+const overflow = await mobile.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 2);
+if (overflow) problems.push('page scrolls horizontally at 390px');
+
+console.log(`roster: ${shape.units} units, ${shape.classes.length} classes ${JSON.stringify(shape.perClass)}`);
+console.log(`battle: ${battle.log.join(' | ')}`);
+console.log(`game log: ${(battle.gameLog||[]).join(' // ')}`);
+console.log(`actors: ${battle.actors}, models: ${anim.models} (${anim.sprites} sprite), states: ${anim.animStates.join(',')}`);
+console.log(`screenshots -> ${SHOTS}`);
+
+if (problems.length) {
+  console.error(`\n${problems.length} problem(s):`);
+  for (const p of [...new Set(problems)]) console.error(`  - ${p}`);
+} else {
+  console.log('\nno console errors, no failed requests, no missing art.');
+}
+
+await browser.close();
+server.close();
+process.exit(problems.length ? 1 : 0);

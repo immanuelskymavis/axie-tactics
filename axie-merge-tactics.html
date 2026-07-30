@@ -3,24 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='36' rx='24' ry='22' fill='%23fdb014'/%3E%3Cpath d='M14 20 q6 -12 16 -10 q-6 8 -6 16z' fill='%23c9820b'/%3E%3Cpath d='M50 20 q-6 -12 -16 -10 q6 8 6 16z' fill='%23c9820b'/%3E%3Cellipse cx='23' cy='33' rx='6' ry='7' fill='%2320242b'/%3E%3Cellipse cx='41' cy='33' rx='6' ry='7' fill='%2320242b'/%3E%3Ccircle cx='21' cy='30' r='2.2' fill='%23fff'/%3E%3Ccircle cx='39' cy='30' r='2.2' fill='%23fff'/%3E%3Cpath d='M26 45 q6 6 12 0' stroke='%238a5a10' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
   <title>Axie Merge Tactics</title>
   <style>
+    /* Design tokens. Previously the shell was olive, the board and modals were navy,
+       and the CMS was a third palette; nearly every colour was a hardcoded hex with
+       only 5 of 11 declared variables actually used. This is one Lunacia palette —
+       deep indigo surfaces, warm gold accents — consumed everywhere. */
     :root{
-      --bg:#0f140f;--panel:#1d231b;--panel2:#232c1f;--ink:#eef6e7;--muted:#b4c3a9;
-      --good:#5fdd9a;--bad:#ff7c90;--gold:#ffd76a;--vio:#9a85ff;--cyan:#67e8ff;
+      /* surfaces */
+      --bg:#0d1020;--bg-2:#141a30;
+      --panel:#1b2340;--panel-2:#151b33;--panel-3:#101527;
+      --edge:#2f3b6b;--edge-soft:#26305a;--edge-strong:#4a5c9e;
+      --ink:#eaf0ff;--muted:var(--muted);--ink-dim:#7c8ab5;
+
+      /* semantic */
+      --good:#5fe3a1;--good-2:var(--good-2);
+      --bad:#ff7c90;--bad-2:var(--bad-2);
+      --gold:var(--gold);--gold-2:#ffe8a1;--gold-deep:#c98734;
+      --energy:#7cc3ff;--hp:var(--hp);--shield:#8ee5f5;
+      --vio:#9a85ff;--cyan:#67e8ff;
+
+      /* Axie's canonical class colours — these are what make the board read as Axie.
+         Each class supplies a fill, a border and a glow, and every class-coloured
+         surface derives from them. */
+      --beast:#fdb014;   --beast-edge:#ffd166;   --beast-deep:#7a5208;
+      --aquatic:#3fc5e0; --aquatic-edge:#8ee5f5; --aquatic-deep:#12626f;
+      --plant:#a8df3d;   --plant-edge:#cef27e;   --plant-deep:#3f6b12;
+      --bird:#ff8cbe;    --bird-edge:#ffc0da;    --bird-deep:#8f2f57;
+      --bug:#ff6b57;     --bug-edge:#ffa294;     --bug-deep:#8a2a1c;
+      --reptile:#b673e0; --reptile-edge:#d7aef0; --reptile-deep:#5b2679;
+
+      /* shape + rhythm */
+      --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:22px;
+      --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;
+      --shadow:0 8px 25px #0009;
+      --font:ui-rounded,"Nunito","Quicksand","Trebuchet MS",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      --font-display:ui-rounded,"Nunito","Quicksand","Trebuchet MS",system-ui,sans-serif;
+
       --hexw:94px;--hexh:90px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;background:
-      radial-gradient(1200px 700px at 20% -10%,#35523055 0%,transparent 65%),
-      radial-gradient(900px 700px at 100% 0%,#56432944 0%,transparent 60%),
-      linear-gradient(180deg,#10150f,#171f16 45%,#0f140f);
-      color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      radial-gradient(1200px 700px at 18% -12%,#2a3a7a55 0%,transparent 62%),
+      radial-gradient(900px 700px at 100% 0%,#6a3f8044 0%,transparent 58%),
+      linear-gradient(180deg,var(--bg),var(--bg-2) 48%,var(--bg));
+      color:var(--ink);font-family:var(--font);
       min-height:100vh;
     }
     .app{max-width:1480px;margin:0 auto;padding:14px;display:block}
-    .panel{background:linear-gradient(180deg,#2a3424,#1b2318);border:1px solid #46563c;border-radius:14px;box-shadow:0 8px 25px #0008}
+    .panel{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--edge);border-radius:var(--r-lg);box-shadow:var(--shadow)}
     .header{padding:5px 8px;display:flex;align-items:center;justify-content:space-between}
     h1{margin:0;font-size:18px;letter-spacing:.6px}
     .titleWord{
@@ -32,44 +65,44 @@
     }
     .sub{color:var(--muted);font-size:12px}
     .stats{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .hpWidget{min-width:220px;padding:8px 10px;border-radius:12px;border:1px solid #46563c;background:#182018;display:flex;gap:8px;align-items:center}
-    .avatar{width:34px;height:34px;border-radius:50%;border:2px solid #6f8b66;object-fit:cover}
+    .hpWidget{min-width:220px;padding:8px 10px;border-radius:12px;border:1px solid var(--edge);background:var(--panel-3);display:flex;gap:8px;align-items:center}
+    .avatar{width:34px;height:34px;border-radius:50%;border:2px solid var(--edge-strong);object-fit:cover}
     .hpWrap{flex:1}
-    .hpTop{font-size:10px;color:#d7e6ce;display:flex;justify-content:space-between}
-    .hpBar{height:5px;border-radius:99px;background:#0d1410;border:1px solid #476046;overflow:hidden}
-    .hpFill{height:100%;background:linear-gradient(90deg,#62db95,#a7ffc7)}
-    .hpFill.enemy{background:linear-gradient(90deg,#ff7d92,#ffb2bf)}
+    .hpTop{font-size:10px;color:var(--muted);display:flex;justify-content:space-between}
+    .hpBar{height:5px;border-radius:99px;background:var(--panel-3);border:1px solid var(--edge-soft);overflow:hidden}
+    .hpFill{height:100%;background:linear-gradient(90deg,var(--hp),var(--good-2))}
+    .hpFill.enemy{background:linear-gradient(90deg,var(--bad),var(--bad-2))}
     #boardHpHud{
       position:absolute;right:10px;top:8px;z-index:30;display:flex;flex-direction:column;gap:6px;max-width:250px
     }
-    #boardHpHud .hpWidget{min-width:176px;padding:6px 8px;background:#101813da;border-color:#4b5f45}
+    #boardHpHud .hpWidget{min-width:176px;padding:6px 8px;background:#101527da;border-color:var(--edge)}
     #boardHpHud .avatar{width:24px;height:24px}
     #boardHpHud .hpTop{font-size:10px}
     #boardHpHud .hpBar{height:4px}
-    .pill{padding:6px 10px;border-radius:999px;background:#182018;border:1px solid #46563c;font-size:12px}
-    .pill.big{border-radius:14px;padding:8px 12px;display:flex;flex-direction:column;min-width:92px;background:linear-gradient(180deg,#263022,#1a2218)}
-    .statLabel{font-size:10px;color:#9fb0dd;text-transform:uppercase;letter-spacing:.5px}
+    .pill{padding:6px 10px;border-radius:999px;background:var(--panel-3);border:1px solid var(--edge);font-size:12px}
+    .pill.big{border-radius:14px;padding:8px 12px;display:flex;flex-direction:column;min-width:92px;background:linear-gradient(180deg,var(--panel),var(--panel-2))}
+    .statLabel{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
     .statValue{font-size:19px;font-weight:800;line-height:1.05}
     .mainBoard{padding:12px 10px;position:relative}
-    .subSection{margin:10px;border:1px solid #2a3258;border-radius:12px;background:linear-gradient(180deg,#151a30,#101428);padding:10px}
+    .subSection{margin:10px;border:1px solid var(--edge-soft);border-radius:12px;background:linear-gradient(180deg,var(--panel-2),var(--panel-3));padding:10px}
     .benchAttached{margin-top:0;border-top-left-radius:0;border-top-right-radius:0;border-top:0}
-    .subTitle{font-size:12px;color:#aab3d5;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+    .subTitle{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
     #stageTrack{display:flex;gap:6px;margin-top:8px;align-items:center;flex-wrap:wrap}
-    .stageNode{width:12px;height:12px;border-radius:999px;border:1px solid #475a9f;background:#111731;display:flex;align-items:center;justify-content:center;font-size:7px;color:#9eb0e5}
+    .stageNode{width:12px;height:12px;border-radius:999px;border:1px solid var(--edge-strong);background:var(--panel-3);display:flex;align-items:center;justify-content:center;font-size:7px;color:var(--muted)}
     .stageNode.done{background:linear-gradient(180deg,#2a8b5f,#1a5a3d);border-color:#5ce3a2;color:#e7fff5}
     .stageNode.current{background:linear-gradient(180deg,#4b62d6,#2e43ad);border-color:#88a3ff;color:#fff;font-weight:800;box-shadow:0 0 0 2px #6d86f555}
     .stageNode.boss{border-color:#c86a86}
     .stageLine{width:8px;height:2px;background:#3b4d8d}
     .heart.full{color:#ff5e7d;text-shadow:0 0 8px #ff5e7d99}
     .heart.empty{color:#4b536f}
-    #boardWrap{position:relative;padding:8px;background:#10180f;border:1px solid #46563c;border-radius:14px;overflow:hidden}
+    #boardWrap{position:relative;padding:8px;background:var(--panel-3);border:1px solid var(--edge);border-radius:14px;overflow:hidden}
     #boardWrap::before{
       content:'';position:absolute;left:6px;right:6px;bottom:6px;height:38%;pointer-events:none;z-index:1;
-      background:radial-gradient(120% 100% at 50% 100%,#56714866,#2f3f2a66 55%,transparent 70%);
+      background:radial-gradient(120% 100% at 50% 100%,#3d51a066,#25306e66 55%,transparent 70%);
     }
     #boardWrap::after{
       content:'';position:absolute;inset:0;pointer-events:none;z-index:2;border-radius:14px;
-      box-shadow:inset 0 0 0 6px #3f423f, inset 0 0 0 10px #2e312f, inset 0 0 22px #000b;
+      box-shadow:inset 0 0 0 5px #2b3563, inset 0 0 0 8px #1a2140, inset 0 0 26px #000c;
     }
     #boardBg{
       position:absolute;inset:0;opacity:.25;pointer-events:none;
@@ -85,13 +118,13 @@
     .hex{
       width:var(--hexw);height:var(--hexh);position:relative;margin-right:0;cursor:pointer;
       clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-      background:linear-gradient(180deg,#1f242b,#171d24);
-      border:3px solid #0f1218;
+      background:linear-gradient(180deg,#1c2340,#151b31);
+      border:3px solid #0c1020;
       transition:.15s transform,.15s box-shadow,.15s filter;
     }
     .hex:hover{transform:translateY(-1px);box-shadow:0 0 0 1px #5f71cf,inset 0 0 0 1px #5f71cf}
-    .hex.playerZone{background:linear-gradient(180deg,#263626,#1c2a1f)}
-    .hex.enemyZone{background:linear-gradient(180deg,#3e2f22,#2b2118)}
+    .hex.playerZone{background:linear-gradient(180deg,#1e2c50,#16203c)}
+    .hex.enemyZone{background:linear-gradient(180deg,#38243f,#241a33)}
     .hex .coord{display:none}
     .hex.selected{box-shadow:0 0 0 2px #7aa2ff,inset 0 0 0 1px #7aa2ff}
     .hex.inRange{filter:grayscale(1) brightness(.9);box-shadow:inset 0 0 0 2px #8e95afaa}
@@ -105,7 +138,7 @@
       left:4px;top:4px;width:calc(var(--hexw) - 8px);height:calc(var(--hexh) - 8px);border-radius:0;
       clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
     }
-    .spawnGhost img{width:100%;height:100%;object-fit:cover;object-position:center 18%;filter:saturate(1.05)}
+    .spawnGhost img{width:100%;height:100%;object-fit:contain;opacity:.85}
     .slotUnit{
       position:absolute;left:7px;top:7px;width:80px;height:66px;border-radius:12px;overflow:hidden;
       background:linear-gradient(180deg,#1f2b54,#151d37);
@@ -122,23 +155,41 @@
       box-shadow:inset 0 0 0 3px #7aa7ffcc;
     }
     .slotUnit.enemy{border-color:#ff6f95;filter:brightness(.9) saturate(.85)}
-    .slotUnit.class-aqua{background:linear-gradient(180deg,#1f4d78,#18365c);border-color:#66c7ff}
-    .slotUnit.class-plant{background:linear-gradient(180deg,#2f6a3b,#204f2b);border-color:#74d88d}
-    .slotUnit.class-beast{background:linear-gradient(180deg,#7a4c26,#5a371c);border-color:#ffb472}
-    .slotUnit.class-bird{background:linear-gradient(180deg,#6f5a1f,#4f4016);border-color:#ffd978}
+    .slotUnit.class-beast  {background:linear-gradient(180deg,#2c2a34,#1a1c2c);border-color:var(--beast);  box-shadow:inset 0 -14px 20px -12px var(--beast)}
+    .slotUnit.class-aquatic{background:linear-gradient(180deg,#1e2a3c,#161d31);border-color:var(--aquatic);box-shadow:inset 0 -14px 20px -12px var(--aquatic)}
+    .slotUnit.class-plant  {background:linear-gradient(180deg,#233227,#171f2c);border-color:var(--plant);  box-shadow:inset 0 -14px 20px -12px var(--plant)}
+    .slotUnit.class-bird   {background:linear-gradient(180deg,#33253a,#1d1a30);border-color:var(--bird);   box-shadow:inset 0 -14px 20px -12px var(--bird)}
+    .slotUnit.class-bug    {background:linear-gradient(180deg,#352430,#1e1a2c);border-color:var(--bug);    box-shadow:inset 0 -14px 20px -12px var(--bug)}
+    .slotUnit.class-reptile{background:linear-gradient(180deg,#2e2540,#1b1930);border-color:var(--reptile);box-shadow:inset 0 -14px 20px -12px var(--reptile)}
     .uTop{display:flex;justify-content:space-between;font-size:11px}
     .unitShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 35%,#000b 70%,#000e)}
-    .starOverlay{position:absolute;left:50%;top:0;transform:translateX(-50%);font-size:11px;color:#ffd76a;text-shadow:0 1px 2px #000;z-index:6;background:#0008;padding:0 4px;border-radius:0 0 6px 6px}
+    .starOverlay{position:absolute;left:50%;top:0;transform:translateX(-50%);font-size:11px;color:var(--gold);text-shadow:0 1px 2px #000;z-index:6;background:#0008;padding:0 4px;border-radius:0 0 6px 6px}
     .unitNameOverlay{position:absolute;left:6px;right:6px;bottom:4px;font-size:10px;font-weight:700;text-shadow:0 1px 2px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .uName{font-weight:700;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .uBody{display:flex;justify-content:space-between;align-items:center}
-    .unitArt{width:26px;height:26px;border-radius:6px;object-fit:cover;border:1px solid #6a7bb3;box-shadow:0 0 10px #0008}
-    .unitBg{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 40%;transform:scale(1.18)}
-    .unitModel{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);overflow:hidden;transform:scale(1.18);transform-origin:center 68%;z-index:1}
-    .unitModel .modelFallback{width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:saturate(1.05)}
-    .unitModel.model-board .modelFallback{transform:scale(1.04);object-position:center 30%;filter:saturate(1.12) contrast(1.06) drop-shadow(0 2px 6px #0008)}
-    .unitModel.model-combat{inset:0;width:100%;height:100%;transform:none;transform-origin:center center;z-index:1}
-    .unitModel.model-combat .modelFallback{object-position:center 22%;filter:saturate(1.1) contrast(1.06)}
+    .unitArt{width:26px;height:26px;border-radius:6px;object-fit:contain;background:#0f1428;border:1px solid var(--edge);box-shadow:0 0 10px #0008}
+    /* Art is transparent and correctly framed now, so it is `contain`-fitted rather
+       than cropped. The old object-position offsets existed only to hide name text
+       that was baked into the placeholder PNGs. */
+    .unitBg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+      filter:drop-shadow(0 3px 4px #0007)}
+    .unitModel{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;z-index:1;
+      transform-origin:center 72%}
+    .unitModel .modelFallback{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 4px #0007)}
+    .unitModel.model-combat{inset:0;width:100%;height:100%}
+
+    /* Sprite-sheet units (Buba, Puffy, Pomodoro) play a horizontal strip by stepping
+       background-position. --f is the frame count, --d the clip duration. */
+    .spriteAnim{
+      position:absolute;inset:0;width:100%;height:100%;z-index:1;
+      background-repeat:no-repeat;
+      background-size:calc(100% * var(--f,8)) 100%;
+      background-position:0 0;
+      animation:spriteRun var(--d,1.2s) steps(var(--f,8)) infinite;
+      filter:drop-shadow(0 3px 4px #0007);
+    }
+    .spriteAnim.once{animation-iteration-count:1}
+    @keyframes spriteRun{from{background-position:0 0}to{background-position:-100% 0}}
     .unitModel[data-anim="idle"]{animation:modelIdle 1.2s ease-in-out infinite}
     .unitModel[data-anim="move"]{animation:modelMove .35s linear infinite}
     .unitModel[data-anim="attack"]{animation:modelAttack .22s ease}
@@ -156,12 +207,12 @@
     .unitArt.lg{width:24px;height:24px}
     .unitArt.actor{width:42px;height:42px;border-radius:10px;position:relative;z-index:2}
     .emoji{font-size:20px}
-    .star{color:#ffd76a}
+    .star{color:var(--gold)}
     .hpbar{height:6px;background:#0007;border-radius:99px;overflow:hidden;border:1px solid #25346a}
     .hpfill{height:100%;background:linear-gradient(90deg,#39f18e,#8effb9)}
     .right{padding:10px;display:flex;flex-direction:column;gap:10px}
     .section{padding:10px}
-    .secTitle{font-size:12px;color:#aab3d5;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+    .secTitle{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
     #shopRow{display:flex;gap:8px;align-items:stretch;position:relative}
     #shop{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:1}
     #shopSide{display:flex;flex-direction:column;gap:8px;min-width:108px}
@@ -171,12 +222,12 @@
       font-size:18px;font-weight:800;backdrop-filter:blur(2px)
     }
     #shopSellOverlay.show{display:flex}
-    .card{background:linear-gradient(180deg,#1a2142,#131834);border:1px solid #344172;border-radius:12px;padding:0;overflow:hidden}
+    .card{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--edge);border-radius:12px;padding:0;overflow:hidden}
     .cardInner{padding:7px 8px}
-    .cardBanner{height:108px;background:#10152d;border-bottom:1px solid #2f3c70;position:relative;overflow:hidden}
-    .cardBanner img{width:100%;height:100%;object-fit:cover;object-position:center 10%}
+    .cardBanner{height:108px;background:var(--panel-3);border-bottom:1px solid #2f3c70;position:relative;overflow:hidden}
+    .cardBanner img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 5px #0008)}
     .cardBanner .unitModel{inset:0;width:100%;height:100%;transform:none}
-    .cardBanner .unitModel .modelFallback{object-position:center 10%}
+    
     .shopCostOverlay{
       position:absolute;left:6px;top:6px;z-index:4;
       font-size:18px;font-weight:900;line-height:1;background:#0f172bd9;border:1px solid #5d77bf;
@@ -201,21 +252,27 @@
     }
     .benchSlot.selected{box-shadow:0 0 0 2px #7aa2ff inset}
     .benchSlot .slotUnit{left:0;top:0;width:100%;height:100%;border-width:2px}
-    .benchSlot .unitBg{inset:0;transform:scale(1.08);object-position:center 15%}
+    .benchSlot .unitBg{inset:0}
     .benchSlot .unitNameOverlay{font-size:11px;bottom:6px}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
     #synergy,#relicList,#bagList,#log{font-size:12px;color:#d6ddf5;line-height:1.35}
     #synergyActive{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+    /* Inline sprite icons inherit currentColor, so a class badge tints itself. */
+    .ico{width:1.05em;height:1.05em;vertical-align:-.16em;display:inline-block;flex:none}
     .synBadge{
-      padding:8px 10px;border-radius:10px;background:linear-gradient(180deg,#212b53,#171f3f);
-      border:1px solid #4d63b0;font-size:12px;font-weight:700;cursor:help;color:#fff
+      display:inline-flex;align-items:center;gap:5px;
+      padding:6px 9px;border-radius:var(--r-md);background:linear-gradient(180deg,var(--panel),var(--panel-2));
+      border:1px solid var(--edge);font-size:13px;font-weight:800;cursor:help;color:var(--ink)
     }
+    .synBadge .ico{width:16px;height:16px}
+    .synCount{font-size:11px;opacity:.85;min-width:9px;text-align:center}
+    .shopNameRow .ico{width:14px;height:14px}
     #log{max-height:120px;overflow:auto;background:#0f1430;border:1px solid #2e3969;border-radius:10px;padding:8px}
     #actorLayer{position:absolute;inset:0;pointer-events:auto;z-index:12}
     #fxLayer{position:absolute;inset:0;pointer-events:none;z-index:14}
     #debugHud{
       position:absolute;top:8px;left:8px;z-index:20;pointer-events:none;
-      background:#070b1acc;border:1px solid #3f4f92;border-radius:8px;padding:6px 8px;
+      background:#070b1acc;border:1px solid var(--edge-strong);border-radius:8px;padding:6px 8px;
       font-size:11px;line-height:1.2;color:#d6ddf5;min-width:120px
     }
     .actor{
@@ -225,11 +282,13 @@
       clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);border-radius:0;
     }
     .actor.enemy{border-color:#ff648f;filter:brightness(.9) saturate(.88)}
-    .actor.class-aqua{background:linear-gradient(180deg,#296092,#1d4265)}
-    .actor.class-plant{background:linear-gradient(180deg,#3b7a45,#275933)}
-    .actor.class-beast{background:linear-gradient(180deg,#8a5c35,#613f24)}
-    .actor.class-bird{background:linear-gradient(180deg,#866f29,#5f501f)}
-    .actor .actorArt{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 33%;transform:scale(1.17);z-index:1}
+    .actor.class-beast  {background:radial-gradient(70% 60% at 50% 82%,var(--beast) -40%,transparent 70%)}
+    .actor.class-aquatic{background:radial-gradient(70% 60% at 50% 82%,var(--aquatic) -40%,transparent 70%)}
+    .actor.class-plant  {background:radial-gradient(70% 60% at 50% 82%,var(--plant) -40%,transparent 70%)}
+    .actor.class-bird   {background:radial-gradient(70% 60% at 50% 82%,var(--bird) -40%,transparent 70%)}
+    .actor.class-bug    {background:radial-gradient(70% 60% at 50% 82%,var(--bug) -40%,transparent 70%)}
+    .actor.class-reptile{background:radial-gradient(70% 60% at 50% 82%,var(--reptile) -40%,transparent 70%)}
+    .actor .actorArt{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1;filter:drop-shadow(0 3px 4px #0008)}
     .actor .actorShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 42%,#0006 74%,#000a);z-index:2}
     .actor .actorStars{position:absolute;left:50%;top:2px;transform:translateX(-50%);font-size:12px;color:#ffd86a;text-shadow:0 1px 2px #000;z-index:4}
     .actor .actorHp{position:absolute;left:6px;right:6px;bottom:12px;height:6px;border-radius:99px;background:#000a;border:1px solid #35507a;overflow:hidden;z-index:5}
@@ -237,11 +296,6 @@
     .actor .actorMana{position:absolute;left:6px;right:6px;bottom:4px;height:5px;border-radius:99px;background:#00131f;border:1px solid #2a4a68;overflow:hidden;z-index:5}
     .actor .actorManaFill{height:100%;background:linear-gradient(90deg,#58bfff,#9cd9ff)}
     .battleCtas{position:absolute;right:10px;bottom:10px;z-index:25;display:flex;gap:8px}
-    #startBtn{
-      padding:14px 20px;font-size:17px;min-width:220px;
-      background:linear-gradient(180deg,#5cff8f,#20b95a);color:#082a16;border:1px solid #a3ffbf;
-      box-shadow:0 8px 22px #2bc96966,0 0 0 1px #d4ffe133 inset;animation:startPulse 1.2s ease-in-out infinite
-    }
     @keyframes startPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
     #resetBtnBottom{width:100%;padding:12px 14px;font-size:14px}
     .projectile{
@@ -267,7 +321,7 @@
     }
     .overlay.show{display:flex}
     .modal{
-      width:min(980px,95vw);background:linear-gradient(180deg,#181e3b,#10152d);border:1px solid #3f4f92;border-radius:16px;padding:14px
+      width:min(980px,95vw);background:linear-gradient(180deg,var(--panel),var(--panel-3));border:1px solid var(--edge-strong);border-radius:16px;padding:14px
     }
     .modalClose{float:right;background:#2a335f;border:1px solid #5b6cb3;color:#fff;border-radius:8px;padding:4px 8px;cursor:pointer}
     .barRow{display:flex;align-items:center;gap:8px;margin:4px 0}
@@ -277,7 +331,7 @@
     .relicGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
     .relicCard{background:linear-gradient(180deg,#1b2448,#131a35);border:1px solid #4558a5;border-radius:12px;padding:10px}
     .small{font-size:11px;color:#aeb7da}
-    .shopTheme{background:linear-gradient(180deg,#3c341d,#262112);border-color:#6e5e31;box-shadow:inset 0 0 0 1px #d7b75e33}
+    .shopTheme{background:linear-gradient(180deg,#232a4d,#161c36);border-color:var(--edge-strong);box-shadow:inset 0 0 0 1px #ffd76a22}
     .energyCoin{
       width:74px;height:74px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;
       background:radial-gradient(circle at 30% 28%,#fff0a8,#f7c84a 45%,#b97824 78%);border:2px solid #f2d06a;box-shadow:0 0 0 2px #7a5b22 inset;
@@ -364,9 +418,10 @@
     @keyframes castPop{0%{box-shadow:0 0 0 0 #8fe3ff00}40%{box-shadow:0 0 0 10px #8fe3ff88}100%{box-shadow:0 0 0 0 #8fe3ff00}}
     .card.t1{border:3px solid #5e6f8a}.card.t2{border:3px solid #4e8bb7}.card.t3{border:3px solid #5da56a}.card.t4{border:3px solid #b08448}.card.t5{border:3px solid #b14d67}
     .synBadge.off{opacity:.45;filter:grayscale(1)}
-    .synBadge.lv0{opacity:.45;filter:grayscale(1)}
-    .synBadge.lv1{background:linear-gradient(180deg,#233f86,#1a2d63);border-color:#77a2ff;color:#d5e4ff}
-    .synBadge.lv2{background:linear-gradient(180deg,#5a4a1f,#3a2f14);border-color:#ffd670;color:#ffe9b1}
+    /* Synergy tiers: inactive is dimmed, Lv1 lifts, Lv2 gets the gold treatment. */
+    .synBadge.lv0{opacity:.5;filter:saturate(.35)}
+    .synBadge.lv1{border-color:var(--edge-strong);box-shadow:inset 0 0 0 1px #ffffff14}
+    .synBadge.lv2{border-color:var(--gold);color:var(--gold-2);box-shadow:0 0 12px -3px var(--gold),inset 0 0 0 1px #ffd76a33}
     .card.shake{animation:shake .28s ease}
     @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
     .shopPulse{position:relative}
@@ -415,6 +470,24 @@
   </style>
 </head>
 <body>
+  <!-- Icon sprite. Class and trait glyphs were emoji, which render differently on every
+       platform and never matched Axie's look. These are drawn once here and referenced
+       with <use>; they inherit currentColor so a badge can tint them per state. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <symbol id="i-beast" viewBox="0 0 24 24"><path d="M12 3c-2 0-3.4 1.3-4.2 2.6L5 4.6l.6 3.1C4.6 8.9 4 10.4 4 12c0 4.4 3.6 8 8 8s8-3.6 8-8c0-1.6-.6-3.1-1.6-4.3l.6-3.1-2.8 1C15.4 4.3 14 3 12 3Z" fill="currentColor"/><circle cx="9.3" cy="12" r="1.5" fill="#0d1020"/><circle cx="14.7" cy="12" r="1.5" fill="#0d1020"/></symbol>
+    <symbol id="i-aquatic" viewBox="0 0 24 24"><path d="M12 2.5c3.6 4.4 6.5 8 6.5 11.3A6.5 6.5 0 0 1 5.5 13.8C5.5 10.5 8.4 6.9 12 2.5Z" fill="currentColor"/><path d="M9.4 14.6a2.8 2.8 0 0 0 2.8 2.8" stroke="#0d1020" stroke-width="1.5" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-plant" viewBox="0 0 24 24"><path d="M12 21V10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M12 12C12 7 15.5 3.6 20 3c.6 5-2.8 9-8 9Z" fill="currentColor"/><path d="M11 15C11 11.7 8.6 9 5 8.6c-.4 3.4 2 6.4 6 6.4Z" fill="currentColor" opacity=".65"/></symbol>
+    <symbol id="i-bird" viewBox="0 0 24 24"><path d="M20 4c-1.2 6.4-4.6 11-9.4 13.4L7 19.4l1-3.6C9.4 10.4 13.6 5.6 20 4Z" fill="currentColor"/><path d="M8 15.8 18.4 5.6" stroke="#0d1020" stroke-width="1.3" opacity=".55"/><path d="M4 20.5 7 19.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-bug" viewBox="0 0 24 24"><ellipse cx="12" cy="14" rx="5.4" ry="6.4" fill="currentColor"/><path d="M8.6 6.6 6 3.6M15.4 6.6 18 3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="5.4" cy="2.8" r="1.5" fill="currentColor"/><circle cx="18.6" cy="2.8" r="1.5" fill="currentColor"/><path d="M12 8.4v11.6M7.2 12h9.6" stroke="#0d1020" stroke-width="1.3" opacity=".5"/></symbol>
+    <symbol id="i-reptile" viewBox="0 0 24 24"><path d="M3 13c2.6-4.2 6-6.3 10.2-6.3 2.6 0 4.6.9 6 2.7l2.6-1.2-1.3 3.1c.4 3.9-2.4 7.3-7 7.3-3.6 0-6.4-1.6-10.5-5.6Z" fill="currentColor"/><circle cx="15.6" cy="11" r="1.6" fill="#0d1020"/><path d="M5 15.6c1.6 1.4 3.4 2.4 5.4 2.9" stroke="#0d1020" stroke-width="1.2" fill="none" opacity=".5"/></symbol>
+
+    <symbol id="i-assassin" viewBox="0 0 24 24"><path d="M14.4 2.6 20 8.2 10.6 17.6 8 15l6.4-12.4Z" fill="currentColor"/><path d="m8.6 15.6-4 4M6.4 13.4l4.2 4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-bastion" viewBox="0 0 24 24"><path d="M12 2.4 20 5v7c0 4.6-3.2 8.2-8 9.6-4.8-1.4-8-5-8-9.6V5l8-2.6Z" fill="currentColor"/><path d="m8.4 12 2.6 2.6 4.8-5" stroke="#0d1020" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-vanguard" viewBox="0 0 24 24"><path d="M12 2.4 19.6 5v6.6c0 4.4-3 7.8-7.6 9.4-4.6-1.6-7.6-5-7.6-9.4V5L12 2.4Z" fill="currentColor" opacity=".55"/><path d="M12 6.4 15.2 12H8.8L12 6.4Zm-2 6.6h4v4.4h-4V13Z" fill="currentColor"/></symbol>
+    <symbol id="i-mage" viewBox="0 0 24 24"><path d="M12 1.8 14 8l6.2 2-6.2 2-2 6.2-2-6.2L3.8 10 10 8l2-6.2Z" fill="currentColor"/><circle cx="19" cy="18.4" r="1.9" fill="currentColor" opacity=".8"/><circle cx="5" cy="17.4" r="1.3" fill="currentColor" opacity=".6"/></symbol>
+    <symbol id="i-spikes" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.4" fill="currentColor"/><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 1.6v3.6M12 18.8v3.6M1.6 12h3.6M18.8 12h3.6M4.6 4.6 7.2 7.2M16.8 16.8l2.6 2.6M19.4 4.6 16.8 7.2M7.2 16.8l-2.6 2.6"/></g></symbol>
+    <symbol id="i-sniper" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.6" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 1.4v4M12 18.6v4M1.4 12h4M18.6 12h4"/></g></symbol>
+  </defs></svg>
   <div class="app">
     <div class="panel">
       <div class="header">
@@ -435,7 +508,7 @@
           <div id="boardRelics" class="zoneLabel" style="left:10px;top:58px;max-width:300px;display:flex;gap:6px;align-items:center;flex-wrap:wrap"></div>
           <div id="boardHpHud">
             <div class="hpWidget">
-              <img class="avatar" src="assets/extracted/units/peon.png" alt="Player">
+              <img class="avatar" src="assets/axies/olek/../svg/shiitake.svg" alt="Player">
               <div class="hpWrap">
                 <div class="hpTop"><span>You</span><span id="playerHpText"></span></div>
                 <div class="hpBar"><div id="playerHpFill" class="hpFill"></div></div>
@@ -528,7 +601,6 @@
           <button id="toggleDebugBtn" class="btn alt" style="flex:1">Debug HUD</button>
         </div>
         <div style="display:flex;gap:8px;margin-bottom:8px">
-          <button id="toggleRenderModeBtn" class="btn alt" style="flex:1">Render: Classic</button>
         </div>
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
           <input id="seedInput" class="pill mono" style="border-radius:10px;min-width:140px;flex:1" placeholder="Challenge Seed" />
@@ -620,7 +692,10 @@
   </div>
 
   <script>
-    const TIER_POOL = {1:10,2:8,3:6,4:4,5:3};
+    // Shop pool copies per unit. Six classes means six units per tier instead of four,
+    // so per-unit copies come down to keep total pool size — and therefore merge odds —
+    // close to where they were with four classes.
+    const TIER_POOL = {1:7,2:6,3:4,4:3,5:2};
     const STAGE_ODDS = {
       1:{1:80,2:12,3:5,4:2,5:1},
       2:{1:50,2:24,3:14,4:8,5:4},
@@ -635,53 +710,170 @@
     };
     const STAR_MULT = {1:1,2:1.6,3:2.5,4:3.8};
 
-    const UNIT_DEFS = [
-      {id:'peon',name:'Peon',emoji:'💧',tier:1,class:'Aqua',trait:'Assassin',atk:45,hp:480,mystic:false,range:1,attack:'Aqua Nip',skill:'Infiltrate backline, 150 magic dmg, 100% lifesteal'},
-      {id:'sprout',name:'Sprout',emoji:'🌱',tier:1,class:'Plant',trait:'Bastion',atk:30,hp:620,mystic:false,range:2,attack:'Seed Shot',skill:'Root Barrier roots self, gives 150 HP shield to self/ally'},
-      {id:'nut',name:'Nut',emoji:'🥜',tier:1,class:'Beast',trait:'Vanguard',atk:55,hp:560,mystic:false,range:1,attack:'Nut Crack',skill:'Frenzy Smash cleaves 3 front hexes for 110 dmg'},
-      {id:'pips',name:'Pips',emoji:'🐤',tier:1,class:'Bird',trait:'Mage',atk:35,hp:430,mystic:true,range:3,attack:'Feather Dart',skill:'Starlight Chirp grants 40 skill energy to adjacent allies'},
+    // Axie's six canonical classes. Everything class-shaped in the game derives from
+    // this list — synergy counting, buffs, badges, shop icons and the board tile colours
+    // — so a class is added or retuned in exactly one place.
+    //
+    // `buff` runs only when the synergy is active (lv 1 or 2); `mods` runs always and
+    // applies relic/augment accumulators from state.mods.
+    const CLASSES = [
+      {id:'Beast', slug:'beast', icon:'🦁',
+       tip:'Lv1 +20% ATK and 12% execute, Lv2 +45% ATK and 22% execute',
+       buff:(u,lv)=>{u.atk *= lv===2?1.45:1.20; u.executePct = lv===2?0.22:0.12;},
+       mods:(u,m)=>{u.atk += m.beastFlatAtk;}},
 
-      {id:'bubbles',name:'Bubbles',emoji:'🫧',tier:2,class:'Aqua',trait:'Mage',atk:40,hp:560,mystic:true,range:3,attack:'Bubble Pop',skill:'Bubble Shield grants ally absorb-200 shield + CC immunity'},
-      {id:'cactus',name:'Cactus',emoji:'🌵',tier:2,class:'Plant',trait:'Spikes',atk:40,hp:680,mystic:false,range:2,attack:'Prickly Jab',skill:'Needle Burst 30% pass/act trigger dealing 75 dmg circle'},
-      {id:'gnasher',name:'Gnasher',emoji:'🦁',tier:2,class:'Beast',trait:'Vanguard',atk:60,hp:720,mystic:false,range:1,attack:'Crunch',skill:'Bite & Tear deals 120 dmg + 50% armor shred'},
-      {id:'kestrel',name:'Kestrel',emoji:'🦅',tier:2,class:'Bird',trait:'Assassin',atk:50,hp:560,mystic:false,range:1,attack:'Beak Dive',skill:'Swoop Attack leaps untargetable, slams lowest HP for 160 dmg'},
+      {id:'Aquatic', slug:'aquatic', icon:'💧',
+       tip:'Lv1 +20% attack speed and 12% splash, Lv2 +40% attack speed and 22% splash',
+       buff:(u,lv)=>{u.attackSpeed += lv===2?0.40:0.20; u.aquaSplash = lv===2?0.22:0.12;},
+       mods:(u,m)=>{u.attackSpeed += m.aquaAS;}},
 
-      {id:'nemo',name:'Nemo',emoji:'🐠',tier:3,class:'Aqua',trait:'Spikes',atk:55,hp:830,mystic:false,range:1,attack:'Tail Slap',skill:'Tail Whip Flurry strikes 3x for 50 dmg, reflects dmg'},
-      {id:'pumpkin',name:'Pumpkin',emoji:'🎃',tier:3,class:'Plant',trait:'Bastion',atk:35,hp:1100,mystic:false,range:1,attack:'Gourd Bash',skill:'October Shield taunts 2-hex radius, cuts damage taken by 50%'},
-      {id:'zoro',name:'Zoro',emoji:'🐺',tier:3,class:'Beast',trait:'Assassin',atk:65,hp:780,mystic:false,range:1,attack:'Alpha Slash',skill:'Slash Dash blinks behind target, hits path for 140 dmg'},
-      {id:'falcon',name:'Falcon',emoji:'🦜',tier:3,class:'Bird',trait:'Sniper',atk:55,hp:700,mystic:false,range:4,attack:'Pinpoint Peck',skill:'Gale Force hits for 130 dmg + 2 hex knockback'},
+      {id:'Plant', slug:'plant', icon:'🌿',
+       tip:'Lv1 +20% HP and 1.5% regen/s, Lv2 +50% HP and 3% regen/s',
+       buff:(u,lv)=>{u.maxHp *= lv===2?1.5:1.2; u.plantRegen = lv===2?0.03:0.015;}},
 
-      {id:'siren',name:'Siren',emoji:'🧜',tier:4,class:'Aqua',trait:'Sniper',atk:60,hp:920,mystic:false,range:4,attack:'Sonic Wave',skill:'Siren Song charms closest target for 3.5s'},
-      {id:'yggdrasil',name:'Yggdrasil',emoji:'🌳',tier:4,class:'Plant',trait:'Spikes',atk:60,hp:1250,mystic:false,range:2,attack:'Root Smash',skill:'Forest Vengeance global roots and stuns all targets for 150 magic dmg'},
-      {id:'goliath',name:'Goliath',emoji:'🗿',tier:4,class:'Beast',trait:'Bastion',atk:80,hp:1350,mystic:false,range:1,attack:'Titan Fist',skill:'Earthquake stuns 1-hex circle for 2.5s, 100 true dmg'},
-      {id:'raven',name:'Raven',emoji:'🐦‍⬛',tier:4,class:'Bird',trait:'Sniper',atk:70,hp:900,mystic:false,range:5,attack:'Caw Arrow',skill:'Omen Strike lanes for 200 dmg, executes under 25% HP'},
+      {id:'Bird', slug:'bird', icon:'🕊️',
+       tip:'Lv1 +18% crit and 8% dodge, Lv2 +35% crit and 16% dodge',
+       buff:(u,lv)=>{u.crit += lv===2?0.35:0.18; u.evasion = lv===2?0.16:0.08;},
+       mods:(u,m)=>{u.moveBonus=(u.moveBonus||0)+m.birdMove;}},
 
-      {id:'immanuel',name:'Immanuel',emoji:'🌊',tier:5,class:'Aqua',trait:'Mage',atk:80,hp:1200,mystic:true,range:4,attack:'Abyssal Bolt',skill:'Tidal Surge heals global allies for 300, pushes enemies back 2 rows'},
-      {id:'lotus',name:'Lotus',emoji:'🪷',tier:5,class:'Plant',trait:'Vanguard',atk:70,hp:1700,mystic:false,range:1,attack:'Petal Slap',skill:'Nirvana Aura passive aura heals 5% max HP/sec + resurrects once at 50% HP'},
-      {id:'chonky',name:'Chonky',emoji:'🦛',tier:5,class:'Beast',trait:'Spikes',atk:95,hp:1650,mystic:false,range:1,attack:'Heavy Chomp',skill:'Fat Roll crushes for 150 dmg + 25% max HP value'},
-      {id:'kallaway',name:'Kallaway',emoji:'🦚',tier:5,class:'Bird',trait:'Assassin',atk:85,hp:1180,mystic:false,range:1,attack:'Razor Wing',skill:'Bladestorm phys-immune whirlwind dealing 80 magic dmg/sec'}
+      // Bug and Reptile follow Axie's own class identities: Bug stacks poison, Reptile
+      // is the fear/tank class that punishes attackers.
+      {id:'Bug', slug:'bug', icon:'🐞',
+       tip:'Lv1 attacks poison for 15 dmg/s over 3s, Lv2 35 dmg/s over 3s',
+       buff:(u,lv)=>{u.poisonDps = lv===2?35:15; u.poisonDur = 3;},
+       mods:(u,m)=>{u.poisonDps = (u.poisonDps||0) + m.bugPoison;}},
+
+      {id:'Reptile', slug:'reptile', icon:'🦎',
+       tip:'Lv1 15% damage reduction and slows attackers 10%, Lv2 30% DR and 20% slow',
+       buff:(u,lv)=>{u.dr += lv===2?0.30:0.15; u.chillAura = lv===2?0.20:0.10;},
+       mods:(u,m)=>{u.dr += m.reptileDR;}}
     ];
+
+    const TRAITS = [
+      {id:'Assassin', icon:'🗡️',
+       tip:'Lv1 22% lifesteal and 18% backstab, Lv2 40% lifesteal and 35% backstab',
+       buff:(u,lv)=>{u.lifesteal = lv===2?0.40:0.22; u.backstab = lv===2?0.35:0.18;},
+       mods:(u,m)=>{u.crit += m.rogueCrit;}},
+
+      {id:'Bastion', icon:'🛡️',
+       tip:'Lv1 22% DR and +70 cast shield, Lv2 45% DR and +150 cast shield',
+       buff:(u,lv)=>{u.dr += lv===2?0.45:0.22; u.castShield = lv===2?150:70;}},
+
+      {id:'Vanguard', icon:'⚔️',
+       tip:'Lv1 +30 start energy + taunt pulse, Lv2 +65 start energy + wider taunt pulse',
+       buff:(u,lv)=>{u.energy += lv===2?65:30; u.tauntPulse = lv===2?2:1;}},
+
+      {id:'Mage', icon:'✨',
+       tip:'Lv1 +30% skill power + 12 mana burn, Lv2 +65% skill power + 24 mana burn',
+       buff:(u,lv)=>{u.skillPow = (u.skillPow||1) * (lv===2?1.65:1.30); u.mageBurn = lv===2?24:12;}},
+
+      {id:'Spikes', icon:'🌵',
+       tip:'Lv1 22% reflect + 45 thorn burst, Lv2 45% reflect + 95 thorn burst',
+       buff:(u,lv)=>{u.reflect += lv===2?0.45:0.22; u.thornBurst = lv===2?95:45;},
+       mods:(u,m)=>{u.reflect += m.thornReflect;}},
+
+      {id:'Sniper', icon:'🎯',
+       tip:'Lv1 +1 range + 25% pierce, Lv2 +3 range + 50% pierce',
+       buff:(u,lv)=>{u.range += lv===2?3:1; u.pierceShot = lv===2?0.50:0.25;},
+       mods:(u,m)=>{u.range += m.sniperRange; u.atk *= 1+m.sniperDmg;}}
+    ];
+
+    const CMAP = Object.fromEntries(CLASSES.map(c=>[c.id,c]));
+    const TMAP = Object.fromEntries(TRAITS.map(t=>[t.id,t]));
+    const CLASS_IDS = CLASSES.map(c=>c.id);
+    const TRAIT_IDS = TRAITS.map(t=>t.id);
+    const SYN_ICONS = Object.fromEntries([...CLASSES,...TRAITS].map(x=>[x.id,x.icon]));
+    const SYN_TIPS  = Object.fromEntries([...CLASSES,...TRAITS].map(x=>[x.id,x.tip]));
+
+    // Synergy breakpoints [Lv1, Lv2]. Each class still holds exactly 5 units, but with
+    // six classes a shop roll lands on any given one 1/6 of the time instead of 1/4, so
+    // Lv2 for a class comes down from 4 to 3. Traits went the other way — 30 units over
+    // 6 traits is exactly 5 each, up from ~3.3 — so trait Lv2 rises from 3 to 4.
+    const CLASS_BREAK = [2,3];
+    const TRAIT_BREAK = [2,4];
+    const synLevel = (n,[a,b]) => n>=b?2:n>=a?1:0;
+
+    const UNIT_DEFS = [
+      // Tier 1
+      {id:'nutcracker',skillKey:'nut',name:'Nut Cracker',emoji:'🦁',tier:1,class:'Beast',trait:'Vanguard',atk:55,hp:560,mystic:false,range:1,attack:'Nut Crack',skill:'Frenzy Smash cleaves the 3 hexes ahead for 110 dmg'},
+      {id:'goldfish',skillKey:'peon',name:'Goldfish',emoji:'💧',tier:1,class:'Aquatic',trait:'Assassin',atk:45,hp:480,mystic:false,range:1,attack:'Aqua Nip',skill:'Infiltrate blinks to the backline for 150 magic dmg with full lifesteal'},
+      {id:'shiitake',skillKey:'sprout',name:'Shiitake',emoji:'🌿',tier:1,class:'Plant',trait:'Bastion',atk:30,hp:620,mystic:false,range:2,attack:'Spore Shot',skill:'Root Barrier roots self, shields self and nearest ally for 150'},
+      {id:'eggshell',skillKey:'pips',name:'Eggshell',emoji:'🕊️',tier:1,class:'Bird',trait:'Mage',atk:35,hp:430,mystic:true,range:3,attack:'Feather Dart',skill:'Starlight Chirp grants 40 energy to adjacent allies'},
+      {id:'larva',skillKey:'cactus',name:'Larva',emoji:'🐞',tier:1,class:'Bug',trait:'Spikes',atk:40,hp:540,mystic:false,range:1,attack:'Nibble',skill:'Needle Burst hits every adjacent enemy for 75 magic dmg'},
+      {id:'tinydino',skillKey:'falcon',name:'Tiny Dino',emoji:'🦎',tier:1,class:'Reptile',trait:'Sniper',atk:42,hp:500,mystic:false,range:3,attack:'Venom Spit',skill:'Acid Lob deals 130 dmg and knocks the target back 2 rows'},
+
+      // Tier 2
+      {id:'zigzag',skillKey:'zoro',name:'Zigzag',emoji:'🦁',tier:2,class:'Beast',trait:'Assassin',atk:58,hp:600,mystic:false,range:1,attack:'Zig Slash',skill:'Zig Dash blinks behind the target and hits for 140 dmg'},
+      {id:'koi',skillKey:'bubbles',name:'Koi',emoji:'💧',tier:2,class:'Aquatic',trait:'Bastion',atk:40,hp:700,mystic:false,range:1,attack:'Tail Slap',skill:'Current Guard shields the lowest-HP ally for 200 and grants CC immunity'},
+      {id:'ginger',skillKey:'yggdrasil',name:'Ginger',emoji:'🌿',tier:2,class:'Plant',trait:'Mage',atk:44,hp:580,mystic:true,range:3,attack:'Root Bolt',skill:'Spice Bloom roots and stuns every enemy for 150 magic dmg'},
+      {id:'trifeather',skillKey:'nemo',name:'Tri Feather',emoji:'🕊️',tier:2,class:'Bird',trait:'Spikes',atk:50,hp:560,mystic:false,range:2,attack:'Quill Jab',skill:'Quill Flurry strikes 3x for 50 dmg and gains +25% reflect'},
+      {id:'leafbug',skillKey:'raven',name:'Leaf Bug',emoji:'🐞',tier:2,class:'Bug',trait:'Sniper',atk:48,hp:540,mystic:false,range:4,attack:'Sap Shot',skill:'Sap Volley hits the whole row for 200 dmg, executes under 25% HP'},
+      {id:'kotaro',skillKey:'gnasher',name:'Kotaro',emoji:'🦎',tier:2,class:'Reptile',trait:'Vanguard',atk:60,hp:720,mystic:false,range:1,attack:'Kotaro Bite',skill:'Kotaro Bite deals 120 dmg and shreds the target armor'},
+
+      // Tier 3
+      {id:'riskybeast',skillKey:'pumpkin',name:'Risky Beast',emoji:'🦁',tier:3,class:'Beast',trait:'Bastion',atk:55,hp:1000,mystic:false,range:1,attack:'Reckless Ram',skill:'Gamble Guard taunts within 2 hexes and cuts damage taken by 50%'},
+      {id:'anemone',skillKey:'siren',name:'Anemone',emoji:'💧',tier:3,class:'Aquatic',trait:'Mage',atk:58,hp:830,mystic:true,range:3,attack:'Sting Bolt',skill:'Anemone Lure charms the nearest enemy for 3.5s'},
+      {id:'cucumber',skillKey:'cactus',name:'Cucumber',emoji:'🌿',tier:3,class:'Plant',trait:'Spikes',atk:52,hp:950,mystic:false,range:1,attack:'Vine Whip',skill:'Thorn Coat bursts every adjacent enemy for 75 magic dmg'},
+      {id:'cupid',skillKey:'falcon',name:'Cupid',emoji:'🕊️',tier:3,class:'Bird',trait:'Sniper',atk:55,hp:700,mystic:false,range:4,attack:'Heart Arrow',skill:'Heart Arrow deals 130 dmg and knocks the target back 2 rows'},
+      {id:'sandal',skillKey:'nut',name:'Sandal',emoji:'🐞',tier:3,class:'Bug',trait:'Vanguard',atk:62,hp:900,mystic:false,range:1,attack:'Stomp',skill:'Swarm Stomp cleaves the 3 hexes ahead for 110 dmg'},
+      {id:'scalyspear',skillKey:'zoro',name:'Scaly Spear',emoji:'🦎',tier:3,class:'Reptile',trait:'Assassin',atk:65,hp:780,mystic:false,range:1,attack:'Spear Thrust',skill:'Scale Dash blinks behind the target and hits for 140 dmg'},
+
+      // Tier 4
+      {id:'goda',skillKey:'goliath',name:'Goda',emoji:'🦁',tier:4,class:'Beast',trait:'Mage',atk:72,hp:1050,mystic:true,range:3,attack:'Astral Howl',skill:'Moon Chorus stuns a 1-hex circle for 2.5s and deals 100 true dmg'},
+      {id:'hermit',skillKey:'nemo',name:'Hermit',emoji:'💧',tier:4,class:'Aquatic',trait:'Spikes',atk:60,hp:1250,mystic:false,range:1,attack:'Shell Bash',skill:'Shell Fortress strikes 3x for 50 dmg and gains +25% reflect'},
+      {id:'bidens',skillKey:'raven',name:'Bidens',emoji:'🌿',tier:4,class:'Plant',trait:'Sniper',atk:66,hp:900,mystic:false,range:5,attack:'Seed Volley',skill:'Bloom Volley hits the whole row for 200 dmg, executes under 25% HP'},
+      {id:'kingfisher',skillKey:'gnasher',name:'Kingfisher',emoji:'🕊️',tier:4,class:'Bird',trait:'Vanguard',atk:70,hp:1100,mystic:false,range:1,attack:'Dive Beak',skill:'Dive Beak deals 120 dmg and shreds the target armor'},
+      {id:'pliers',skillKey:'kestrel',name:'Pliers',emoji:'🐞',tier:4,class:'Bug',trait:'Assassin',atk:78,hp:920,mystic:false,range:1,attack:'Clamp',skill:'Sever leaps untargetable and slams the lowest-HP enemy for 160 dmg'},
+      {id:'bonesail',skillKey:'goliath',name:'Bone Sail',emoji:'🦎',tier:4,class:'Reptile',trait:'Bastion',atk:62,hp:1350,mystic:false,range:1,attack:'Sail Slam',skill:'Quake Guard stuns a 1-hex circle for 2.5s and deals 100 true dmg'},
+
+      // Tier 5
+      {id:'buba',skillKey:'chonky',name:'Buba',emoji:'🦁',tier:5,class:'Beast',trait:'Vanguard',atk:88,hp:1600,mystic:false,range:1,attack:'Buba Bash',skill:'Bash N Brawl crushes for 150 dmg plus 25% of the target max HP'},
+      {id:'puffy',skillKey:'immanuel',name:'Puffy',emoji:'💧',tier:5,class:'Aquatic',trait:'Mage',atk:80,hp:1200,mystic:true,range:4,attack:'Bubble Bolt',skill:'Paddle Pool heals every ally for 300 and pushes enemies back 2 rows'},
+      {id:'olek',skillKey:'lotus',name:'Olek',emoji:'🌿',tier:5,class:'Plant',trait:'Bastion',atk:70,hp:1700,mystic:false,range:1,attack:'Petal Slap',skill:'Evergreen Aura heals 5% max HP/s and revives once at 50% HP'},
+      {id:'momo',skillKey:'kallaway',name:'Momo',emoji:'🕊️',tier:5,class:'Bird',trait:'Assassin',atk:85,hp:1180,mystic:false,range:1,attack:'Razor Wing',skill:'Marvelous Mayhem grants physical immunity and a 3s whirlwind'},
+      {id:'pomodoro',skillKey:'nemo',name:'Pomodoro',emoji:'🐞',tier:5,class:'Bug',trait:'Spikes',atk:95,hp:1500,mystic:false,range:1,attack:'Vine Crush',skill:'Peculiar Thorns strikes 3x for 50 dmg and gains +25% reflect'},
+      {id:'venoki',skillKey:'raven',name:'Venoki',emoji:'🦎',tier:5,class:'Reptile',trait:'Sniper',atk:82,hp:1250,mystic:false,range:5,attack:'Venom Lance',skill:'Vortex Volley hits the whole row for 200 dmg, executes under 25% HP'}
+    ];
+
     const UMAP = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,u]));
-    const UNIT_ASSETS = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,`assets/extracted/units/${u.id}.png`]));
-    const UNIT_MODEL_MANIFEST = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,{
-      runtime:'spritesheet',
-      performanceTier: u.tier>=4?'high':'low',
-      scale: u.tier>=4?1.22:1.18,
-      anchor:{x:0.5,y:0.68},
-      files:{
-        idle: `assets/extracted/units/${u.id}.png`,
-        move: `assets/extracted/units/${u.id}.png`,
-        attack: `assets/extracted/units/${u.id}.png`,
-        cast: `assets/extracted/units/${u.id}.png`,
-        hit: `assets/extracted/units/${u.id}.png`,
-        death: `assets/extracted/units/${u.id}.png`
-      },
-      animMap:{idle:'idle',move:'move',attack:'attack',cast:'cast',hit:'hit',death:'death',crit:'crit'}
-    }]));
+
+    // Buba, Puffy and Pomodoro are rendered from Sky Mavis's official 3D models into
+    // sprite-sheet strips (tools/render-sprites.mjs). Every other unit is an SVG built
+    // from the shared Axie template (tools/make-svg-axies.mjs).
+    const RENDERED_AXIES = new Set(['buba','puffy','pomodoro']);
+    const SPRITE_STATES = ['idle','move','attack','cast'];
+    const SPRITE_FRAMES = 8, SPRITE_SIZE = 128;
+    const SPRITE_FPS = {idle:6, move:14, attack:9, cast:10};
+
+    const unitArtPath = id => RENDERED_AXIES.has(id)
+      ? `assets/axies/${id}/portrait.png`
+      : `assets/axies/svg/${id}.svg`;
+    const UNIT_ASSETS = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,unitArtPath(u.id)]));
+
+    // Real animation data, replacing the earlier stub that pointed every state at one
+    // static image. Sprite units play a strip; SVG units have no strip and are animated
+    // by CSS transforms on the element instead.
+    const UNIT_MODEL_MANIFEST = Object.fromEntries(UNIT_DEFS.map(u=>{
+      const sprite = RENDERED_AXIES.has(u.id);
+      return [u.id,{
+        runtime: sprite ? 'spritesheet' : 'svg',
+        scale: u.tier>=4 ? 1.10 : 1.04,
+        portrait: unitArtPath(u.id),
+        files: sprite ? Object.fromEntries(SPRITE_STATES.map(s=>[s,{
+          file:`assets/axies/${u.id}/${s}.png`,
+          frames:SPRITE_FRAMES, w:SPRITE_SIZE, h:SPRITE_SIZE, fps:SPRITE_FPS[s]
+        }])) : null
+      }];
+    }));
+
+    // hit and death have no dedicated clip; they reuse idle and are distinguished by
+    // CSS (tint for hit, fade and fall for death).
+    const ANIM_FALLBACK = {hit:'idle', death:'idle', crit:'attack'};
+
     const BOSS_ASSETS = {
-      phase1:'assets/extracted/boss/chimera_phase1.png',
-      phase2:'assets/extracted/boss/chimera_phase2.png',
-      token:'assets/extracted/boss/chimera_token.png'
+      phase1:'assets/boss/chimera_phase1.svg',
+      phase2:'assets/boss/chimera_phase2.svg',
+      token:'assets/boss/chimera_token.svg'
     };
     const RELICS = [
       {id:'mint',name:"Lunacia's Mint",desc:'+2 prep energy income',apply:s=>s.mods.incomeBonus+=2},
@@ -727,14 +919,14 @@
       selected:null,dragging:null,touchDrag:null,mergePulseUid:null,inBattle:false,raf:0,battleTimer:0,lastLoopAt:0,loopRunning:false,combat:null,relics:[],relicTaken:{},pendingAdvance:false,pendingClearStage:null,fps:0,stallMs:0,
       enemyPreview:null,enemyPreviewStage:null,lastBattleBreakdown:[],audioCtx:null,
       daily:null,endlessUnlocked:false,endlessMode:false,bestStage:0,runSeed:null,seedRng:null,recapVisible:false,logVisible:false,debugVisible:false,advancedOpen:false,shopAnimSeq:0,pendingAutoReset:false,
-      settings:{renderMode:'classic'},
+      settings:{},
       modelCache:new Map(),
       leaderboard:[
         {name:'AegisFox',stage:27},{name:'Lunacian',stage:24},{name:'HexMancer',stage:22},{name:'CrimsonMint',stage:19},{name:'SeaRogue',stage:17}
       ],
       runStats:{wins:0,losses:0,damageByDef:{},fieldCounts:{}},
       mods:{
-        incomeBonus:0,aquaAS:0,beastFlatAtk:0,birdMove:0,rogueCrit:0,thornReflect:0,guardianHP:0,sniperDmg:0,skillPower:0,sniperRange:0,
+        incomeBonus:0,aquaAS:0,beastFlatAtk:0,birdMove:0,bugPoison:0,reptileDR:0,rogueCrit:0,thornReflect:0,guardianHP:0,sniperDmg:0,skillPower:0,sniperRange:0,
         startEnergy:0,globalAS:0,sellBonusEnergy:0,killHeal:0,doubleCastChance:0,globalHP:0,lowHpAS:0,secondWind:false,winBonusEnergy:0,lossBonusEnergy:0
       }
     };
@@ -757,42 +949,95 @@
     }
     function placedPlayerCount(){let n=0;for(let r=5;r<10;r++)for(let c=0;c<5;c++)if(state.grid[r][c])n++;return n;}
     function classSlug(cls){return String(cls||'').toLowerCase();}
+    // Single lookup for class and trait glyphs, so no caller keeps its own emoji map.
+    // Classes and traits resolve to the inline SVG sprite; the emoji in CLASSES/TRAITS
+    // stays as the fallback for anything the sprite does not cover.
+    const ICON_SLUG = Object.fromEntries([
+      ...CLASSES.map(c=>[c.id,c.slug]),
+      ...TRAITS.map(t=>[t.id,t.id.toLowerCase()])
+    ]);
+    function synIcon(key,cls=''){
+      const slug=ICON_SLUG[key];
+      if(!slug) return SYN_ICONS[key]||'';
+      const tint = CMAP[key] ? ` style="color:var(--${slug})"` : '';
+      return `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-label="${key}"${tint}><use href="#i-${slug}"/></svg>`;
+    }
     function buyCost(def){return (def?.tier||1)+1;}
     function unitImgTag(defId,cls='unitArt',alt='unit'){
       const src=UNIT_ASSETS[defId];
       if(!src) return '';
       return `<img class="${cls}" src="${src}" alt="${alt}" loading="lazy" onerror="this.style.display='none'">`;
     }
+    // Resolves a game animation state to a sprite strip. States without their own clip
+    // (hit, death, crit) fall back through ANIM_FALLBACK. Returns null for SVG units,
+    // which are animated by CSS transforms on the element instead of a strip.
     function modelAsset(defId,anim='idle'){
       const m=UNIT_MODEL_MANIFEST[defId];
-      if(!m) return null;
-      const file=m.files[m.animMap?.[anim]||anim] || m.files.idle;
-      return file?{manifest:m,file}:null;
+      if(!m||!m.files) return null;
+      const key = m.files[anim] ? anim : (ANIM_FALLBACK[anim]||'idle');
+      const file = m.files[key] || m.files.idle;
+      return file?{manifest:m,anim:key,...file}:null;
     }
     function primeModelCache(){
       for(const id of Object.keys(UNIT_MODEL_MANIFEST)){
-        const a=modelAsset(id,'idle'); if(!a||state.modelCache.has(a.file)) continue;
-        const img=new Image(); img.src=a.file; state.modelCache.set(a.file,img);
+        for(const st of ['idle','move','attack']){
+          const a=modelAsset(id,st); if(!a||state.modelCache.has(a.file)) continue;
+          const img=new Image(); img.src=a.file; state.modelCache.set(a.file,img);
+        }
       }
     }
+    // One markup contract for both art kinds: a wrapper carrying data-anim, which the
+    // CSS drives either by stepping a sprite strip or by transforming an <img>.
     function renderUnitVisual(defId,viewState={anim:'idle'},opts={}){
-      const cls=opts.className||'unitBg', alt=opts.alt||'unit', anim=viewState.anim||'idle', surface=opts.surface||'board';
-      const useModel = state.settings.renderMode==='model' && surface==='board';
-      const a = useModel ? modelAsset(defId,anim) : null;
-      if(!a) return unitImgTag(defId,cls,alt);
-      const perf = a.manifest.performanceTier||'low';
-      const fallback=UNIT_ASSETS[defId]||a.file;
-      const modeClass = surface==='combat'?'model-combat':(surface==='board'?'model-board':'');
-      const scaleStyle = surface==='combat' ? '' : `transform:scale(${a.manifest.scale||1.18})`;
-      return `<div class="${cls} unitModel ${modeClass}" data-model="true" data-def="${defId}" data-anim="${anim}" data-perf="${perf}" style="${scaleStyle}"><img class="modelFallback" src="${a.file}" alt="${alt}" loading="lazy" onerror="this.src='${fallback}'"></div>`;
+      const cls=opts.className||'unitBg', alt=opts.alt||'unit';
+      const anim=viewState.anim||'idle', surface=opts.surface||'board';
+      const m=UNIT_MODEL_MANIFEST[defId];
+      const modeClass = surface==='combat'?'model-combat':'model-board';
+      const a = modelAsset(defId,anim);
+      if(a){
+        const dur=(a.frames/Math.max(1,a.fps)).toFixed(2);
+        return `<div class="${cls} unitModel ${modeClass}" data-model="true" data-def="${defId}" data-anim="${anim}" data-kind="sprite">`
+          + `<div class="spriteAnim" style="background-image:url('${a.file}');--f:${a.frames};--d:${dur}s"></div></div>`;
+      }
+      const src=(m&&m.portrait)||UNIT_ASSETS[defId];
+      if(!src) return '';
+      return `<div class="${cls} unitModel ${modeClass}" data-model="true" data-def="${defId}" data-anim="${anim}" data-kind="svg">`
+        + `<img class="modelFallback" src="${src}" alt="${alt}" loading="lazy" onerror="this.style.display='none'"></div>`;
     }
+    // Swaps the sprite strip as well as the data-anim flag, so sprite units really do
+    // play their attack/cast clips rather than only nudging the whole image.
     function setCombatAnim(u,anim='idle',duration=220){
       const a=el('actor-'+u.id); if(!a) return;
       const m=a.querySelector('[data-model]'); if(!m) return;
       m.dataset.anim=anim;
+      if(m.dataset.kind==='sprite'){
+        const art=modelAsset(u.defId,anim);
+        const strip=m.querySelector('.spriteAnim');
+        if(art&&strip){
+          const dur=(art.frames/Math.max(1,art.fps)).toFixed(2);
+          strip.style.backgroundImage=`url('${art.file}')`;
+          strip.style.setProperty('--f',art.frames);
+          strip.style.setProperty('--d',dur+'s');
+          strip.classList.toggle('once', anim==='attack'||anim==='cast');
+        }
+      }
       if(anim!=='death'){
         clearTimeout(a._animBackTimer);
-        a._animBackTimer=setTimeout(()=>{if(m.dataset.anim!=='death') m.dataset.anim='idle';},duration);
+        a._animBackTimer=setTimeout(()=>{
+          if(m.dataset.anim==='death') return;
+          m.dataset.anim='idle';
+          if(m.dataset.kind==='sprite'){
+            const idle=modelAsset(u.defId,'idle');
+            const strip=m.querySelector('.spriteAnim');
+            if(idle&&strip){
+              const d=(idle.frames/Math.max(1,idle.fps)).toFixed(2);
+              strip.style.backgroundImage=`url('${idle.file}')`;
+              strip.style.setProperty('--f',idle.frames);
+              strip.style.setProperty('--d',d+'s');
+              strip.classList.remove('once');
+            }
+          }
+        },duration);
       }
     }
     function acquireActorNode(){
@@ -1311,14 +1556,17 @@
           const cost=buyCost(d);
           const canBuyNow = ()=>!(state.energy<cost||state.inBattle);
           const canBuy = canBuyNow();
-          const visualReady = canBuy || !!opp;
+          // `opp` must be resolved before it is read: this previously sat one line above
+          // its own declaration, so the shop threw a TDZ error whenever a card was
+          // unaffordable — including from startBattle, which aborted the whole battle.
           const opp=shopMergeOpportunity(d.id);
+          const visualReady = canBuy || !!opp;
           if(opp) c.classList.add('shopPulse','star'+opp.star);
           c.innerHTML=`
             ${opp?`<div class="shopMergeTag">${'★'.repeat(opp.star)}</div>`:''}
             <div class="cardBanner"><div class="shopCostOverlay">${cost} 🪙</div>${unitImgTag(d.id,'',d.name)}</div>
             <div class="cardInner">
-            <div class="shopNameRow"><span class="name">${d.name}</span><span class="small">${{Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️'}[d.class]||''} ${{Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'}[d.trait]||''}</span></div>
+            <div class="shopNameRow"><span class="name">${d.name}</span><span class="small">${synIcon(d.class)} ${synIcon(d.trait)}</span></div>
             </div>`;
           c.style.cursor=canBuy?'pointer':'not-allowed';
           c.style.opacity=visualReady?'1':'0.42';
@@ -1379,7 +1627,6 @@
       const tRecap=el('toggleRecapBtn'); if(tRecap) tRecap.textContent=state.recapVisible?'Hide':'Show';
       const tDebug=el('toggleDebugBtn'); if(tDebug) tDebug.textContent=state.debugVisible?'Hide Debug':'Show Debug';
       const tAdv=el('toggleAdvancedBtn'); if(tAdv){tAdv.textContent=state.advancedOpen?'🧰':'⚙️';tAdv.classList.toggle('open',state.advancedOpen);}
-      const tRender=el('toggleRenderModeBtn'); if(tRender) tRender.textContent=`Render: ${state.settings.renderMode==='model'?'Model':'Classic'}`;
       const aw=el('advancedWrap'); if(aw) aw.style.display=state.advancedOpen?'block':'none';
       updateDebugHud();
       el('endlessBtn').style.display=state.endlessUnlocked&&!state.endlessMode?'inline-block':'none';
@@ -1392,39 +1639,38 @@
       return units;
     }
 
+    // Counts distinct unit *definitions* per class and trait — duplicates of the same
+    // unit never advance a synergy. Shared by the prep-phase HUD and combat.
+    function countSynergies(list, classOf, traitOf, idOf){
+      const cls={}, tr={};
+      for(const k of CLASS_IDS) cls[k]=new Set();
+      for(const k of TRAIT_IDS) tr[k]=new Set();
+      for(const u of list){
+        const id=idOf(u);
+        cls[classOf(u)]?.add(id);
+        tr[traitOf(u)]?.add(id);
+      }
+      const counts=(sets)=>Object.fromEntries(Object.entries(sets).map(([k,s])=>[k,s.size]));
+      const c=counts(cls), t=counts(tr);
+      return {
+        cls:c, tr:t,
+        cLv:Object.fromEntries(CLASS_IDS.map(k=>[k,synLevel(c[k],CLASS_BREAK)])),
+        tLv:Object.fromEntries(TRAIT_IDS.map(k=>[k,synLevel(t[k],TRAIT_BREAK)]))
+      };
+    }
+
     function getSynergyState(){
       const units = getPlayerPlacedUnits();
-      const clsSets={Aqua:new Set(),Plant:new Set(),Beast:new Set(),Bird:new Set()};
-      const trSets={Assassin:new Set(),Bastion:new Set(),Vanguard:new Set(),Mage:new Set(),Spikes:new Set(),Sniper:new Set()};
-      units.forEach(u=>{const d=UMAP[u.defId];if(clsSets[d.class])clsSets[d.class].add(d.id);if(trSets[d.trait])trSets[d.trait].add(d.id);});
-      const cls={Aqua:clsSets.Aqua.size,Plant:clsSets.Plant.size,Beast:clsSets.Beast.size,Bird:clsSets.Bird.size};
-      const tr={Assassin:trSets.Assassin.size,Bastion:trSets.Bastion.size,Vanguard:trSets.Vanguard.size,Mage:trSets.Mage.size,Spikes:trSets.Spikes.size,Sniper:trSets.Sniper.size};
-      const lvl=(n,a,b)=>n>=b?2:n>=a?1:0;
-      return {
-        units,cls,tr,
-        cLv:{Aqua:lvl(cls.Aqua,2,4),Plant:lvl(cls.Plant,2,4),Beast:lvl(cls.Beast,2,4),Bird:lvl(cls.Bird,2,4)},
-        tLv:{Assassin:lvl(tr.Assassin,2,3),Bastion:lvl(tr.Bastion,2,3),Vanguard:lvl(tr.Vanguard,2,3),Mage:lvl(tr.Mage,2,3),Spikes:lvl(tr.Spikes,2,3),Sniper:lvl(tr.Sniper,2,3)}
-      };
+      const s = countSynergies(units, u=>UMAP[u.defId].class, u=>UMAP[u.defId].trait, u=>UMAP[u.defId].id);
+      return {units, ...s};
     }
 
     function renderSynergy(){
       const s=getSynergyState();
-      const icons={Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️',Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'};
-      const tips={
-        Aqua:'Lv1 +20% AS and 12% splash, Lv2 +40% AS and 22% splash',
-        Plant:'Lv1 +20% HP and 1.5% regen/s, Lv2 +50% HP and 3% regen/s',
-        Beast:'Lv1 +20% ATK and 12% execute, Lv2 +45% ATK and 22% execute',
-        Bird:'Lv1 +18% crit and 8% dodge, Lv2 +35% crit and 16% dodge',
-        Assassin:'Lv1 22% lifesteal and 18% backstab, Lv2 40% lifesteal and 35% backstab',
-        Bastion:'Lv1 22% DR and +70 cast shield, Lv2 45% DR and +150 cast shield',
-        Vanguard:'Lv1 +30 start energy + taunt pulse, Lv2 +65 start energy + wider taunt pulse',
-        Mage:'Lv1 +30% skill power + 12 mana burn, Lv2 +65% skill power + 24 mana burn',
-        Spikes:'Lv1 22% reflect + 45 thorn burst, Lv2 45% reflect + 95 thorn burst',
-        Sniper:'Lv1 +1 range + 25% pierce, Lv2 +3 range + 50% pierce'
-      };
+      const badge=(k,lv,n)=>`<button class="synBadge synBtn lv${lv}" data-syn="${k}" title="${k} — ${SYN_TIPS[k]}">${synIcon(k)}<span class="synCount">${n}</span></button>`;
       const badges=[];
-      for(const k of ['Aqua','Plant','Beast','Bird']) if(s.cls[k]>0) badges.push(`<button class="synBadge synBtn lv${s.cLv[k]}" data-syn="${k}" title="${tips[k]}">${icons[k]}</button>`);
-      for(const k of ['Assassin','Bastion','Vanguard','Mage','Spikes','Sniper']) if(s.tr[k]>0) badges.push(`<button class="synBadge synBtn lv${s.tLv[k]}" data-syn="${k}" title="${tips[k]}">${icons[k]}</button>`);
+      for(const k of CLASS_IDS) if(s.cls[k]>0) badges.push(badge(k,s.cLv[k],s.cls[k]));
+      for(const k of TRAIT_IDS) if(s.tr[k]>0) badges.push(badge(k,s.tLv[k],s.tr[k]));
       el('synergyActive').innerHTML = badges.join('');
       el('boardSynergy').innerHTML = badges.join('');
       el('synergy').innerHTML = '';
@@ -1445,7 +1691,7 @@
       const castPct=Math.min(100,Math.round((castScore/6)*100));
       slot.innerHTML = `
         <div style="font-weight:700;display:flex;gap:6px;align-items:center">${boss?`<img class="unitArt lg" src="${BOSS_ASSETS.phase1}" alt="Chimera">`:unitImgTag(d.id,'unitArt lg',d.name)} ${d.name}</div>
-        <div class="small">${enemy?'Enemy':'Ally'}${preview?' Preview':''} • ${{Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️'}[d.class]||''} ${d.class} / ${{Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'}[d.trait]||''} ${d.trait} • ${'★'.repeat(u.star)}</div>
+        <div class="small">${enemy?'Enemy':'Ally'}${preview?' Preview':''} • ${synIcon(d.class)} ${d.class} / ${synIcon(d.trait)} ${d.trait} • ${'★'.repeat(u.star)}</div>
         <div class="small">ATK: ${atk}</div><div class="statBar"><span style="width:${atkPct}%"></span></div>
         <div class="small">HP: ${hp}</div><div class="statBar"><span style="width:${hpPct}%"></span></div>
         <div class="small">Cast Speed: ${castsIn} attacks</div><div class="statBar"><span style="width:${castPct}%"></span></div>
@@ -1491,26 +1737,18 @@
     }
     function openSynergyModal(key,anchorEl=null){
       const title=el('synergyModalTitle'), body=el('synergyUnitsBody'); if(!title||!body) return;
-      const isClass=['Aqua','Plant','Beast','Bird'].includes(key);
-      const tips={
-        Aqua:'Lv1 +20% AS and 12% splash, Lv2 +40% AS and 22% splash',
-        Plant:'Lv1 +20% HP and 1.5% regen/s, Lv2 +50% HP and 3% regen/s',
-        Beast:'Lv1 +20% ATK and 12% execute, Lv2 +45% ATK and 22% execute',
-        Bird:'Lv1 +18% crit and 8% dodge, Lv2 +35% crit and 16% dodge',
-        Assassin:'Lv1 22% lifesteal and 18% backstab, Lv2 40% lifesteal and 35% backstab',
-        Bastion:'Lv1 22% DR and +70 cast shield, Lv2 45% DR and +150 cast shield',
-        Vanguard:'Lv1 +30 start energy + taunt pulse, Lv2 +65 start energy + wider taunt pulse',
-        Mage:'Lv1 +30% skill power + 12 mana burn, Lv2 +65% skill power + 24 mana burn',
-        Spikes:'Lv1 22% reflect + 45 thorn burst, Lv2 45% reflect + 95 thorn burst',
-        Sniper:'Lv1 +1 range + 25% pierce, Lv2 +3 range + 50% pierce'
-      };
+      const isClass=CLASS_IDS.includes(key);
+      const tips=SYN_TIPS;
+      const brk=isClass?CLASS_BREAK:TRAIT_BREAK;
       const s=getSynergyState();
       const lv = isClass ? s.cLv[key] : s.tLv[key];
       const defs=UNIT_DEFS.filter(u=>isClass?u.class===key:u.trait===key);
       const have=new Set(getPlayerPlacedUnits().map(u=>u.defId));
-      title.textContent=`${key} • Lv${lv}`;
+      const owned=defs.filter(d=>have.has(d.id)).length;
+      title.textContent=`${key} • Lv${lv} (${owned}/${brk[1]})`;
       body.style.display='grid';
-      body.innerHTML = `<div style="grid-column:1/-1" class="small">${tips[key]}</div>` + defs.map(d=>`<div class="unitMini ${have.has(d.id)?'':'off'}">${unitImgTag(d.id,'unitArt lg',d.name)} <span>${d.name}</span></div>`).join('');
+      body.innerHTML = `<div style="grid-column:1/-1" class="small">${tips[key]}<br>Lv1 at ${brk[0]} unique • Lv2 at ${brk[1]} unique</div>`
+        + defs.map(d=>`<div class="unitMini ${have.has(d.id)?'':'off'}">${unitImgTag(d.id,'unitArt lg',d.name)} <span>${d.name}</span></div>`).join('');
       const so=el('synergyOverlay');
       if(so){
         placeFloatingOverlayNearAnchor('synergyOverlay',anchorEl||el('boardWrap'));
@@ -1708,16 +1946,8 @@
     }
 
     function synergiesForBattle(playerUnits){
-      const clsSets={Aqua:new Set(),Plant:new Set(),Beast:new Set(),Bird:new Set()};
-      const trSets={Assassin:new Set(),Bastion:new Set(),Vanguard:new Set(),Mage:new Set(),Spikes:new Set(),Sniper:new Set()};
-      playerUnits.forEach(u=>{clsSets[u.class]?.add(u.defId);trSets[u.trait]?.add(u.defId);});
-      const cls={Aqua:clsSets.Aqua.size,Plant:clsSets.Plant.size,Beast:clsSets.Beast.size,Bird:clsSets.Bird.size};
-      const tr={Assassin:trSets.Assassin.size,Bastion:trSets.Bastion.size,Vanguard:trSets.Vanguard.size,Mage:trSets.Mage.size,Spikes:trSets.Spikes.size,Sniper:trSets.Sniper.size};
-      const lv=(n,a,b)=>n>=b?2:n>=a?1:0;
-      return {
-        classes:{Aqua:lv(cls.Aqua,2,4),Plant:lv(cls.Plant,2,4),Beast:lv(cls.Beast,2,4),Bird:lv(cls.Bird,2,4)},
-        traits:{Assassin:lv(tr.Assassin,2,3),Bastion:lv(tr.Bastion,2,3),Vanguard:lv(tr.Vanguard,2,3),Mage:lv(tr.Mage,2,3),Spikes:lv(tr.Spikes,2,3),Sniper:lv(tr.Sniper,2,3)}
-      };
+      const s = countSynergies(playerUnits, u=>u.class, u=>u.trait, u=>u.defId);
+      return {classes:s.cLv, traits:s.tLv};
     }
 
     function makeCombatUnit(uid,owner,r,c){
@@ -1728,10 +1958,10 @@
       const rangeAdj = tank ? Math.max(1,(d.range+1)-1) : (d.range+1);
       const asAdj = tank ? 0.9 : 1.35;
       return {
-        id:uid,owner,row:r,col:c,defId:d.id,name:d.name,emoji:d.emoji,tier:d.tier,class:d.class,trait:d.trait,star:pu.star,
+        id:uid,owner,row:r,col:c,defId:d.id,skillKey:d.skillKey,name:d.name,emoji:d.emoji,tier:d.tier,class:d.class,trait:d.trait,star:pu.star,
         hp:hpBase*hpAdj,maxHp:hpBase*hpAdj,atk:atkBase,range:rangeAdj,mystic:d.mystic,maxEnergy,energy:0,attackCd:0,moveCd:0,
-        stunned:0,rooted:0,charmed:0,shield:0,immuneCC:0,armorShred:0,dr:0,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,
-        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:d.id==='lotus',targetId:null,damageDone:0,healingDone:0,lastRow:r,lastCol:c
+        stunned:0,rooted:0,charmed:0,shield:0,immuneCC:0,armorShred:0,dr:0,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,poison:null,chilled:0,chillPct:0,
+        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:d.skillKey==='lotus',targetId:null,damageDone:0,healingDone:0,lastRow:r,lastCol:c
       };
     }
     function makeEnemy(defId,star,r,c,powerScale=1.05){
@@ -1742,10 +1972,10 @@
       const rangeAdj = tank ? Math.max(1,(d.range+1)-1) : (d.range+1);
       const asAdj = tank ? 0.9 : 1.35;
       return {
-        id:'e'+(state.nextUid++),owner:'enemy',row:r,col:c,defId:d.id,name:d.name,emoji:d.emoji,tier:d.tier,class:d.class,trait:d.trait,star,
+        id:'e'+(state.nextUid++),owner:'enemy',row:r,col:c,defId:d.id,skillKey:d.skillKey,name:d.name,emoji:d.emoji,tier:d.tier,class:d.class,trait:d.trait,star,
         hp:d.hp*mult*powerScale*hpAdj,maxHp:d.hp*mult*powerScale*hpAdj,atk:d.atk*mult*powerScale,range:rangeAdj,mystic:d.mystic,maxEnergy,energy:0,attackCd:0,moveCd:0,
-        stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:0,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,
-        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:false,targetId:null,damageDone:0,healingDone:0,lastRow:r,lastCol:c
+        stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:0,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,poison:null,chilled:0,chillPct:0,
+        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:d.skillKey==='lotus',targetId:null,damageDone:0,healingDone:0,lastRow:r,lastCol:c
       };
     }
     function makeChimera(stage){
@@ -1753,7 +1983,7 @@
       return {
         id:'boss'+state.nextUid++,owner:'enemy',row:2,col:2,defId:'chimera',name:'Chimera Elite',emoji:'🐉',tier:6,class:'Beast',trait:'Vanguard',star:1,
         hp:cfg.maxHp,maxHp:cfg.maxHp,atk:cfg.atk,range:cfg.range,mystic:false,maxEnergy:cfg.maxEnergy,energy:0,attackCd:0,moveCd:0,
-        stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:cfg.dr,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,attackSpeed:cfg.attackSpeed,crit:0.1,resUsed:false,auraLotus:false,boss:true,targetId:null,damageDone:0,healingDone:0,lastRow:2,lastCol:2
+        stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:cfg.dr,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,poison:null,chilled:0,chillPct:0,attackSpeed:cfg.attackSpeed,crit:0.1,resUsed:false,auraLotus:false,boss:true,targetId:null,damageDone:0,healingDone:0,lastRow:2,lastCol:2
       };
     }
 
@@ -1787,69 +2017,29 @@
     function applyBattleBuffs(units){
       const p = units.filter(u=>u.owner==='player');
       const s = synergiesForBattle(p);
+      const m = state.mods;
       for(const u of p){
-        u.energy = Math.min(u.maxEnergy, u.energy + state.mods.startEnergy);
-        u.maxHp *= (1 + state.mods.globalHP);
-        if(u.trait==='Bastion') u.maxHp *= (1 + state.mods.guardianHP);
-        if(u.class==='Plant'){
-          const pLv=s.classes.Plant;
-          u.maxHp *= pLv===2?1.5:pLv===1?1.2:1;
-          u.plantRegen = pLv===2?0.03:pLv===1?0.015:0;
-        }
-        u.hp=u.maxHp;
+        u.energy = Math.min(u.maxEnergy, u.energy + m.startEnergy);
+        u.maxHp *= (1 + m.globalHP);
+        if(u.trait==='Bastion') u.maxHp *= (1 + m.guardianHP);
 
-        if(u.class==='Beast') u.atk += state.mods.beastFlatAtk;
-        if(u.class==='Beast'){
-          const bLv=s.classes.Beast;
-          u.atk *= bLv===2?1.45:bLv===1?1.20:1;
-          u.executePct = bLv===2?0.22:bLv===1?0.12:0;
+        // Class and trait effects come straight off CLASSES/TRAITS: `buff` only fires
+        // when the synergy is active, `mods` always applies relic accumulators.
+        const cls = CMAP[u.class], tr = TMAP[u.trait];
+        if(cls){
+          const lv = s.classes[u.class];
+          if(lv && cls.buff) cls.buff(u, lv);
+          if(cls.mods) cls.mods(u, m);
         }
-        if(u.class==='Bird'){
-          const bLv=s.classes.Bird;
-          u.crit += bLv===2?0.35:bLv===1?0.18:0;
-          u.evasion = bLv===2?0.16:bLv===1?0.08:0;
+        if(tr){
+          const lv = s.traits[u.trait];
+          if(lv && tr.buff) tr.buff(u, lv);
+          if(tr.mods) tr.mods(u, m);
         }
-        if(u.class==='Bird') u.moveBonus=(u.moveBonus||0)+state.mods.birdMove;
-        if(u.class==='Aqua'){
-          const aLv=s.classes.Aqua;
-          u.attackSpeed += aLv===2?0.40:aLv===1?0.20:0;
-          u.aquaSplash = aLv===2?0.22:aLv===1?0.12:0;
-        }
-        if(u.class==='Aqua') u.attackSpeed += state.mods.aquaAS;
 
-        if(u.trait==='Assassin'){
-          const aLv=s.traits.Assassin;
-          u.lifesteal = (aLv===2?0.40:aLv===1?0.22:0);
-          u.backstab = (aLv===2?0.35:aLv===1?0.18:0);
-        }
-        if(u.trait==='Assassin') u.crit += state.mods.rogueCrit;
-        if(u.trait==='Bastion'){
-          const bLv=s.traits.Bastion;
-          u.dr += bLv===2?0.45:bLv===1?0.22:0;
-          u.castShield = bLv===2?150:bLv===1?70:0;
-        }
-        if(u.trait==='Vanguard'){
-          const vLv=s.traits.Vanguard;
-          u.energy += vLv===2?65:vLv===1?30:0;
-          u.tauntPulse = vLv===2?2:vLv===1?1:0;
-        }
-        if(u.trait==='Mage'){
-          const mLv=s.traits.Mage;
-          u.skillPow = (u.skillPow||1) * (mLv===2?1.65:mLv===1?1.30:1);
-          u.mageBurn = mLv===2?24:mLv===1?12:0;
-        }
-        if(u.trait==='Spikes'){
-          const sLv=s.traits.Spikes;
-          u.reflect += (sLv===2?0.45:sLv===1?0.22:0) + state.mods.thornReflect;
-          u.thornBurst = sLv===2?95:sLv===1?45:0;
-        }
-        if(u.trait==='Sniper'){
-          const sLv=s.traits.Sniper;
-          u.range += (sLv===2?3:sLv===1?1:0) + state.mods.sniperRange;
-          u.pierceShot = sLv===2?0.50:sLv===1?0.25:0;
-          u.atk *= 1+state.mods.sniperDmg;
-        }
-        u.attackSpeed += state.mods.globalAS;
+        // After every maxHp modifier has landed.
+        u.hp = u.maxHp;
+        u.attackSpeed += m.globalAS;
       }
     }
 
@@ -1877,9 +2067,13 @@
           const a=acquireActorNode();
           a.className='actor class-'+classSlug(u.class)+' '+(u.owner==='enemy'?'enemy':'');
           a.id='actor-'+u.id;
-          const artSrc = u.defId==='chimera' ? BOSS_ASSETS.token : UNIT_ASSETS[u.defId];
-          const fallback = u.defId==='chimera' ? BOSS_ASSETS.phase1 : UNIT_ASSETS[u.defId];
-          a.innerHTML=`<img class="actorArt" src="${artSrc}" alt="${u.name}" loading="eager" decoding="sync" onerror="this.src='${fallback}'"><div class="actorShade"></div><div class="actorStars">${'★'.repeat(u.star||1)}</div><div class="actorHp"><div class="actorHpFill"></div></div><div class="actorMana"><div class="actorManaFill"></div></div>`;
+          // Combat actors go through the same renderer as the prep board. Previously they
+          // were built as a bare <img> with no [data-model] element, which is why every
+          // setCombatAnim call silently did nothing.
+          const art = u.defId==='chimera'
+            ? `<img class="actorArt" src="${BOSS_ASSETS.phase1}" alt="${u.name}" loading="eager" decoding="sync">`
+            : renderUnitVisual(u.defId,{anim:'idle'},{className:'actorArt',alt:u.name,surface:'combat'});
+          a.innerHTML=`${art}<div class="actorShade"></div><div class="actorStars">${'★'.repeat(u.star||1)}</div><div class="actorHp"><div class="actorHpFill"></div></div><div class="actorMana"><div class="actorManaFill"></div></div>`;
           a.onclick=(e)=>{e.stopPropagation();state.selected={type:'combat',id:u.id};renderSelectedInfo();};
           actorLayer.appendChild(a);
         });
@@ -2129,7 +2323,9 @@
       const doubleCast = u.owner==='player' && rand()<state.mods.doubleCastChance;
       const times = doubleCast?2:1;
       for(let rep=0;rep<times;rep++){
-        switch(u.defId){
+        // Units map onto a shared set of skill implementations via skillKey, so a new
+        // unit reuses proven combat code instead of needing a bespoke case.
+        switch(u.skillKey||u.defId){
           case 'peon':{
             const enemies=units.filter(x=>x.owner!==u.owner&&!x.dead); if(!enemies.length) break;
             const t=enemies.sort((a,b)=> (u.owner==='player'?a.row-b.row:b.row-a.row))[0];
@@ -2238,10 +2434,15 @@
       if(u.pierceShot){
         units.filter(e=>e.owner!==u.owner&&!e.dead&&e.id!==t.id&&hexDist(e,t)<=1).forEach(e=>applyDamage(u,e,dmg*u.pierceShot,'physical'));
       }
-      if(u.defId==='cactus' && rand()<0.3) units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,t)<=1).forEach(e=>applyDamage(u,e,75,'magic'));
+      // Bug synergy: hits refresh a damage-over-time stack on the target.
+      if(u.poisonDps && !t.dead){ t.poison={dps:u.poisonDps, left:(u.poisonDur||3)*1000, src:u.id}; }
+      // Reptile synergy: attackers are chilled, losing attack speed for a short while.
+      if(t.chillAura && !u.dead){ u.chilled=Math.max(u.chilled||0, 1500); u.chillPct=t.chillAura; }
+      if(u.skillKey==='cactus' && rand()<0.3) units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,t)<=1).forEach(e=>applyDamage(u,e,75,'magic'));
       u.energy=Math.min(u.maxEnergy,u.energy+20);
       if(u.energy>=u.maxEnergy){u.energy=0;castSkill(u,units,t);}
-      u.attackCd = 1000/Math.max(0.3, u.attackSpeed + ((u.hp/u.maxHp<0.5&&u.owner==='player')?state.mods.lowHpAS:0));
+      const chill = (u.chilled>0 ? (u.chillPct||0) : 0);
+      u.attackCd = 1000/Math.max(0.3, (u.attackSpeed*(1-chill)) + ((u.hp/u.maxHp<0.5&&u.owner==='player')?state.mods.lowHpAS:0));
     }
 
     function reviveCheck(units){
@@ -2290,9 +2491,16 @@
           u.physImmune=Math.max(0,u.physImmune-dt);
           if(u.auraLotus){const allies=units.filter(a=>a.owner===u.owner&&!a.dead);allies.forEach(a=>heal(a,a.maxHp*0.05*(dt/1000)));}
           if(u.plantRegen) heal(u,u.maxHp*u.plantRegen*(dt/1000));
-          if(u.boss && !u.phase2 && u.hp/u.maxHp<=0.5){u.phase2=true;u.attackSpeed+=0.25;const av=el('actor-'+u.id);const im=av&&av.querySelector('img.actorArt');if(im) im.src=BOSS_ASSETS.phase2;playCue('boss');log('<b>Chimera enrages at 50% HP!</b>');}
-          if(u.defId==='kallaway'&&u.bladeStorm>0){u.bladeStorm-=dt;u.bladeTick=(u.bladeTick||0)+dt;if(u.bladeTick>=250){u.bladeTick=0;units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=1).forEach(e=>applyDamage(u,e,20,'magic')); actions++;}}
-          if(u.defId==='lotus' && !u.resUsed && u.hp<=0){u.resUsed=true;u.dead=false;u.hp=u.maxHp*0.5;actions++;}
+          if(u.poison && u.poison.left>0){
+            u.poison.left-=dt;
+            const src=units.find(x=>x.id===u.poison.src);
+            applyDamage(src||u, u, u.poison.dps*(dt/1000), 'magic');
+            if(u.poison.left<=0) u.poison=null;
+          }
+          u.chilled=Math.max(0,(u.chilled||0)-dt);
+          if(u.boss && !u.phase2 && u.hp/u.maxHp<=0.5){u.phase2=true;u.attackSpeed+=0.25;const av=el('actor-'+u.id);const im=av&&av.querySelector('img.actorArt, .actorArt img');if(im) im.src=BOSS_ASSETS.phase2;playCue('boss');log('<b>Chimera enrages at 50% HP!</b>');}
+          if(u.skillKey==='kallaway'&&u.bladeStorm>0){u.bladeStorm-=dt;u.bladeTick=(u.bladeTick||0)+dt;if(u.bladeTick>=250){u.bladeTick=0;units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=1).forEach(e=>applyDamage(u,e,20,'magic')); actions++;}}
+          if(u.skillKey==='lotus' && !u.resUsed && u.hp<=0){u.resUsed=true;u.dead=false;u.hp=u.maxHp*0.5;actions++;}
         }
 
         reviveCheck(units);
@@ -2405,8 +2613,8 @@
       state.stage=1;state.playerHp=state.playerMaxHp;state.energy=4;state.enemyHp=state.enemyMaxHp;state.bench=[null,null,null,null,null];
       state.grid=Array.from({length:10},()=>Array(5).fill(null));state.units={};state.nextUid=1;state.shop=[null,null,null];
       state.bag=Object.fromEntries(UNIT_DEFS.map(u=>[u.id,TIER_POOL[u.tier]]));
-      state.selected=null;state.dragging=null;state.touchDrag=null;state.mergePulseUid=null;state.inBattle=false;state.relics=[];state.relicTaken={};state.pendingAdvance=false;state.pendingClearStage=null;state.enemyPreview=null;state.enemyPreviewStage=null;state.lastBattleBreakdown=[];state.runStats={wins:0,losses:0,damageByDef:{},fieldCounts:{}};state.endlessMode=false;state.endlessUnlocked=false;state.bestStage=0;state.runSeed=null;state.seedRng=null;state.recapVisible=false;state.logVisible=false;state.advancedOpen=false;state.settings.renderMode='classic';state.pendingAutoReset=false;
-      state.mods={incomeBonus:0,aquaAS:0,beastFlatAtk:0,birdMove:0,rogueCrit:0,thornReflect:0,guardianHP:0,sniperDmg:0,skillPower:0,sniperRange:0,startEnergy:0,globalAS:0,sellBonusEnergy:0,killHeal:0,doubleCastChance:0,globalHP:0,lowHpAS:0,secondWind:false,winBonusEnergy:0,lossBonusEnergy:0};
+      state.selected=null;state.dragging=null;state.touchDrag=null;state.mergePulseUid=null;state.inBattle=false;state.relics=[];state.relicTaken={};state.pendingAdvance=false;state.pendingClearStage=null;state.enemyPreview=null;state.enemyPreviewStage=null;state.lastBattleBreakdown=[];state.runStats={wins:0,losses:0,damageByDef:{},fieldCounts:{}};state.endlessMode=false;state.endlessUnlocked=false;state.bestStage=0;state.runSeed=null;state.seedRng=null;state.recapVisible=false;state.logVisible=false;state.advancedOpen=false;state.pendingAutoReset=false;
+      state.mods={incomeBonus:0,aquaAS:0,beastFlatAtk:0,birdMove:0,bugPoison:0,reptileDR:0,rogueCrit:0,thornReflect:0,guardianHP:0,sniperDmg:0,skillPower:0,sniperRange:0,startEnergy:0,globalAS:0,sellBonusEnergy:0,killHeal:0,doubleCastChance:0,globalHP:0,lowHpAS:0,secondWind:false,winBonusEnergy:0,lossBonusEnergy:0};
       initDailyModifier();
       grantStarterUnit();
       el('selectedOverlay').classList.remove('show');
@@ -2438,10 +2646,6 @@
     el('toggleRecapBtn').onclick=()=>{state.recapVisible=!state.recapVisible;renderTop();};
     el('toggleLogBtn').onclick=()=>{state.logVisible=!state.logVisible;renderTop();};
     el('toggleDebugBtn').onclick=()=>{state.debugVisible=!state.debugVisible;renderTop();};
-    el('toggleRenderModeBtn').onclick=()=>{
-      state.settings.renderMode = state.settings.renderMode==='model'?'classic':'model';
-      renderPrepUnits();renderTop();if(state.inBattle) renderActorPositions(true);renderShop();
-    };
     el('toggleAdvancedBtn').onclick=()=>{state.advancedOpen=!state.advancedOpen;renderTop();};
     el('closeAdvancedPanelBtn').onclick=()=>{state.advancedOpen=false;renderTop();};
     el('openOddsBtn2').onclick=()=>{renderOddsModal();placeCenterOverlayOnArena('oddsOverlay');el('oddsOverlay').classList.add('show');};
@@ -2471,6 +2675,16 @@
       const sy=el('synergyOverlay'), sym=sy&&sy.querySelector('.modal');
       if(sy&&sy.classList.contains('show')&&sym&&!sym.contains(e.target)){sy.classList.remove('show');}
     });
+
+    // Test hook. Top-level `const` in a classic script is script-scoped, not a window
+    // property, so tools/smoke.mjs has no way in without this. Read-only by convention;
+    // nothing in the game reads it back.
+    window.__game = {
+      state, UNIT_DEFS, UNIT_ASSETS, UNIT_MODEL_MANIFEST, CLASSES, TRAITS,
+      CLASS_IDS, TRAIT_IDS, CLASS_BREAK, TRAIT_BREAK, TIER_POOL, BOSS_ASSETS,
+      getSynergyState, boardCapForStage, buyShop, refreshShop, startBattle,
+      renderPrepUnits, renderTop, renderShop
+    };
 
     renderGlossaryBody();
     buildBoard();
