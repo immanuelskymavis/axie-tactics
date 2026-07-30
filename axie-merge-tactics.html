@@ -267,6 +267,10 @@
     .synBadge .ico{width:16px;height:16px}
     .synCount{font-size:11px;opacity:.85;min-width:9px;text-align:center}
     .shopNameRow .ico{width:14px;height:14px}
+    .relicChip{display:inline-flex;align-items:center;padding:5px 7px;color:var(--gold)}
+    .relicChip .ico{width:17px;height:17px}
+    .augIcon .ico{width:34px;height:34px;color:var(--gold)}
+    .ico.big{width:22px;height:22px;color:var(--gold)}
     #log{max-height:120px;overflow:auto;background:#0f1430;border:1px solid #2e3969;border-radius:10px;padding:8px}
     #actorLayer{position:absolute;inset:0;pointer-events:auto;z-index:12}
     #fxLayer{position:absolute;inset:0;pointer-events:none;z-index:14}
@@ -288,8 +292,9 @@
     .actor.class-bird   {background:radial-gradient(70% 60% at 50% 82%,var(--bird) -40%,transparent 70%)}
     .actor.class-bug    {background:radial-gradient(70% 60% at 50% 82%,var(--bug) -40%,transparent 70%)}
     .actor.class-reptile{background:radial-gradient(70% 60% at 50% 82%,var(--reptile) -40%,transparent 70%)}
-    .actor .actorArt{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1;filter:drop-shadow(0 3px 4px #0008)}
-    .actor .actorShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 42%,#0006 74%,#000a);z-index:2}
+    .actor .actorArt{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1;
+      transform:translateY(-7px) scale(1.34);filter:drop-shadow(0 3px 4px #0008)}
+    .actor .actorShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 52%,#0005 78%,#0009);z-index:2}
     .actor .actorStars{position:absolute;left:50%;top:2px;transform:translateX(-50%);font-size:12px;color:#ffd86a;text-shadow:0 1px 2px #000;z-index:4}
     .actor .actorHp{position:absolute;left:6px;right:6px;bottom:12px;height:6px;border-radius:99px;background:#000a;border:1px solid #35507a;overflow:hidden;z-index:5}
     .actor .actorHpFill{height:100%;background:linear-gradient(90deg,#53ef95,#90ffc1)}
@@ -487,6 +492,30 @@
     <symbol id="i-mage" viewBox="0 0 24 24"><path d="M12 1.8 14 8l6.2 2-6.2 2-2 6.2-2-6.2L3.8 10 10 8l2-6.2Z" fill="currentColor"/><circle cx="19" cy="18.4" r="1.9" fill="currentColor" opacity=".8"/><circle cx="5" cy="17.4" r="1.3" fill="currentColor" opacity=".6"/></symbol>
     <symbol id="i-spikes" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.4" fill="currentColor"/><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 1.6v3.6M12 18.8v3.6M1.6 12h3.6M18.8 12h3.6M4.6 4.6 7.2 7.2M16.8 16.8l2.6 2.6M19.4 4.6 16.8 7.2M7.2 16.8l-2.6 2.6"/></g></symbol>
     <symbol id="i-sniper" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.6" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 1.4v4M12 18.6v4M1.4 12h4M18.6 12h4"/></g></symbol>
+
+    <symbol id="i-r-mint" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor"/><path d="M12 6.6v10.8M9.2 9.2h4.6a1.9 1.9 0 0 1 0 3.8H9.2h5" stroke="#0d1020" stroke-width="1.8" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-r-cloak" viewBox="0 0 24 24"><path d="M12 3c3 0 5 1.6 6 4l2.4 12H3.6L6 7c1-2.4 3-4 6-4Z" fill="currentColor"/><path d="M8.4 9.6h7.2" stroke="#0d1020" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-r-spores" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="currentColor"/><g fill="currentColor"><circle cx="4.4" cy="7.4" r="2.1"/><circle cx="19.6" cy="8" r="1.8"/><circle cx="6" cy="19" r="1.8"/><circle cx="18.6" cy="18" r="2.1"/></g></symbol>
+    <symbol id="i-r-crest" viewBox="0 0 24 24"><path d="M12 2.4 20 5v7c0 4.6-3.2 8.2-8 9.6-4.8-1.4-8-5-8-9.6V5l8-2.6Z" fill="currentColor"/><path d="M12 7v9M8 11h8" stroke="#0d1020" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-r-banner" viewBox="0 0 24 24"><path d="M5 2.6v18.8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M7 4h12l-3 4 3 4H7V4Z" fill="currentColor"/></symbol>
+    <symbol id="i-r-runestone" viewBox="0 0 24 24"><path d="M7 3.6h10l4 6.4-9 11-9-11 4-6.4Z" fill="currentColor"/><path d="M12 7.4v8M9.4 10.6h5.2" stroke="#0d1020" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-r-scope" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></symbol>
+    <symbol id="i-r-capacitor" viewBox="0 0 24 24"><rect x="3" y="7" width="15" height="10" rx="2.6" fill="currentColor"/><rect x="19" y="10" width="2.6" height="4" rx="1.2" fill="currentColor"/><path d="m11 9-2.6 4H11l-.6 3 3-4h-2.4l.6-3Z" fill="#0d1020"/></symbol>
+    <symbol id="i-r-watch" viewBox="0 0 24 24"><circle cx="12" cy="12.6" r="7" fill="currentColor"/><path d="M12 8.8v4l2.6 1.6" stroke="#0d1020" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M9.4 3h5.2l-.6 2.6H10L9.4 3Z" fill="currentColor"/></symbol>
+    <symbol id="i-r-scrap" viewBox="0 0 24 24"><path d="M5 14V9a7 7 0 0 1 14 0v5h-4V9a3 3 0 0 0-6 0v5H5Z" fill="currentColor"/><rect x="5" y="15.4" width="4" height="4.4" fill="currentColor" opacity=".65"/><rect x="15" y="15.4" width="4" height="4.4" fill="currentColor" opacity=".65"/></symbol>
+    <symbol id="i-r-gem" viewBox="0 0 24 24"><path d="M7 3.4h10l4 5.4-9 12-9-12 4-5.4Z" fill="currentColor"/><path d="M3 8.8h18M12 3.4 9 8.8l3 12 3-12-3-5.4Z" stroke="#0d1020" stroke-width="1.2" fill="none" opacity=".55"/></symbol>
+    <symbol id="i-r-glass" viewBox="0 0 24 24"><circle cx="12" cy="11" r="7.4" fill="currentColor"/><circle cx="9.4" cy="8.6" r="2.2" fill="#0d1020" opacity=".35"/><path d="M6.6 19.6h10.8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-r-elixir" viewBox="0 0 24 24"><path d="M9.4 2.6h5.2v5l4 9.2a2.6 2.6 0 0 1-2.4 3.6H7.8a2.6 2.6 0 0 1-2.4-3.6l4-9.2v-5Z" fill="currentColor"/><path d="M8 2.6h8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.7" fill="#0d1020" opacity=".45"/></symbol>
+    <symbol id="i-r-adrenaline" viewBox="0 0 24 24"><path d="m14 3 7 7-2 2-1.4-1.4-6.6 6.6L7 20.6 3.4 17l3.4-4 6.6-6.6L12 5l2-2Z" fill="currentColor"/><path d="m10 9 5 5" stroke="#0d1020" stroke-width="1.6"/></symbol>
+    <symbol id="i-r-secondwind" viewBox="0 0 24 24"><path d="M12 20.6S3.4 15 3.4 9.2A4.6 4.6 0 0 1 12 6.8a4.6 4.6 0 0 1 8.6 2.4c0 5.8-8.6 11.4-8.6 11.4Z" fill="currentColor"/><path d="M6.6 12h3l1.4-2.4 2 4.4 1.4-2h2.6" stroke="#0d1020" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-r-battery" viewBox="0 0 24 24"><path d="M13.4 2 5 13.4h5L9.4 22 19 10.2h-5.4L13.4 2Z" fill="currentColor"/></symbol>
+    <symbol id="i-r-tax" viewBox="0 0 24 24"><path d="M5 2.6h14v18.8l-2.4-1.6-2.4 1.6-2.4-1.6-2.4 1.6-2.4-1.6L5 21.4V2.6Z" fill="currentColor"/><path d="M8.4 7.4h7.2M8.4 11h7.2M8.4 14.6h4.4" stroke="#0d1020" stroke-width="1.5" stroke-linecap="round"/></symbol>
+
+    <symbol id="i-d-bloodmoon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4" fill="currentColor"/><circle cx="9" cy="9.6" r="1.7" fill="#0d1020" opacity=".3"/><circle cx="15" cy="14.6" r="2.3" fill="#0d1020" opacity=".25"/></symbol>
+    <symbol id="i-d-ironwall" viewBox="0 0 24 24"><g fill="currentColor"><rect x="2.6" y="4" width="8" height="5" rx="1"/><rect x="12" y="4" width="9.4" height="5" rx="1"/><rect x="2.6" y="10" width="12" height="5" rx="1"/><rect x="15.6" y="10" width="5.8" height="5" rx="1"/><rect x="2.6" y="16" width="6.4" height="4.4" rx="1"/><rect x="10.4" y="16" width="11" height="4.4" rx="1"/></g></symbol>
+    <symbol id="i-d-arcane" viewBox="0 0 24 24"><path d="M12 1.8 14 8l6.2 2-6.2 2-2 6.2-2-6.2L3.8 10 10 8l2-6.2Z" fill="currentColor"/><circle cx="19.4" cy="19" r="1.8" fill="currentColor"/></symbol>
+    <symbol id="i-d-slowtime" viewBox="0 0 24 24"><path d="M6 2.6h12M6 21.4h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M7.4 3.6h9.2v3L12 12l4.6 5.4v3H7.4v-3L12 12 7.4 6.6v-3Z" fill="currentColor"/></symbol>
+    <symbol id="i-d-bounty" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.6 8.4-2 5.2-5.2 2 2-5.2 5.2-2Z" fill="currentColor"/></symbol>
   </defs></svg>
   <div class="app">
     <div class="panel">
@@ -835,6 +864,40 @@
       {id:'venoki',skillKey:'raven',name:'Venoki',emoji:'🦎',tier:5,class:'Reptile',trait:'Sniper',atk:82,hp:1250,mystic:false,range:5,attack:'Venom Lance',skill:'Vortex Volley hits the whole row for 200 dmg, executes under 25% HP'}
     ];
 
+    // The CMS (cms/index.html) writes balance overrides to localStorage. Apply them here,
+    // before the derived maps are built, so edits take effect on reload.
+    //
+    // Deliberately an override layer, not a full data source: the CMS cannot supply art or
+    // a skillKey, so it may only retune units that already exist. Unknown ids are skipped,
+    // and class/trait are validated against the real lists — a typo cannot silently drop a
+    // unit out of every synergy.
+    (function applyCmsOverrides(){
+      let data;
+      try{ data = JSON.parse(localStorage.getItem('cms_data_v1')||'null'); }catch{ return; }
+      if(!data || !Array.isArray(data.units) || !data.units.length) return;
+      const byId = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,u]));
+      const num=(v,f)=>Number.isFinite(+v)&&+v>0?+v:f;
+      let applied=0, skipped=[];
+      for(const o of data.units){
+        const base = o && o.id && byId[o.id];
+        if(!base){ if(o&&o.id) skipped.push(o.id); continue; }
+        if(o.name) base.name=String(o.name);
+        if(o.emoji) base.emoji=String(o.emoji);
+        if(CLASS_IDS.includes(o.class)) base.class=o.class;
+        if(TRAIT_IDS.includes(o.trait)) base.trait=o.trait;
+        base.tier  = Math.min(5,Math.max(1,num(o.tier,base.tier)));
+        base.atk   = num(o.atk,base.atk);
+        base.hp    = num(o.hp,base.hp);
+        base.range = Math.min(6,Math.max(1,num(o.range,base.range)));
+        if(typeof o.mystic==='boolean') base.mystic=o.mystic;
+        if(o.attack) base.attack=String(o.attack);
+        if(o.skill)  base.skill=String(o.skill);
+        applied++;
+      }
+      if(applied) console.info(`[cms] applied ${applied} unit override(s)`);
+      if(skipped.length) console.warn(`[cms] ignored unknown unit id(s): ${skipped.join(', ')} — the CMS can only retune existing units`);
+    })();
+
     const UMAP = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,u]));
 
     // Buba, Puffy and Pomodoro are rendered from Sky Mavis's official 3D models into
@@ -956,6 +1019,18 @@
       ...CLASSES.map(c=>[c.id,c.slug]),
       ...TRAITS.map(t=>[t.id,t.id.toLowerCase()])
     ]);
+    // Relic and daily glyphs resolve to the same sprite; the emoji maps stay as the
+    // fallback so an unrecognised id still renders something.
+    function relicIcon(id,cls=''){
+      return document.getElementById('i-r-'+id)
+        ? `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-r-${id}"/></svg>`
+        : (RELIC_ICONS[id]||'\u{1F539}');
+    }
+    function dailyIcon(id,cls=''){
+      return document.getElementById('i-d-'+id)
+        ? `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-d-${id}"/></svg>`
+        : (DAILY_ART[id]||'\u{1F33F}');
+    }
     function synIcon(key,cls=''){
       const slug=ICON_SLUG[key];
       if(!slug) return SYN_ICONS[key]||'';
@@ -1165,7 +1240,7 @@
       box.innerHTML = `<div><b>${state.daily.name}</b></div><div class="small">${state.daily.desc}</div>`;
       const onBoard=el('dailyOnBoard');
       if(onBoard){
-        onBoard.innerHTML = `<span style="font-size:20px">${DAILY_ART[state.daily.id]||'🌿'}</span>`;
+        onBoard.innerHTML = dailyIcon(state.daily.id,'big');
         onBoard.style.cursor='pointer';
         onBoard.onclick=(e)=>openSideInfo(`Daily Challenge: ${state.daily.name}`,`<div class="small">${state.daily.desc}</div>`,e.currentTarget);
       }
@@ -1727,12 +1802,12 @@
     }
 
     function renderRelics(){
-      const rl=el('relicList'); if(rl) rl.innerHTML = state.relics.length?state.relics.map(r=>`<div>${RELIC_ICONS[r.id]||'🔹'} <b>${r.name}</b> <span class="small">${r.desc}</span></div>`).join(''):'<span class="small">None yet</span>';
+      const rl=el('relicList'); if(rl) rl.innerHTML = state.relics.length?state.relics.map(r=>`<div>${relicIcon(r.id)} <b>${r.name}</b> <span class="small">${r.desc}</span></div>`).join(''):'<span class="small">None yet</span>';
       const br=el('boardRelics');
       if(br){
-        br.innerHTML = state.relics.length?state.relics.map(r=>`<span class="badge" title="${r.desc}" style="font-size:16px;padding:4px 7px">${RELIC_ICONS[r.id]||'🔹'}</span>`).join(''):'';
+        br.innerHTML = state.relics.length?state.relics.map(r=>`<span class="badge relicChip" title="${r.name} — ${r.desc}">${relicIcon(r.id)}</span>`).join(''):'';
         br.style.cursor=state.relics.length?'pointer':'default';
-        if(state.relics.length) br.onclick=(e)=>openSideInfo('Active Relics',state.relics.map(r=>`<div>${RELIC_ICONS[r.id]||'🔹'} <b>${r.name}</b><div class="small">${r.desc}</div></div>`).join('<hr style="border-color:#36457f66">'),e.currentTarget);
+        if(state.relics.length) br.onclick=(e)=>openSideInfo('Active Relics',state.relics.map(r=>`<div>${relicIcon(r.id)} <b>${r.name}</b><div class="small">${r.desc}</div></div>`).join('<hr style="border-color:#36457f66">'),e.currentTarget);
       }
     }
     function openSynergyModal(key,anchorEl=null){
@@ -1987,24 +2062,10 @@
       };
     }
 
-    function generateEnemies(stage){
-      const used = new Set(), list = [];
-      const count = stage===1 ? 2 : Math.min(8, 3 + Math.floor(stage*0.7));
-      if(stage===5 || stage===10){list.push(makeChimera(stage)); used.add('2|2');}
-      for(let i=0;i<count;i++){
-        const t = weightedTier(clamp(stage+1,1,10));
-        const maxTier = stage===1 ? 1 : Math.min(5,Math.max(1,t+1));
-        const defs = UNIT_DEFS.filter(u=>u.tier<=maxTier);
-        const d = rnd(defs);
-        let r,c,key,tries=0;
-        do{r=Math.floor(rand()*5);c=Math.floor(rand()*5);key=r+'|'+c;tries++;}while(used.has(key)&&tries<50);
-        used.add(key);
-        const star = stage>=8 && rand()<0.32 ? 2 : (stage>=10&&rand()<0.15?3:1);
-        const scale = stage===1 ? 0.68 : (stage===2 ? 0.88 : 1.05);
-        list.push(makeEnemy(d.id,star,r,c,scale));
-      }
-      return list;
-    }
+    // NOTE: enemy comps come from buildEnemyPreview() via state.enemyPreview, which
+    // startBattle maps through makeEnemy/makeChimera. A second generateEnemies() used to
+    // live here with the same logic and no callers; it had already drifted from the live
+    // path (placement retry limit 50 vs 60), so it was removed rather than kept in sync.
 
     function getCellCenter(r,c){
       const cell=document.querySelector(`.hex[data-r="${r}"][data-c="${c}"]`);
@@ -2550,7 +2611,7 @@
       el('relicChoices').innerHTML='';
       picks.forEach(r=>{
         const c=document.createElement('div');c.className='relicCard';
-        c.innerHTML=`<div class="augIcon">${RELIC_ICONS[r.id]||'🔹'}</div><div style="font-weight:800;margin-bottom:4px">${r.name}</div><div class="small" style="margin-bottom:10px">${r.desc}</div><button class="btn" style="width:100%">Choose Augment</button>`;
+        c.innerHTML=`<div class="augIcon">${relicIcon(r.id)}</div><div style="font-weight:800;margin-bottom:4px">${r.name}</div><div class="small" style="margin-bottom:10px">${r.desc}</div><button class="btn" style="width:100%">Choose Augment</button>`;
         c.querySelector('button').onclick=()=>{
           state.relics.push({id:r.id,name:r.name,desc:r.desc});state.relicTaken[r.id]=1;r.apply(state);
           el('relicOverlay').classList.remove('show');

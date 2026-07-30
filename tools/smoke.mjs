@@ -155,6 +155,78 @@ await mobile.screenshot({ path: join(SHOTS, 'smoke-3-mobile.png') });
 const overflow = await mobile.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 2);
 if (overflow) problems.push('page scrolls horizontally at 390px');
 
+
+// ---- 6. boss stage: Chimera spawns and phase art swaps ----
+const bossPage = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+bossPage.on('pageerror', (e) => problems.push(`boss pageerror: ${e.message}`));
+bossPage.on('console', (m) => m.type() === 'error' && problems.push(`boss console: ${m.text()}`));
+await bossPage.goto(`http://127.0.0.1:${PORT}/axie-merge-tactics.html`, { waitUntil: 'networkidle' });
+const boss = await bossPage.evaluate(async () => {
+  const g = window.__game;
+  g.state.stage = 5;
+  g.state.energy = 999;
+  for (let round = 0; round < 8; round++) {
+    for (let i = 0; i < 3; i++) if (g.state.shop[i]) { try { g.buyShop(i); } catch {} }
+    g.refreshShop(); g.state.energy = 999;
+  }
+  let placed = 0;
+  const cap = g.boardCapForStage(5);
+  for (let b = 0; b < g.state.bench.length && placed < cap; b++) {
+    const uid = g.state.bench[b]; if (!uid) continue;
+    outer: for (let r = 9; r >= 5; r--) for (let c = 0; c < 5; c++) {
+      if (!g.state.grid[r][c]) { g.state.grid[r][c] = uid; g.state.bench[b] = null; placed++; break outer; }
+    }
+  }
+  g.renderPrepUnits(); g.renderTop();
+  g.startBattle();
+  const bossUnit = (g.state.combat?.units || []).find((u) => u.boss);
+  const before = document.querySelector('#actor-' + (bossUnit?.id) + ' img.actorArt')?.getAttribute('src');
+  // Force the phase threshold rather than waiting out a full fight.
+  if (bossUnit) bossUnit.hp = bossUnit.maxHp * 0.4;
+  return { placed, hasBoss: !!bossUnit, before, phase1: g.BOSS_ASSETS.phase1, phase2: g.BOSS_ASSETS.phase2 };
+});
+if (!boss.hasBoss) problems.push('stage 5 produced no Chimera boss');
+await bossPage.waitForTimeout(900);
+const bossAfter = await bossPage.evaluate(() => {
+  const g = window.__game;
+  const u = (g.state.combat?.units || []).find((x) => x.boss);
+  return { phase2: !!u?.phase2, src: document.querySelector('.actor img.actorArt')?.getAttribute('src') };
+});
+if (boss.hasBoss && !bossAfter.phase2) problems.push('boss did not enter phase 2 below 50% HP');
+await bossPage.screenshot({ path: join(SHOTS, 'smoke-4-boss.png'), fullPage: true });
+
+// ---- 7. CMS override actually reaches the game ----
+const cmsPage = await browser.newPage();
+cmsPage.on('pageerror', (e) => problems.push(`cms pageerror: ${e.message}`));
+await cmsPage.goto(`http://127.0.0.1:${PORT}/cms/index.html`, { waitUntil: 'networkidle' });
+await cmsPage.screenshot({ path: join(SHOTS, 'smoke-5-cms.png'), fullPage: true });
+await cmsPage.evaluate(() => {
+  localStorage.setItem('cms_data_v1', JSON.stringify({
+    units: [
+      { id: 'goldfish', name: 'Goldfish', class: 'Aquatic', trait: 'Assassin', tier: 1, atk: 999, hp: 4321, range: 1 },
+      { id: 'does-not-exist', name: 'Ghost', atk: 1 },
+      { id: 'larva', class: 'NotAClass', atk: 77 },
+    ],
+    synergies: {},
+  }));
+});
+const overridden = await cmsPage.evaluate(async (port) => {
+  const w = window.open(`http://127.0.0.1:${port}/axie-merge-tactics.html`, '_blank');
+  await new Promise((r) => setTimeout(r, 2500));
+  const g = w.__game;
+  const gf = g.UNIT_DEFS.find((u) => u.id === 'goldfish');
+  const lv = g.UNIT_DEFS.find((u) => u.id === 'larva');
+  const out = { atk: gf.atk, hp: gf.hp, larvaAtk: lv.atk, larvaClass: lv.class, count: g.UNIT_DEFS.length };
+  w.close();
+  return out;
+}, PORT);
+if (overridden.atk !== 999 || overridden.hp !== 4321) problems.push(`cms override not applied: ${JSON.stringify(overridden)}`);
+if (overridden.larvaClass !== 'Bug') problems.push(`cms let an invalid class through: ${overridden.larvaClass}`);
+if (overridden.larvaAtk !== 77) problems.push('cms valid field on a partially-invalid entry was dropped');
+if (overridden.count !== 30) problems.push(`cms changed roster size to ${overridden.count}`);
+console.log(`boss: spawned=${boss.hasBoss} phase2=${bossAfter.phase2}`);
+console.log(`cms override: goldfish atk ${overridden.atk}/hp ${overridden.hp}, invalid class rejected -> ${overridden.larvaClass}`);
+
 console.log(`roster: ${shape.units} units, ${shape.classes.length} classes ${JSON.stringify(shape.perClass)}`);
 console.log(`battle: ${battle.log.join(' | ')}`);
 console.log(`game log: ${(battle.gameLog||[]).join(' // ')}`);

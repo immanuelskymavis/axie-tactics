@@ -5,63 +5,101 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Axie Tactics CMS</title>
   <style>
-    body{margin:0;background:#0f1410;color:#e9f3e6;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-    .wrap{max-width:1100px;margin:0 auto;padding:14px;display:grid;gap:12px}
-    .card{background:#1a2318;border:1px solid #3f543a;border-radius:12px;padding:12px}
-    h1,h2{margin:0 0 10px 0}
+    /* Shares the game's Lunacia tokens — this used to be a third, unrelated palette. */
+    :root{
+      --bg:#0d1020;--panel:#1b2340;--panel-2:#151b33;--panel-3:#101527;
+      --edge:#2f3b6b;--edge-strong:#4a5c9e;
+      --ink:#eaf0ff;--muted:#9fb0dd;
+      --gold:#ffd76a;--good:#5fe3a1;--bad:#ff7c90;
+      --beast:#fdb014;--aquatic:#3fc5e0;--plant:#a8df3d;--bird:#ff8cbe;--bug:#ff6b57;--reptile:#b673e0;
+      --r-md:12px;--r-sm:8px;
+      --font:ui-rounded,"Nunito","Quicksand","Trebuchet MS",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;color:var(--ink);font-family:var(--font);
+      background:radial-gradient(1200px 700px at 18% -12%,#2a3a7a55 0%,transparent 62%),
+                 linear-gradient(180deg,var(--bg),#141a30 48%,var(--bg));min-height:100vh}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px;display:grid;gap:12px}
+    .card{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--edge);
+      border-radius:var(--r-md);padding:14px;box-shadow:0 8px 25px #0009}
+    h1{margin:0 0 4px 0;font-size:20px;letter-spacing:.4px}
+    h2{margin:0 0 10px 0;font-size:15px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+    .note{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 10px}
+    .note b{color:var(--gold)}
     .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-    label{font-size:12px;color:#b8ccb3;display:flex;flex-direction:column;gap:4px}
-    input,select,textarea,button{border-radius:8px;border:1px solid #475d42;background:#11170f;color:#e9f3e6;padding:8px}
-    button{cursor:pointer;background:#2b4f2c}
-    table{width:100%;border-collapse:collapse;font-size:12px}
-    th,td{border-bottom:1px solid #354733;padding:6px;text-align:left}
     .row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+    input,select,textarea,button{border-radius:var(--r-sm);border:1px solid var(--edge);
+      background:var(--panel-3);color:var(--ink);padding:8px;font-family:inherit;font-size:13px}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--edge-strong)}
+    button{cursor:pointer;background:linear-gradient(180deg,#2f60ff,#274ee0);border-color:#4f7bff;font-weight:700}
+    button.warn{background:linear-gradient(180deg,#90364e,#6f263a);border-color:#c05a75}
+    button.ghost{background:var(--panel-3);border-color:var(--edge);font-weight:600}
+    table{width:100%;border-collapse:collapse;font-size:12px}
+    th{color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-size:11px}
+    th,td{border-bottom:1px solid var(--edge);padding:7px 6px;text-align:left}
+    tbody tr:hover{background:#ffffff08}
+    .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;
+      border:1px solid currentColor}
+    .c-Beast{color:var(--beast)}.c-Aquatic{color:var(--aquatic)}.c-Plant{color:var(--plant)}
+    .c-Bird{color:var(--bird)}.c-Bug{color:var(--bug)}.c-Reptile{color:var(--reptile)}
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <h1>Axie Tactics CMS</h1>
+      <p class="note">Balance overrides for <b>axie-merge-tactics.html</b>. Saved edits are read by
+      the game on its next reload, from the same browser. This is an <b>override layer</b>: it can
+      retune units that already exist, but cannot add new ones — a new unit would also need art and
+      a skill implementation. Unknown ids are ignored, and an invalid class or trait is discarded
+      rather than applied.</p>
       <div class="row3">
         <button id="exportBtn">Export JSON</button>
         <input id="importFile" type="file" accept="application/json">
-        <button id="clearBtn">Reset CMS Data</button>
+        <button id="clearBtn" class="warn">Reset CMS Data</button>
       </div>
     </div>
     <div class="card">
       <h2>Add / Update Unit</h2>
       <div class="row">
-        <label>ID<input id="uId" placeholder="peon"></label>
-        <label>Name<input id="uName" placeholder="Peon"></label>
+        <label>ID<input id="uId" placeholder="goldfish"></label>
+        <label>Name<input id="uName" placeholder="Goldfish"></label>
         <label>Emoji<input id="uEmoji" placeholder="💧"></label>
         <label>Tier<input id="uTier" type="number" min="1" max="5" value="1"></label>
-        <label>Class<input id="uClass" placeholder="Aqua"></label>
-        <label>Trait<input id="uTrait" placeholder="Assassin"></label>
+        <label>Class<select id="uClass">
+          <option>Beast</option><option>Aquatic</option><option>Plant</option>
+          <option>Bird</option><option>Bug</option><option>Reptile</option>
+        </select></label>
+        <label>Trait<select id="uTrait">
+          <option>Assassin</option><option>Bastion</option><option>Vanguard</option>
+          <option>Mage</option><option>Spikes</option><option>Sniper</option>
+        </select></label>
         <label>Attack<input id="uAtk" type="number" value="45"></label>
         <label>HP<input id="uHp" type="number" value="480"></label>
         <label>Range<input id="uRange" type="number" value="1"></label>
         <label>Mystic<select id="uMystic"><option value="false">false</option><option value="true">true</option></select></label>
         <label>Attack Name<input id="uAttack" placeholder="Aqua Nip"></label>
         <label>Skill Description<input id="uSkill" placeholder="Infiltrate backline..."></label>
-        <label style="grid-column:1/-1">Image URL<input id="uImage" placeholder="https://...png"></label>
+        <label style="grid-column:1/-1">Image URL <span style="opacity:.6">(reference only — the game resolves art by unit id)</span><input id="uImage" placeholder="assets/axies/svg/goldfish.svg"></label>
       </div>
       <div class="row3" style="margin-top:8px">
         <button id="saveUnitBtn">Save Unit</button>
-        <button id="deleteUnitBtn">Delete Unit</button>
-        <button id="clearUnitBtn">Clear Form</button>
+        <button id="deleteUnitBtn" class="warn">Delete Unit</button>
+        <button id="clearUnitBtn" class="ghost">Clear Form</button>
       </div>
     </div>
     <div class="card">
       <h2>Synergy Effects</h2>
       <div class="row">
-        <label>Key (Class/Trait)<input id="sKey" placeholder="Aqua"></label>
+        <label>Key (Class/Trait)<input id="sKey" placeholder="Aquatic"></label>
         <label>Lv1 Effect<textarea id="sLv1"></textarea></label>
         <label>Lv2 Effect<textarea id="sLv2"></textarea></label>
       </div>
       <div class="row3" style="margin-top:8px">
         <button id="saveSynBtn">Save Synergy</button>
-        <button id="deleteSynBtn">Delete Synergy</button>
-        <button id="clearSynBtn">Clear Form</button>
+        <button id="deleteSynBtn" class="warn">Delete Synergy</button>
+        <button id="clearSynBtn" class="ghost">Clear Form</button>
       </div>
     </div>
     <div class="card">
@@ -86,8 +124,8 @@
     const $=id=>document.getElementById(id);
     const save=()=>localStorage.setItem(STORAGE_NAMESPACE,JSON.stringify(state));
     function render(){
-      $('unitRows').innerHTML=state.units.map(u=>`<tr><td>${u.id}</td><td>${u.name}</td><td>${u.tier}</td><td>${u.class}</td><td>${u.trait}</td><td>ATK ${u.atk} / HP ${u.hp} / R ${u.range}</td><td><button onclick="editUnit('${u.id}')">Edit</button></td></tr>`).join('');
-      $('synRows').innerHTML=Object.entries(state.synergies).map(([k,v])=>`<tr><td>${k}</td><td>${v.lv1||''}</td><td>${v.lv2||''}</td><td><button onclick="editSyn('${k}')">Edit</button></td></tr>`).join('');
+      $('unitRows').innerHTML=state.units.map(u=>`<tr><td>${u.id}</td><td>${u.name}</td><td>${u.tier}</td><td><span class="pill c-${u.class}">${u.class}</span></td><td>${u.trait}</td><td>ATK ${u.atk} / HP ${u.hp} / R ${u.range}</td><td><button class="ghost" onclick="editUnit('${u.id}')">Edit</button></td></tr>`).join('');
+      $('synRows').innerHTML=Object.entries(state.synergies).map(([k,v])=>`<tr><td>${k}</td><td>${v.lv1||''}</td><td>${v.lv2||''}</td><td><button class="ghost" onclick="editSyn('${k}')">Edit</button></td></tr>`).join('');
     }
     window.editUnit=id=>{
       const u=state.units.find(x=>x.id===id); if(!u) return;
