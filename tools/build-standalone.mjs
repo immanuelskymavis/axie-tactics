@@ -109,8 +109,18 @@ if (styleStart < 0 || bodyStart < 6 || bodyEnd < 0) {
   console.error('could not locate <style>/<body> boundaries in the source HTML');
   process.exit(1);
 }
+// The game deliberately commits to one dark visual world — a lit arena, not a document —
+// so it does not offer a light theme. It does have to hold that against a light-theme
+// host: pin the background on the root element too (the game only styles <body>), and
+// declare color-scheme so scrollbars and form controls match rather than flashing white.
+const themeHold = `<style>
+  html{background:#0d1020;color-scheme:dark}
+  html,body{min-height:100%}
+</style>`;
+
 const artifact = [
   preamble,
+  themeHold,
   html.slice(styleStart, styleEnd),
   html.slice(bodyStart, bodyEnd).trim(),
 ].join('\n');
