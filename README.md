@@ -53,7 +53,11 @@ cd tools && npm install
 npm run fetch:axies     # download official GLBs + textures into tools/.cache/
 npm run render:sprites  # render them to transparent sprite strips in assets/axies/
 npm run build:art       # both of the above
-npm run smoke           # end-to-end check (see below)
+npm run smoke           # end-to-end check of the served game (see below)
+
+npm run build:mobile     # 64px sprite profile -> assets/axies-mobile/
+npm run build:standalone # single self-contained file -> dist/
+npm run verify:standalone# prove dist/ is self-contained and plays on phone viewports
 
 node make-svg-axies.mjs # regenerate the SVG roster + boss art
 node preview-art.mjs    # contact sheet of every unit -> tools/out/
@@ -83,6 +87,26 @@ no failed requests, every roster id resolves to art that exists, a full prep-to-
 cycle runs, combat actors carry the animation hooks, the stage-5 Chimera spawns and
 swaps to its enraged art, CMS overrides apply and reject invalid input, and the 390px
 layout does not scroll horizontally. Screenshots land in `tools/out/`.
+
+## Single-file build
+
+`npm run build:standalone` inlines every asset as a `data:` URI and emits two files to
+`dist/`:
+
+- `axie-merge-tactics.standalone.html` — a complete document, droppable on any static host
+  or opened straight off disk.
+- `axie-merge-tactics.artifact.html` — the same content with no `<!doctype>`/`<html>`/
+  `<head>`/`<body>`, for hosts that supply their own document skeleton.
+
+Both default to the `mobile` sprite profile (`--profile full` for the large one). At the
+520px breakpoint hexes are 47x41, so the full-resolution 128px frames are about three
+times larger than a phone will ever draw them; the small profile takes the bundle from
+1.56 MB to 0.69 MB. Every art path in the game resolves through `assetUrl()`, which reads
+`window.__ASSETS` — the map this build writes.
+
+`npm run verify:standalone` is the check that matters: it serves *only* the built file, so
+any asset the page still tries to fetch 404s. Passing with **zero subresource requests** is
+what proves the page survives a strict CSP instead of loading with missing art.
 
 ## CMS
 

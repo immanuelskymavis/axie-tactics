@@ -383,10 +383,17 @@
       #shopSide{min-width:72px;gap:4px}
       .energyCoin{width:36px;height:36px;font-size:19px}
       .energyCoin .num{font-size:12px;padding:1px 5px;right:-3px;bottom:-2px}
-      #shopFightBtn{padding:6px 4px;font-size:11px}
+      #shopFightBtn{padding:10px 4px;font-size:12px;min-height:38px}
       #toggleAdvancedBtn{padding:6px 4px;font-size:14px}
       .slotUnit{width:40px;height:34px}
       .actor{width:40px;height:34px;border-width:3px}
+      /* The HP and mana bars keep their desktop size by default, which on a 34px-tall
+         actor covers more than half the tile and hides the Axie. Scale them with it. */
+      .actor .actorHp{left:3px;right:3px;bottom:6px;height:3px}
+      .actor .actorMana{left:3px;right:3px;bottom:2px;height:3px}
+      .actor .actorStars{font-size:8px;top:0}
+      .actor .actorArt{transform:translateY(-3px) scale(1.28)}
+      .actor .actorShade{background:linear-gradient(180deg,#0000 60%,#0004 82%,#0008)}
       .right{padding:4px;gap:4px}
       .section{padding:6px}
       .secTitle{font-size:10px;margin-bottom:4px}
@@ -537,14 +544,14 @@
           <div id="boardRelics" class="zoneLabel" style="left:10px;top:58px;max-width:300px;display:flex;gap:6px;align-items:center;flex-wrap:wrap"></div>
           <div id="boardHpHud">
             <div class="hpWidget">
-              <img class="avatar" src="assets/axies/svg/olek.svg" alt="You">
+              <img class="avatar" id="avatarYou" data-asset="assets/axies/svg/olek.svg" alt="You">
               <div class="hpWrap">
                 <div class="hpTop"><span>You</span><span id="playerHpText"></span></div>
                 <div class="hpBar"><div id="playerHpFill" class="hpFill"></div></div>
               </div>
             </div>
             <div class="hpWidget">
-              <img class="avatar" src="assets/boss/chimera_token.svg" alt="Enemy">
+              <img class="avatar" id="avatarEnemy" data-asset="assets/boss/chimera_token.svg" alt="Enemy">
               <div class="hpWrap">
                 <div class="hpTop"><span>Enemy</span><span id="enemyHpText"></span></div>
                 <div class="hpBar"><div id="enemyHpFill" class="hpFill enemy"></div></div>
@@ -908,9 +915,14 @@
     const SPRITE_FRAMES = 8, SPRITE_SIZE = 128;
     const SPRITE_FPS = {idle:6, move:14, attack:9, cast:10};
 
-    const unitArtPath = id => RENDERED_AXIES.has(id)
+    // Every art path in the game goes through here. Served normally it is a passthrough;
+    // tools/build-standalone.mjs inlines the assets as data URIs and populates
+    // window.__ASSETS, which is what makes a single-file, CSP-safe build possible.
+    const assetUrl = p => (window.__ASSETS && window.__ASSETS[p]) || p;
+
+    const unitArtPath = id => assetUrl(RENDERED_AXIES.has(id)
       ? `assets/axies/${id}/portrait.png`
-      : `assets/axies/svg/${id}.svg`;
+      : `assets/axies/svg/${id}.svg`);
     const UNIT_ASSETS = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,unitArtPath(u.id)]));
 
     // Real animation data, replacing the earlier stub that pointed every state at one
@@ -923,7 +935,7 @@
         scale: u.tier>=4 ? 1.10 : 1.04,
         portrait: unitArtPath(u.id),
         files: sprite ? Object.fromEntries(SPRITE_STATES.map(s=>[s,{
-          file:`assets/axies/${u.id}/${s}.png`,
+          file:assetUrl(`assets/axies/${u.id}/${s}.png`),
           frames:SPRITE_FRAMES, w:SPRITE_SIZE, h:SPRITE_SIZE, fps:SPRITE_FPS[s]
         }])) : null
       }];
@@ -934,9 +946,9 @@
     const ANIM_FALLBACK = {hit:'idle', death:'idle', crit:'attack'};
 
     const BOSS_ASSETS = {
-      phase1:'assets/boss/chimera_phase1.svg',
-      phase2:'assets/boss/chimera_phase2.svg',
-      token:'assets/boss/chimera_token.svg'
+      phase1:assetUrl('assets/boss/chimera_phase1.svg'),
+      phase2:assetUrl('assets/boss/chimera_phase2.svg'),
+      token:assetUrl('assets/boss/chimera_token.svg')
     };
     const RELICS = [
       {id:'mint',name:"Lunacia's Mint",desc:'+2 prep energy income',apply:s=>s.mods.incomeBonus+=2},
@@ -2746,6 +2758,9 @@
       getSynergyState, boardCapForStage, buyShop, refreshShop, startBattle,
       renderPrepUnits, renderTop, renderShop
     };
+
+    // Resolve the two markup avatars through the same map as everything else.
+    document.querySelectorAll('img[data-asset]').forEach(i=>{i.src=assetUrl(i.dataset.asset);});
 
     renderGlossaryBody();
     buildBoard();

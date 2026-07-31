@@ -2,4 +2,6 @@ node_modules/
 tools/node_modules/
 tools/.cache/
 tools/out/
+dist/
+assets/axies-mobile/
 .DS_Store

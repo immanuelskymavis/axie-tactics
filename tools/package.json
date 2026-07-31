@@ -8,7 +8,10 @@
     "fetch:axies": "node fetch-axie-assets.mjs",
     "render:sprites": "node render-sprites.mjs",
     "build:art": "npm run fetch:axies && npm run render:sprites",
-    "smoke": "node smoke.mjs"
+    "build:mobile": "node render-sprites.mjs --profile mobile",
+    "build:standalone": "node build-standalone.mjs",
+    "smoke": "node smoke.mjs",
+    "verify:standalone": "node verify-standalone.mjs"
   },
   "devDependencies": {
     "playwright": "^1.56.1",

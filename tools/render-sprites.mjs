@@ -18,7 +18,24 @@ import { AXIES, BODY_TINTS, clipsFor } from './axie-sources.mjs';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
 const CACHE = join(HERE, '.cache');
-const OUT = join(ROOT, 'assets', 'axies');
+// --profile mobile renders a smaller set into assets/axies-mobile/. At the 520px
+// breakpoint the game's hexes are 47x41, so 128px frames are ~3x larger than any phone
+// will draw them; the small profile exists purely to keep the inlined single-file build
+// light over mobile data. Full resolution stays the default for the served game.
+const PROFILE = (() => {
+  const i = process.argv.indexOf('--profile');
+  return i >= 0 ? process.argv[i + 1] : 'full';
+})();
+const PROFILES = {
+  full:   { size: 128, portrait: 256, dir: 'axies' },
+  mobile: { size: 64,  portrait: 128, dir: 'axies-mobile' },
+};
+if (!PROFILES[PROFILE]) {
+  console.error(`unknown profile "${PROFILE}" — expected one of ${Object.keys(PROFILES).join(', ')}`);
+  process.exit(2);
+}
+const P = PROFILES[PROFILE];
+const OUT = join(ROOT, 'assets', P.dir);
 
 const argv = process.argv.slice(2);
 const argOf = (name, fallback) => {
@@ -26,7 +43,7 @@ const argOf = (name, fallback) => {
   return i >= 0 && argv[i + 1] ? Number(argv[i + 1]) : fallback;
 };
 const FRAMES = argOf('frames', 8);
-const SIZE = argOf('size', 128);
+const SIZE = argOf('size', P.size);
 const DEBUG = argv.includes('--debug');
 // The GLBs carry their colour in material properties and ship only a 1x1 placeholder
 // map; the separate texture atlas is for the FBX pipeline and smears if applied here.
@@ -97,6 +114,7 @@ page.on('pageerror', (e) => console.error(`    [page error] ${e.message}`));
 await page.goto(`http://127.0.0.1:${PORT}/render-harness.html`);
 await page.waitForFunction('window.__ready === true', { timeout: 60_000 });
 
+console.log(`profile: ${PROFILE} (${P.size}px frames, ${P.portrait}px portraits) -> assets/${P.dir}/\n`);
 const webgl = await page.evaluate('window.__webgl');
 if (!webgl) {
   console.error('WebGL unavailable in headless Chromium — cannot render sprites.');
@@ -147,7 +165,7 @@ for (const axie of AXIES) {
     await writeFile(join(dir, file), buf);
 
     manifest[axie][state] = {
-      file: `assets/axies/${axie}/${file}`,
+      file: `assets/${P.dir}/${axie}/${file}`,
       frames: FRAMES,
       w: SIZE,
       h: SIZE,
@@ -175,7 +193,7 @@ for (const axie of AXIES) {
     model: `/.cache/${axie}/${clipsFor(axie).idle}.glb`,
     texture: null,
     frames: 1,
-    size: 256,
+    size: P.portrait,
     loop: false,
     bodyTint: BODY_TINTS[axie] || null,
   });
@@ -183,12 +201,12 @@ for (const axie of AXIES) {
     join(OUT, axie, 'portrait.png'),
     Buffer.from(portrait.png.split(',')[1], 'base64'),
   );
-  manifest[axie].portrait = `assets/axies/${axie}/portrait.png`;
+  manifest[axie].portrait = `assets/${P.dir}/${axie}/portrait.png`;
 }
 
 await mkdir(OUT, { recursive: true });
 await writeFile(join(OUT, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
-console.log(`\nmanifest -> assets/axies/manifest.json`);
+console.log(`\nmanifest -> assets/${P.dir}/manifest.json`);
 
 await browser.close();
 server.close();
