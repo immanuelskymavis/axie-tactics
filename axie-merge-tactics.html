@@ -55,7 +55,11 @@
     .benchAttached{margin-top:0;border-top-left-radius:0;border-top-right-radius:0;border-top:0}
     .subTitle{font-size:12px;color:#aab3d5;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
     #stageTrack{display:flex;gap:6px;margin-top:8px;align-items:center;flex-wrap:wrap}
-    .stageNode{width:12px;height:12px;border-radius:999px;border:1px solid #475a9f;background:#111731;display:flex;align-items:center;justify-content:center;font-size:7px;color:#9eb0e5}
+    .stageNode{width:20px;height:20px;border-radius:999px;position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .stageNode img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:.85}
+    .stageNode i{position:relative;z-index:1;font-style:normal;font-size:8px;font-weight:800;color:#fff;text-shadow:0 1px 2px #000}
+    .stageNode.current img{opacity:1;filter:drop-shadow(0 0 5px #88a3ff)}
+    .stageNode.boss i{color:#ffd6d6}
     .stageNode.done{background:linear-gradient(180deg,#2a8b5f,#1a5a3d);border-color:#5ce3a2;color:#e7fff5}
     .stageNode.current{background:linear-gradient(180deg,#4b62d6,#2e43ad);border-color:#88a3ff;color:#fff;font-weight:800;box-shadow:0 0 0 2px #6d86f555}
     .stageNode.boss{border-color:#c86a86}
@@ -123,10 +127,20 @@
       box-shadow:inset 0 0 0 3px #7aa7ffcc;
     }
     .slotUnit.enemy{border-color:#ff6f95;filter:brightness(.9) saturate(.85)}
-    .slotUnit.class-aqua{background:linear-gradient(180deg,#1f4d78,#18365c);border-color:#66c7ff}
-    .slotUnit.class-plant{background:linear-gradient(180deg,#2f6a3b,#204f2b);border-color:#74d88d}
-    .slotUnit.class-beast{background:linear-gradient(180deg,#7a4c26,#5a371c);border-color:#ffb472}
-    .slotUnit.class-bird{background:linear-gradient(180deg,#6f5a1f,#4f4016);border-color:#ffd978}
+    /* One rule for all nine Axie classes; the tint comes from the official
+       class icon and is set inline as --cls. */
+    .slotUnit[class*="class-"]{background:linear-gradient(180deg,#2a3242,#1b2130)}
+    .slotUnit.class-beast{--cls:#ffa400}
+    .slotUnit.class-bug{--cls:#fe4434}
+    .slotUnit.class-bird{--cls:#e75393}
+    .slotUnit.class-plant{--cls:#6bc603}
+    .slotUnit.class-aquatic{--cls:#02c1db}
+    .slotUnit.class-reptile{--cls:#a956cb}
+    .slotUnit.class-mech{--cls:#cac2db}
+    .slotUnit.class-dawn{--cls:#8facff}
+    .slotUnit.class-dusk{--cls:#0e759e}
+    .slotUnit[class*="class-"]{background:linear-gradient(180deg,color-mix(in srgb,var(--cls,#5b6478) 34%,#141a26),#141a26)}
+    .slotUnit.awakened{box-shadow:0 0 0 1px #ffd86a88,0 0 12px #ffd86a55}
     .uTop{display:flex;justify-content:space-between;font-size:11px}
     .unitShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 35%,#000b 70%,#000e)}
     .starOverlay{position:absolute;left:50%;top:0;transform:translateX(-50%);font-size:11px;color:#ffd76a;text-shadow:0 1px 2px #000;z-index:6;background:#0008;padding:0 4px;border-radius:0 0 6px 6px}
@@ -209,9 +223,57 @@
     #synergy,#relicList,#bagList,#log{font-size:12px;color:#d6ddf5;line-height:1.35}
     #synergyActive{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
     .synBadge{
-      padding:8px 10px;border-radius:10px;background:linear-gradient(180deg,#212b53,#171f3f);
-      border:1px solid #4d63b0;font-size:12px;font-weight:700;cursor:help;color:#fff
+      padding:5px 7px;border-radius:10px;background:linear-gradient(180deg,#212b53,#171f3f);
+      border:1px solid #4d63b0;font-size:12px;font-weight:700;cursor:help;color:#fff;
+      display:inline-flex;align-items:center;gap:4px;line-height:1
     }
+    .synBadge img{width:18px;height:18px;display:block}
+    .synBadge .traitIcon{width:18px;height:18px;display:block}
+    .traitIcon{vertical-align:-3px}
+    .synBadge i{font-style:normal;font-size:10px;opacity:.85;min-width:8px;text-align:center}
+    .synBadge.clsBadge{border-color:var(--syn,#4d63b0)}
+    .synBadge.lv1{box-shadow:0 0 0 1px #7f8fd6aa}
+    .synBadge.lv2{box-shadow:0 0 0 1px #ffd86a,0 0 10px #ffd86a55}
+    .synBadge.lv2 i{opacity:1;color:#ffe8a8}
+    .synTitleIcon{width:22px;height:22px;vertical-align:-5px}
+    .synTiers{grid-column:1/-1;display:flex;flex-direction:column;gap:4px;margin-bottom:6px}
+    .synTier{font-size:11px;color:#9fb0dd;padding:4px 6px;border-radius:6px;border:1px solid #2f3c70;background:#131a34}
+    .synTier.on{color:#ffe8a8;border-color:#ffd86a66;background:#241f16}
+    .synTier b{display:inline-block;min-width:16px;color:#cfe0ff}
+    /* class + part chips */
+    .classChip{display:inline-flex;align-items:center;gap:5px}
+    .classChip img{width:16px;height:16px;display:block}
+    .partRow{display:flex;align-items:center;gap:3px;margin:3px 0}
+    .partRow img{width:17px;height:17px;opacity:.92}
+    .partRow .purity{font-size:10px;color:#9fb0dd;margin-left:4px}
+    /* the four real Origins ability cards on a unit */
+    .kitList{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+    .kitCard{display:flex;gap:6px;align-items:flex-start;padding:3px 5px;border-radius:6px;background:#131a34;border:1px solid #28325c}
+    .kitCard.skill{border-color:#ffd86a77;background:#1d1e2c}
+    .kitCard img{width:16px;height:16px;margin-top:1px;flex:0 0 16px}
+    .kitCard b{font-size:11px;color:#dce6ff}
+    .kitCard i{font-size:9px;color:#ffd86a;font-style:normal}
+    .kitDesc{font-size:10px;line-height:1.25;color:#93a3ca}
+    /* codex */
+    .codexGrid{display:flex;flex-direction:column;gap:14px;max-height:70vh;overflow:auto}
+    .codexTier h4{margin:0 0 6px 0;font-size:12px;color:#9fb0dd;text-transform:uppercase;letter-spacing:1px}
+    .codexRow{display:grid;grid-template-columns:74px 1fr 62px;gap:10px;align-items:start;
+      padding:8px;border-radius:10px;background:#131a34;border:1px solid #2b3560;
+      border-left:3px solid var(--cls,#4d63b0);margin-bottom:6px}
+    .codexRow img.codexBody{width:74px;height:74px;object-fit:contain}
+    .codexRow img.codexAwk{width:62px;height:62px;object-fit:contain;opacity:.9;
+      border-left:1px dashed #3a4576;padding-left:4px}
+    .codexName{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .codexName img{width:18px;height:18px}
+    /* relics */
+    .relicRow{display:flex;align-items:center;gap:7px}
+    .relicIcon{object-fit:contain;image-rendering:auto;vertical-align:-4px}
+    .relicBadge{padding:3px 5px!important;display:inline-flex;align-items:center}
+    /* enemy intents */
+    .intentRow{display:flex;align-items:center;gap:5px;margin:2px 0}
+    .intentIcon{object-fit:contain;vertical-align:-4px;filter:drop-shadow(0 1px 2px #000a)}
+    .ghostIntent{position:absolute!important;right:-2px;top:-3px;width:14px!important;height:14px!important;
+      object-fit:contain;z-index:6;filter:drop-shadow(0 1px 2px #000c)}
     #log{max-height:120px;overflow:auto;background:#0f1430;border:1px solid #2e3969;border-radius:10px;padding:8px}
     #actorLayer{position:absolute;inset:0;pointer-events:auto;z-index:12}
     #fxLayer{position:absolute;inset:0;pointer-events:none;z-index:14}
@@ -227,10 +289,23 @@
       clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);border-radius:0;
     }
     .actor.enemy{border-color:#ff648f;filter:brightness(.9) saturate(.88)}
-    .actor.class-aqua{background:linear-gradient(180deg,#296092,#1d4265)}
-    .actor.class-plant{background:linear-gradient(180deg,#3b7a45,#275933)}
-    .actor.class-beast{background:linear-gradient(180deg,#8a5c35,#613f24)}
-    .actor.class-bird{background:linear-gradient(180deg,#866f29,#5f501f)}
+    .actor.class-beast{--cls:#ffa400}
+    .actor.class-bug{--cls:#fe4434}
+    .actor.class-bird{--cls:#e75393}
+    .actor.class-plant{--cls:#6bc603}
+    .actor.class-aquatic{--cls:#02c1db}
+    .actor.class-reptile{--cls:#a956cb}
+    .actor.class-mech{--cls:#cac2db}
+    .actor.class-dawn{--cls:#8facff}
+    .actor.class-dusk{--cls:#0e759e}
+    .actor[class*="class-"]{background:linear-gradient(180deg,color-mix(in srgb,var(--cls,#5b6478) 42%,#141a26),#141a26)}
+    .actor.awakened{box-shadow:0 0 0 1px #ffd86a99,0 0 14px #ffd86a55}
+    .actor.summon{width:34px;height:30px;border-width:2px;opacity:.96}
+    /* Origins status icons stacked under the stars. */
+    .actor .actorStatus{position:absolute;left:2px;right:2px;top:14px;display:flex;gap:1px;justify-content:center;z-index:4;pointer-events:none}
+    .actor .actorStatus img{width:11px;height:11px;filter:drop-shadow(0 1px 2px #000c)}
+    .statusPop{position:absolute;left:50%;top:-6px;width:22px;height:22px;transform:translateX(-50%);z-index:9;pointer-events:none;animation:statusPop .9s ease forwards}
+    @keyframes statusPop{0%{opacity:0;transform:translate(-50%,4px) scale(.6)}25%{opacity:1;transform:translate(-50%,-8px) scale(1.05)}100%{opacity:0;transform:translate(-50%,-24px) scale(.95)}}
     .actor .actorArt{position:absolute;left:-14%;right:-14%;top:-54%;bottom:12px;width:128%;height:auto;object-fit:contain;object-position:center bottom;transform:scale(1.08);z-index:1;filter:drop-shadow(0 3px 5px #000b)}
     .actor .actorShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 66%,#0004 86%,#0008);z-index:2}
     .actor .actorStars{position:absolute;left:50%;top:2px;transform:translateX(-50%);font-size:12px;color:#ffd86a;text-shadow:0 1px 2px #000;z-index:4}
@@ -307,13 +382,16 @@
       .hpWidget{min-width:108px;padding:3px 5px}
       .avatar{width:24px;height:24px}
       #stageTrack{width:100%;justify-content:center;margin-top:2px}
-      .stageNode{width:10px;height:10px;font-size:6px}
+      .stageNode{width:17px;height:17px}
+      .stageNode i{font-size:7px}
       .stageLine{width:6px}
       .mainBoard{padding:40px 4px 6px 4px}
       #boardWrap{padding:5px}
       .boardRow{height:var(--hexh)}
       .zoneLabel{font-size:9px;padding:2px 4px}
-      #boardSynergy .synBadge{padding:4px 6px;font-size:9px}
+      #boardSynergy{grid-template-columns:repeat(2,auto);gap:3px}
+      #boardSynergy .synBadge{padding:3px 4px;font-size:9px}
+      #boardSynergy .synBadge img{width:13px;height:13px}
       #dragCapOverlay{font-size:26px !important}
       #benchSection,#shopSection{margin:4px;padding:6px}
       #bench{gap:4px}
@@ -347,8 +425,10 @@
       #boardHpHud .hpTop{font-size:9px}
       #dailyOnBoard,#boardRelics{max-width:46% !important}
     }
-    #boardSynergy{position:absolute;left:10px;bottom:8px;z-index:30;display:flex;flex-direction:column;gap:6px;max-width:46%}
-    #boardSynergy .synBadge{padding:7px 10px;font-size:12px}
+    #boardSynergy{position:absolute;left:8px;bottom:8px;z-index:30;display:grid;
+      grid-template-columns:repeat(2,auto);gap:4px;max-width:40%;align-content:end;justify-items:start}
+    #boardSynergy .synBadge{padding:4px 6px;font-size:11px}
+    #boardSynergy .synBadge img{width:16px;height:16px}
     #dragGhost{position:absolute;width:80px;height:66px;border-radius:12px;pointer-events:none;z-index:40;opacity:.9;display:none;box-shadow:0 0 0 2px #fff6,0 8px 20px #000a}
     #selectedOverlay{
       position:fixed;display:none;z-index:60;background:transparent;pointer-events:none
@@ -413,7 +493,7 @@
     .unitMini{display:flex;align-items:center;gap:6px;padding:6px;border:1px solid #3e4c73;border-radius:8px;background:#15213a}
     .unitMini.off{filter:grayscale(1);opacity:.5}
     .relicCard{position:relative;background:linear-gradient(180deg,#32422a,#1b2619);border:1px solid #7ba46f;border-radius:14px;padding:12px;box-shadow:inset 0 0 0 1px #c9ff9c22}
-    .relicCard .augIcon{font-size:24px}
+    .relicCard .augIcon{font-size:24px;height:52px;display:flex;align-items:center;justify-content:center}
   </style>
 </head>
 <body>
@@ -437,7 +517,7 @@
           <div id="boardRelics" class="zoneLabel" style="left:10px;top:58px;max-width:300px;display:flex;gap:6px;align-items:center;flex-wrap:wrap"></div>
           <div id="boardHpHud">
             <div class="hpWidget">
-              <img class="avatar" src="assets/origins/portraits/peon.png" alt="Player">
+              <img class="avatar" src="assets/origins/portraits/buba.png" alt="Player">
               <div class="hpWrap">
                 <div class="hpTop"><span>You</span><span id="playerHpText"></span></div>
                 <div class="hpBar"><div id="playerHpFill" class="hpFill"></div></div>
@@ -521,6 +601,7 @@
         <div style="display:flex;gap:8px;margin-bottom:8px">
           <button id="openLeaderboardBtn" class="btn alt" style="flex:1">Leaderboard</button>
           <button id="openBagBtn" class="btn alt" style="flex:1">Bag Pool</button>
+          <button id="openCodexBtn" class="btn alt" style="flex:1">Axie Codex</button>
         </div>
         <div style="display:flex;gap:8px;margin-bottom:8px">
           <button id="openOddsBtn2" class="btn alt" style="flex:1">Shop Odds</button>
@@ -583,6 +664,19 @@
     </div>
   </div>
 
+  <div id="codexOverlay" class="overlay">
+    <div class="modal" style="max-width:1080px">
+      <button id="closeCodexBtn" class="modalClose">Close</button>
+      <h2 style="margin:0 0 4px 0">Starter Axie Codex</h2>
+      <div class="small" style="margin-bottom:10px">
+        The 19 official Origins starter Axies. Each Axie's class, body parts and
+        four ability cards are its real Origins data; merging to 3&#9733; awakens
+        its second body stage.
+      </div>
+      <div id="codexBody" class="codexGrid"></div>
+    </div>
+  </div>
+
   <div id="resultOverlay" class="overlay">
     <div class="modal" style="max-width:760px;text-align:center;background:radial-gradient(120% 100% at 50% 0%,#345828,#1a2418 60%)">
       <h1 id="resultTitle" style="margin:6px 0 6px 0;font-size:62px;letter-spacing:2px"></h1>
@@ -637,66 +731,156 @@
     };
     const STAR_MULT = {1:1,2:1.6,3:2.5,4:3.8};
 
+    // ---- Axie Origins data -------------------------------------------------
+    // Units are the 19 official Origins starter Axies. Class, purity, body
+    // parts and every ability card below come from the kit catalogs
+    // (pve-starters.json + cards.json); art comes from the kit Spine bodies
+    // and the gtk2d icon sets. See assets/origins/manifest.json.
+    const ORIGINS_ART_ROOT = 'assets/origins';
+    const CLASS_LIST = ['Beast','Bug','Bird','Plant','Aquatic','Reptile','Mech','Dawn','Dusk'];
+    const AXIE_CLASSES = {
+      Beast:{tint:'#ffa400',icon:'beast.png',arena:'arena-beast.jpg'},
+      Bug:{tint:'#fe4434',icon:'bug.png',arena:'arena-bug.jpg'},
+      Bird:{tint:'#e75393',icon:'bird.png',arena:'arena-bird.jpg'},
+      Plant:{tint:'#6bc603',icon:'plant.png',arena:'arena-plant.jpg'},
+      Aquatic:{tint:'#02c1db',icon:'aquatic.png',arena:'arena-aquatic.jpg'},
+      Reptile:{tint:'#a956cb',icon:'reptile.png',arena:'arena-reptile.jpg'},
+      Mech:{tint:'#cac2db',icon:'mech.png',arena:'arena-mech.jpg'},
+      Dawn:{tint:'#8facff',icon:'dawn.png',arena:'arena-dawn.jpg'},
+      Dusk:{tint:'#0e759e',icon:'dusk.png',arena:'arena-dusk.jpg'},
+    };
+    // Real Axie class advantage: each bloodline deals +15% to the next and
+    // -15% into the one that beats it.
+    const CLASS_BLOODLINE = {
+      Plant:'Verdant', Reptile:'Verdant', Dusk:'Verdant',
+      Aquatic:'Tidal', Bird:'Tidal', Dawn:'Tidal',
+      Beast:'Primal', Bug:'Primal', Mech:'Primal'
+    };
+    const BLOODLINE_BEATS = {Verdant:'Tidal', Tidal:'Primal', Primal:'Verdant'};
+    const CLASS_ADVANTAGE = 0.15;
+
     const UNIT_DEFS = [
-      {id:'peon',name:'Peon',emoji:'💧',tier:1,class:'Aqua',trait:'Assassin',atk:45,hp:480,mystic:false,range:1,attack:'Aqua Nip',skill:'Infiltrate backline, 150 magic dmg, 100% lifesteal'},
-      {id:'sprout',name:'Sprout',emoji:'🌱',tier:1,class:'Plant',trait:'Bastion',atk:30,hp:620,mystic:false,range:2,attack:'Seed Shot',skill:'Root Barrier roots self, gives 150 HP shield to self/ally'},
-      {id:'nut',name:'Nut',emoji:'🥜',tier:1,class:'Beast',trait:'Vanguard',atk:55,hp:560,mystic:false,range:1,attack:'Nut Crack',skill:'Frenzy Smash cleaves 3 front hexes for 110 dmg'},
-      {id:'pips',name:'Pips',emoji:'🐤',tier:1,class:'Bird',trait:'Mage',atk:35,hp:430,mystic:true,range:3,attack:'Feather Dart',skill:'Starlight Chirp grants 40 skill energy to adjacent allies'},
+      {id:'buba',name:'Buba',axieId:1,tier:1,class:'Beast',trait:'Vanguard',purity:4,atk:55,hp:560,range:1,mystic:false,
+       attack:'Foxy',skill:'Buba Brush',skillPart:'tail',skillDesc:'Retain. Deal 85% Splash DMG in Fury form.',
+       partClasses:['Beast','Plant'],parts:{back:'plant-back-03',ears:'beast-ears-03',eyes:'beast-eyes-03',horn:'plant-horn-01',mouth:'beast-mouth-01',tail:'beast-tail-03'},
+       kit:[{part:'mouth',partId:'beast-mouth-01',partClass:'Beast',name:'Foxy',desc:'+2 Rage.',type:'Melee AttackMelee'},{part:'horn',partId:'plant-horn-01',partClass:'Plant',name:'Persimmon',desc:'+1 Rage. Cleanse: 4.',type:'Ranged AttackRanged'},{part:'back',partId:'plant-back-03',partClass:'Plant',name:'Forest Hero',desc:'+3 ATK per Energy Spent whenever an allied Axie attacks, +6 ATK if this Axie attacks.',type:'Melee AttackMelee'},{part:'tail',partId:'beast-tail-03',partClass:'Beast',name:'Buba Brush',desc:'Retain. Deal 85% Splash DMG in Fury form.',type:'Melee AttackMelee'}]},
+      {id:'olek',name:'Olek',axieId:2,tier:1,class:'Plant',trait:'Bastion',purity:4,atk:30,hp:620,range:2,mystic:false,
+       attack:'Beetroot',skill:'Rusty Helm',skillPart:'horn',skillDesc:'+35 Shield to self and an allied Axie with the lowest HP.',
+       partClasses:['Mech','Plant'],parts:{back:'plant-back-01',ears:'reptile-ears-03',eyes:'plant-eyes-01',horn:'mech-horn-03',mouth:'plant-mouth-01',tail:'plant-tail-01'},
+       kit:[{part:'mouth',partId:'plant-mouth-01',partClass:'Plant',name:'Beetroot',desc:'Consume up to 4 Leaf. Randomly deal 3 hits. +8 DMG per Leaf consumed.',type:'Melee AttackMelee'},{part:'horn',partId:'mech-horn-03',partClass:'Mech',name:'Rusty Helm',desc:'+35 Shield to self and an allied Axie with the lowest HP.',type:'Melee AttackMelee'},{part:'back',partId:'plant-back-01',partClass:'Plant',name:'Succulent',desc:'Target any ally. Apply 1 Leaf & 2 Cleanser.',type:'Ranged Skill'},{part:'tail',partId:'plant-tail-01',partClass:'Plant',name:'Sprout',desc:'All allies are healed & +1 Leaf. Bonus 1 Leaf if there is another ally Plant Axie alive.',type:'Ranged Skill'}]},
+      {id:'puffy',name:'Puffy',axieId:3,tier:1,class:'Aquatic',trait:'Assassin',purity:4,atk:45,hp:480,range:1,mystic:false,
+       attack:'Puff',skill:'Jellytacle',skillPart:'horn',skillDesc:'Randomly deal 2 hits. +1 Bubble to allied Axies.',
+       partClasses:['Aquatic','Beast','Reptile'],parts:{back:'reptile-back-03',ears:'aquatic-ears-01',eyes:'aquatic-eyes-01',horn:'aquatic-horn-01',mouth:'beast-mouth-03',tail:'aquatic-tail-01'},
+       kit:[{part:'mouth',partId:'beast-mouth-03',partClass:'Beast',name:'Puff',desc:'Ambush. If target isn\'t Alert, Steal (25% of unblocked DMG) as HP.',type:'Melee AttackMelee'},{part:'horn',partId:'aquatic-horn-01',partClass:'Aquatic',name:'Jellytacle',desc:'Randomly deal 2 hits. +1 Bubble to allied Axies.',type:'Melee AttackMelee'},{part:'back',partId:'reptile-back-03',partClass:'Reptile',name:'Tiny Dino',desc:'Retain.+1 Fragment if you have Skill Card on Hand.',type:'Melee AttackMelee'},{part:'tail',partId:'aquatic-tail-01',partClass:'Aquatic',name:'Puff',desc:'Consume all Energy. For each Energy Consumed, +5 DMG & randomly deal 1 hits.',type:'Ranged AttackRanged'}]},
+      {id:'momo',name:'Momo',axieId:12,tier:1,class:'Bird',trait:'Sniper',purity:5,atk:35,hp:430,range:3,mystic:false,
+       attack:'Feathery Dart',skill:'Death Shower',skillPart:'tail',skillDesc:'Ambush. Deal 5 hits. Exile all Feather Daggers from Hand, bonus +5 DMG per card Exiled.',
+       partClasses:['Bird'],parts:{back:'bird-back-01',ears:'bug-ears-03',eyes:'bird-eyes-01',horn:'bird-horn-01',mouth:'bird-mouth-01',tail:'bird-tail-01'},
+       kit:[{part:'mouth',partId:'bird-mouth-01',partClass:'Bird',name:'Feathery Dart',desc:'Ambush. Deal 3 hits.',type:'Ranged AttackRanged'},{part:'horn',partId:'bird-horn-01',partClass:'Bird',name:'Big Sister',desc:'Target any ally. +1 Lil Bro to Discard Pile.',type:'Ranged Skill'},{part:'back',partId:'bird-back-01',partClass:'Bird',name:'Lil Bro',desc:'Randomly deal 3 hits. On your next turn, add 1 Feather Dagger to your hand per unique Enemy hit. (Cap: 2 Feather Dagger)',type:'Ranged AttackRanged'},{part:'tail',partId:'bird-tail-01',partClass:'Bird',name:'Death Shower',desc:'Ambush. Deal 5 hits. Exile all Feather Daggers from Hand, bonus +5 DMG per card Exiled.',type:'Ranged AttackRanged'}]},
 
-      {id:'bubbles',name:'Bubbles',emoji:'🫧',tier:2,class:'Aqua',trait:'Mage',atk:40,hp:560,mystic:true,range:3,attack:'Bubble Pop',skill:'Bubble Shield grants ally absorb-200 shield + CC immunity'},
-      {id:'cactus',name:'Cactus',emoji:'🌵',tier:2,class:'Plant',trait:'Spikes',atk:40,hp:680,mystic:false,range:2,attack:'Prickly Jab',skill:'Needle Burst 30% pass/act trigger dealing 75 dmg circle'},
-      {id:'gnasher',name:'Gnasher',emoji:'🦁',tier:2,class:'Beast',trait:'Vanguard',atk:60,hp:720,mystic:false,range:1,attack:'Crunch',skill:'Bite & Tear deals 120 dmg + 50% armor shred'},
-      {id:'kestrel',name:'Kestrel',emoji:'🦅',tier:2,class:'Bird',trait:'Assassin',atk:50,hp:560,mystic:false,range:1,attack:'Beak Dive',skill:'Swoop Attack leaps untargetable, slams lowest HP for 160 dmg'},
+      {id:'tripp',name:'Tripp',axieId:5,tier:2,class:'Beast',trait:'Vanguard',purity:4,atk:58,hp:600,range:1,mystic:false,
+       attack:'Nut Cracker',skill:'Acorn Cap',skillPart:'horn',skillDesc:'+1 Bulwark. Draw 1 Card. If a Nut Cracker Card is drawn, +10 ATK to Nut Cracker Cards in your Deck then Banish this Card.',
+       partClasses:['Beast','Dawn','Plant'],parts:{back:'dawn-back-01',ears:'beast-ears-04',eyes:'beast-eyes-07',horn:'plant-horn-07',mouth:'beast-mouth-02',tail:'beast-tail-10'},
+       kit:[{part:'mouth',partId:'beast-mouth-02',partClass:'Beast',name:'Nut Cracker',desc:'This Axie\'s Nut Cracker Cards get +10 ATK. (Cap: +60 ATK)',type:'Melee AttackMelee'},{part:'horn',partId:'plant-horn-07',partClass:'Plant',name:'Acorn Cap',desc:'+1 Bulwark. Draw 1 Card. If a Nut Cracker Card is drawn, +10 ATK to Nut Cracker Cards in your Deck then Banish this Card.',type:'Ranged Skill'},{part:'back',partId:'dawn-back-01',partClass:'Dawn',name:'Nutdha Statue',desc:'Target any ally. +10 Base Heal whenever you play a Nut Cracker Card. (Cap: +60 Base Heal)',type:'Ranged Skill'},{part:'tail',partId:'beast-tail-10',partClass:'Beast',name:'Nut Cracker',desc:'This Axie\'s Nut Cracker Cards get +10 ATK. (Cap: +60 ATK)',type:'Ranged AttackRanged'}]},
+      {id:'shillin',name:'Shillin',axieId:11,tier:2,class:'Bug',trait:'Assassin',purity:4,atk:52,hp:540,range:1,mystic:false,
+       attack:'Nose Drill',skill:'Shield Shattering',skillPart:'tail',skillDesc:'Retain. Target any enemy. Deal 120% of shield DMG done as Splash DMG.',
+       partClasses:['Bird','Bug','Mech'],parts:{back:'bird-back-03',ears:'bug-ears-01',eyes:'bug-eyes-01',horn:'mech-horn-01',mouth:'bug-mouth-01',tail:'bug-tail-03'},
+       kit:[{part:'mouth',partId:'bug-mouth-01',partClass:'Bug',name:'Nose Drill',desc:'On target with Shield, +50% DMG',type:'Melee AttackMelee'},{part:'horn',partId:'mech-horn-01',partClass:'Mech',name:'Shocker',desc:'On targets with Fragile, +20 DMG & deal Pure DMG; otherwise, apply 3 Fragile.',type:'Melee AttackMelee'},{part:'back',partId:'bird-back-03',partClass:'Bird',name:'Paper Wing',desc:'On your next turn, +1 copy of this Axie\'s other Attack Cards to Hand. Banish.',type:'Ranged Skill'},{part:'tail',partId:'bug-tail-03',partClass:'Bug',name:'Shield Shattering',desc:'Retain. Target any enemy. Deal 120% of shield DMG done as Splash DMG.',type:'Ranged AttackRanged'}]},
+      {id:'ena',name:'Ena',axieId:16,tier:2,class:'Plant',trait:'Mage',purity:3,atk:40,hp:560,range:3,mystic:true,
+       attack:'Cub',skill:'Aegis Talisman',skillPart:'tail',skillDesc:'Target any ally. Limit 3: +1 Bulwark; draw 1 card & apply 1 Sleep to a random Enemy Axie.',
+       partClasses:['Beast','Dawn','Plant'],parts:{back:'dawn-back-03',ears:'plant-ears-08',eyes:'plant-eyes-02',horn:'plant-horn-03',mouth:'beast-mouth-05',tail:'dawn-tail-03'},
+       kit:[{part:'mouth',partId:'beast-mouth-05',partClass:'Beast',name:'Cub',desc:'Retain. Pick up to 2 cards on Hand, Retain them till next turn. Banish.',type:'Melee AttackMelee'},{part:'horn',partId:'plant-horn-03',partClass:'Plant',name:'Mandarine',desc:'Target any Ally or Enemy. Reverse Heal on enemies. +2 Sweet Mandarines to Hand.',type:'Ranged Skill'},{part:'back',partId:'dawn-back-03',partClass:'Dawn',name:'Magic Sack',desc:'Retain. Pick a non-Power Card in Hand. On your next turn, add 1 copy of it to Hand. Exile.',type:'Ranged Skill'},{part:'tail',partId:'dawn-tail-03',partClass:'Dawn',name:'Aegis Talisman',desc:'Target any ally. Limit 3: +1 Bulwark; draw 1 card & apply 1 Sleep to a random Enemy Axie.',type:'Ranged Skill'}]},
+      {id:'pomodoro',name:'Pomodoro',axieId:17,tier:2,class:'Bug',trait:'Bastion',purity:2,atk:38,hp:700,range:2,mystic:false,
+       attack:'Platypus',skill:'Lost Dream',skillPart:'horn',skillDesc:'Target any ally. +1 Bulwark. Draw 1 Card. Ethereal. When banished, grant 25 Shield to allies.',
+       partClasses:['Beast','Bug','Mech'],parts:{back:'mech-back-03',ears:'bug-ears-08',eyes:'bird-eyes-03',horn:'mech-horn-05',mouth:'beast-mouth-07',tail:'bug-tail-05'},
+       kit:[{part:'mouth',partId:'beast-mouth-07',partClass:'Beast',name:'Platypus',desc:'Retain. Shield allies. +10 Shield per turn Retained. (Cap: +40 Shield)',type:'Ranged Skill'},{part:'horn',partId:'mech-horn-05',partClass:'Mech',name:'Lost Dream',desc:'Target any ally. +1 Bulwark. Draw 1 Card. Ethereal. When banished, grant 25 Shield to allies.',type:'Ranged Skill'},{part:'back',partId:'mech-back-03',partClass:'Mech',name:'Village Hero',desc:'Get +10 ATK whenever this Axie grants Shield to other allies. (cap: 60 ATK)',type:'Melee AttackMelee'},{part:'tail',partId:'bug-tail-05',partClass:'Bug',name:'Leaf Bug',desc:'Retain. Target any ally. +1 Bulwark. +2 Cocoon. +1 Cocoon per turn Retained. (Cap: +3 Cocoon)',type:'Ranged Skill'}]},
 
-      {id:'nemo',name:'Nemo',emoji:'🐠',tier:3,class:'Aqua',trait:'Spikes',atk:55,hp:830,mystic:false,range:1,attack:'Tail Slap',skill:'Tail Whip Flurry strikes 3x for 50 dmg, reflects dmg'},
-      {id:'pumpkin',name:'Pumpkin',emoji:'🎃',tier:3,class:'Plant',trait:'Bastion',atk:35,hp:1100,mystic:false,range:1,attack:'Gourd Bash',skill:'October Shield taunts 2-hex radius, cuts damage taken by 50%'},
-      {id:'zoro',name:'Zoro',emoji:'🐺',tier:3,class:'Beast',trait:'Assassin',atk:65,hp:780,mystic:false,range:1,attack:'Alpha Slash',skill:'Slash Dash blinks behind target, hits path for 140 dmg'},
-      {id:'falcon',name:'Falcon',emoji:'🦜',tier:3,class:'Bird',trait:'Sniper',atk:55,hp:700,mystic:false,range:4,attack:'Pinpoint Peck',skill:'Gale Force hits for 130 dmg + 2 hex knockback'},
+      {id:'venoki',name:'Venoki',axieId:7,tier:3,class:'Reptile',trait:'Spikes',purity:4,atk:48,hp:720,range:2,mystic:false,
+       attack:'Chemical Fang',skill:'Death Shroom',skillPart:'back',skillDesc:'Target any ally. Apply 3 Poison to a random Enemy 3 times.',
+       partClasses:['Bug','Plant','Reptile'],parts:{back:'plant-back-05',ears:'reptile-ears-01',eyes:'reptile-eyes-01',horn:'reptile-horn-01',mouth:'reptile-mouth-01',tail:'bug-tail-01'},
+       kit:[{part:'mouth',partId:'reptile-mouth-01',partClass:'Reptile',name:'Chemical Fang',desc:'Heal 1 HP per Poison on the target.',type:'Melee AttackMelee'},{part:'horn',partId:'reptile-horn-01',partClass:'Reptile',name:'Poison Tube',desc:'+2 DMG per Poison on the target.',type:'Melee AttackMelee'},{part:'back',partId:'plant-back-05',partClass:'Plant',name:'Death Shroom',desc:'Target any ally. Apply 3 Poison to a random Enemy 3 times.',type:'Ranged Skill'},{part:'tail',partId:'bug-tail-01',partClass:'Bug',name:'Centipede',desc:'Target any ally. Limit: 3. Apply 3 Poison to a random Enemy. +1 Centipede to Discard Pile.',type:'Ranged Skill'}]},
+      {id:'xia',name:'Xia',axieId:21,tier:3,class:'Beast',trait:'Bastion',purity:4,atk:46,hp:820,range:2,mystic:false,
+       attack:'Hazelnut',skill:'Pangolin',skillPart:'tail',skillDesc:'Attack all enemies. +1 Shield per unblocked DMG.',
+       partClasses:['Beast','Plant'],parts:{back:'beast-back-01',ears:'beast-ears-12',eyes:'reptile-eyes-03',horn:'beast-horn-01',mouth:'plant-mouth-03',tail:'beast-tail-05'},
+       kit:[{part:'mouth',partId:'plant-mouth-03',partClass:'Plant',name:'Hazelnut',desc:'Target any ally. +1 Bulwark. +1 Rage.',type:'Ranged Skill'},{part:'horn',partId:'beast-horn-01',partClass:'Beast',name:'Rocky Skull',desc:'+1 Rage to allied Axies. Bonus 1 Rage if this Axie has > 30 Shield.',type:'Melee AttackMelee'},{part:'back',partId:'beast-back-01',partClass:'Beast',name:'Pangolin Slayer',desc:'Attack all enemies. +1 Shield per unblocked DMG.',type:'Ranged AttackRanged'},{part:'tail',partId:'beast-tail-05',partClass:'Beast',name:'Pangolin',desc:'Attack all enemies. +1 Shield per unblocked DMG.',type:'Ranged AttackRanged'}]},
+      {id:'bing',name:'Bing',axieId:22,tier:3,class:'Beast',trait:'Vanguard',purity:5,atk:62,hp:790,range:1,mystic:false,
+       attack:'Puppy',skill:'Toy Ball',skillPart:'horn',skillDesc:'Target the lowest HP enemy. Apply 2 Taunt.',
+       partClasses:['Beast','Plant'],parts:{back:'plant-back-07',ears:'beast-ears-10',eyes:'beast-eyes-08',horn:'beast-horn-07',mouth:'beast-mouth-11',tail:'beast-tail-06'},
+       kit:[{part:'mouth',partId:'beast-mouth-11',partClass:'Beast',name:'Puppy',desc:'Limit 1: +1 Rage to allied Axies. If an ally is in Fury form, draw 4 Cards.',type:'Ranged AttackRanged'},{part:'horn',partId:'beast-horn-07',partClass:'Beast',name:'Toy Ball',desc:'Target the lowest HP enemy. Apply 2 Taunt.',type:'Ranged AttackRanged'},{part:'back',partId:'plant-back-07',partClass:'Plant',name:'Cone Shell',desc:'Target any ally.',type:'Ranged Skill'},{part:'tail',partId:'beast-tail-06',partClass:'Beast',name:'Shiba',desc:'+1 Rage to allied Axies; +1 Rage per 25% HP this Axie is missing.',type:'Melee AttackMelee'}]},
+      {id:'rouge',name:'Rouge',axieId:24,tier:3,class:'Aquatic',trait:'Sniper',purity:4,atk:56,hp:690,range:4,mystic:false,
+       attack:'Ranchu',skill:'Lotus',skillPart:'horn',skillDesc:'Target any ally. Target\'s next Single Attack +65 DMG.',
+       partClasses:['Aquatic','Bug','Plant'],parts:{back:'aquatic-back-08',ears:'aquatic-ears-10',eyes:'aquatic-eyes-05',horn:'plant-horn-09',mouth:'aquatic-mouth-01',tail:'bug-tail-07'},
+       kit:[{part:'mouth',partId:'aquatic-mouth-01',partClass:'Aquatic',name:'Ranchu',desc:'Attack all enemies. +1 Bubble to allied Axies.',type:'Ranged AttackRanged'},{part:'horn',partId:'plant-horn-09',partClass:'Plant',name:'Lotus',desc:'Target any ally. Target\'s next Single Attack +65 DMG.',type:'Ranged Skill'},{part:'back',partId:'aquatic-back-08',partClass:'Aquatic',name:'Sponge',desc:'Retain. Shield allied Axies. +1 Bulwark. Target any ally. Convert up to 3 Bubble into Bubble Bomb.',type:'Ranged Skill'},{part:'tail',partId:'bug-tail-07',partClass:'Bug',name:'Eye Wing',desc:'Target any enemy. Dispel: 3.',type:'Ranged AttackRanged'}]},
 
-      {id:'siren',name:'Siren',emoji:'🧜',tier:4,class:'Aqua',trait:'Sniper',atk:60,hp:920,mystic:false,range:4,attack:'Sonic Wave',skill:'Siren Song charms closest target for 3.5s'},
-      {id:'yggdrasil',name:'Yggdrasil',emoji:'🌳',tier:4,class:'Plant',trait:'Spikes',atk:60,hp:1250,mystic:false,range:2,attack:'Root Smash',skill:'Forest Vengeance global roots and stuns all targets for 150 magic dmg'},
-      {id:'goliath',name:'Goliath',emoji:'🗿',tier:4,class:'Beast',trait:'Bastion',atk:80,hp:1350,mystic:false,range:1,attack:'Titan Fist',skill:'Earthquake stuns 1-hex circle for 2.5s, 100 true dmg'},
-      {id:'raven',name:'Raven',emoji:'🐦‍⬛',tier:4,class:'Bird',trait:'Sniper',atk:70,hp:900,mystic:false,range:5,attack:'Caw Arrow',skill:'Omen Strike lanes for 200 dmg, executes under 25% HP'},
+      {id:'machito',name:'Machito',axieId:18,tier:4,class:'Reptile',trait:'Spikes',purity:5,atk:66,hp:1150,range:1,mystic:false,
+       attack:'Tiny Dino',skill:'Maraca',skillPart:'tail',skillDesc:'Innate. Taunt and apply Weak to all Enemies for 3 turns.',
+       partClasses:['Dusk','Reptile'],parts:{back:'reptile-back-12',ears:'reptile-ears-06',eyes:'reptile-eyes-08',horn:'reptile-horn-12',mouth:'reptile-mouth-03',tail:'dusk-tail-01'},
+       kit:[{part:'mouth',partId:'reptile-mouth-03',partClass:'Reptile',name:'Tiny Dino',desc:'Retain. Each time an enemy takes Bleed DMG, +10 Heal and add 1 copy of Pacu Card to your hand (Cap: +50 Heal and 5 Pacu)',type:'Ranged Skill'},{part:'horn',partId:'reptile-horn-12',partClass:'Reptile',name:'Bumpy',desc:'Innate. Target any ally. Whenever you play a card, this Axie +8 Shield. Can\'t stack. Exile.',type:'Ranged Power'},{part:'back',partId:'reptile-back-12',partClass:'Reptile',name:'Croc',desc:'Target any ally. +1 Bulwark. Next time an enemy uses a Skill or Secret Card, apply 6 Bleed.',type:'Ranged Secret'},{part:'tail',partId:'dusk-tail-01',partClass:'Dusk',name:'Maraca',desc:'Innate. Taunt and apply Weak to all Enemies for 3 turns.',type:'Ranged Skill'}]},
+      {id:'hope',name:'Hope',axieId:19,tier:4,class:'Beast',trait:'Sniper',purity:4,atk:70,hp:900,range:4,mystic:false,
+       attack:'Sniffle',skill:'Mainspring',skillPart:'tail',skillDesc:'Retain. Randomly deal 2 hits, gain 1 Fragment per unique enemy hit. If retained, +1 hit (Cap: +3 hits), lose 1 Fragment.',
+       partClasses:['Beast','Bird','Mech'],parts:{back:'bird-back-05',ears:'beast-ears-06',eyes:'beast-eyes-05',horn:'beast-horn-05',mouth:'beast-mouth-09',tail:'mech-tail-03'},
+       kit:[{part:'mouth',partId:'beast-mouth-09',partClass:'Beast',name:'Sniffle',desc:'+2 Rage. +1 Fragment per 3 Rage on the target',type:'Ranged Skill'},{part:'horn',partId:'beast-horn-05',partClass:'Beast',name:'Lump',desc:'Target any ally. +1 Bulwark. Next time the target is attacked, +1 Fragment, and +1 Rage to allied Axies at the start of next turn.',type:'Ranged Secret'},{part:'back',partId:'bird-back-05',partClass:'Bird',name:'Rubber Duckling',desc:'Retain. If retained, +10 Heal Bonus (Cap: +30 Heal), gain +1 Fragment when played (Cap: +3). Banish.',type:'Ranged Skill'},{part:'tail',partId:'mech-tail-03',partClass:'Mech',name:'Mainspring',desc:'Retain. Randomly deal 2 hits, gain 1 Fragment per unique enemy hit. If retained, +1 hit (Cap: +3 hits), lose 1 Fragment.',type:'Ranged AttackRanged'}]},
+      {id:'noir',name:'Noir',axieId:23,tier:4,class:'Aquatic',trait:'Bastion',purity:5,atk:58,hp:980,range:3,mystic:false,
+       attack:'Ranchu',skill:'Sponge',skillPart:'back',skillDesc:'Retain. Shield allied Axies. +1 Bulwark. Target any ally. Convert up to 3 Bubble into Bubble Bomb.',
+       partClasses:['Aquatic','Beast'],parts:{back:'aquatic-back-08',ears:'aquatic-ears-10',eyes:'aquatic-eyes-03',horn:'beast-horn-09',mouth:'aquatic-mouth-01',tail:'aquatic-tail-03'},
+       kit:[{part:'mouth',partId:'aquatic-mouth-01',partClass:'Aquatic',name:'Ranchu',desc:'Attack all enemies. +1 Bubble to allied Axies.',type:'Ranged AttackRanged'},{part:'horn',partId:'beast-horn-09',partClass:'Beast',name:'Beast Bun',desc:'Ambush. +2 Taunt to self and the target.',type:'Ranged AttackRanged'},{part:'back',partId:'aquatic-back-08',partClass:'Aquatic',name:'Sponge',desc:'Retain. Shield allied Axies. +1 Bulwark. Target any ally. Convert up to 3 Bubble into Bubble Bomb.',type:'Ranged Skill'},{part:'tail',partId:'aquatic-tail-03',partClass:'Aquatic',name:'Oranda',desc:'Target any ally. +1 Bulwark. +7 Shield per Bubble & Bubble Bomb on the target.',type:'Ranged Skill'}]},
+      {id:'mit',name:'Mit',axieId:25,tier:4,class:'Plant',trait:'Mage',purity:4,atk:60,hp:1080,range:2,mystic:true,
+       attack:'Kidney Bean',skill:'Dream Eater',skillPart:'horn',skillDesc:'Innate. Target any ally. Apply 3 Meditate. Exile.',
+       partClasses:['Dusk','Plant'],parts:{back:'plant-back-09',ears:'plant-ears-03',eyes:'beast-eyes-09',horn:'dusk-horn-03',mouth:'plant-mouth-05',tail:'plant-tail-09'},
+       kit:[{part:'mouth',partId:'plant-mouth-05',partClass:'Plant',name:'Kidney Bean',desc:'Target any enemy. Heal self for 15 HP. On target with Sleep, apply 4 Sleep.',type:'Melee AttackMelee'},{part:'horn',partId:'dusk-horn-03',partClass:'Dusk',name:'Dream Eater',desc:'Innate. Target any ally. Apply 3 Meditate. Exile.',type:'Ranged Power'},{part:'back',partId:'plant-back-09',partClass:'Plant',name:'Meadow Blanket',desc:'Target any enemy. On target with Sleep, +15 DMG & apply 4 Sleep.',type:'Melee AttackMelee'},{part:'tail',partId:'plant-tail-09',partClass:'Plant',name:'Drowsy Moss',desc:'Target any ally. +1 Bulwark. Next turn, if the target is attacked, apply 2 Sleep to the attacker.',type:'Ranged Secret'}]},
 
-      {id:'immanuel',name:'Immanuel',emoji:'🌊',tier:5,class:'Aqua',trait:'Mage',atk:80,hp:1200,mystic:true,range:4,attack:'Abyssal Bolt',skill:'Tidal Surge heals global allies for 300, pushes enemies back 2 rows'},
-      {id:'lotus',name:'Lotus',emoji:'🪷',tier:5,class:'Plant',trait:'Vanguard',atk:70,hp:1700,mystic:false,range:1,attack:'Petal Slap',skill:'Nirvana Aura passive aura heals 5% max HP/sec + resurrects once at 50% HP'},
-      {id:'chonky',name:'Chonky',emoji:'🦛',tier:5,class:'Beast',trait:'Spikes',atk:95,hp:1650,mystic:false,range:1,attack:'Heavy Chomp',skill:'Fat Roll crushes for 150 dmg + 25% max HP value'},
-      {id:'kallaway',name:'Kallaway',emoji:'🦚',tier:5,class:'Bird',trait:'Assassin',atk:85,hp:1180,mystic:false,range:1,attack:'Razor Wing',skill:'Bladestorm phys-immune whirlwind dealing 80 magic dmg/sec'}
+      {id:'temujin',name:'Temujin',axieId:14,tier:5,class:'Dawn',trait:'Spikes',purity:3,atk:82,hp:1320,range:3,mystic:false,
+       attack:'Shishi',skill:'Black Gourd',skillPart:'tail',skillDesc:'Target any Enemy, Reverse Heal. Whenever an enemy take damage from Cursed Cards, +7 Heal (Cap: +70). Heal equal to 25% Stat for lowest HP allied Axie.',
+       partClasses:['Beast','Dawn','Dusk'],parts:{back:'dawn-back-05',ears:'dawn-ears-01',eyes:'dawn-eyes-01',horn:'beast-horn-11',mouth:'beast-mouth-13',tail:'dusk-tail-03'},
+       kit:[{part:'mouth',partId:'beast-mouth-13',partClass:'Beast',name:'Shishi',desc:'Attack all enemies. Apply 2 Fear to Enemies take unblocked DMG.',type:'Ranged AttackRanged'},{part:'horn',partId:'beast-horn-11',partClass:'Beast',name:'Small Yak',desc:'Randomly deal 1 hit, +50% DMG on target with Fear, +50% DMG on furthest enemy.',type:'Melee AttackMelee'},{part:'back',partId:'dawn-back-05',partClass:'Dawn',name:'White Gourd',desc:'Target any Ally. Whenever an enemy take damage from Cursed Cards, +7 Heal (Cap: +70). Deal DMG equal to 25% Stat to lowest HP Enemy Axie.',type:'Ranged Skill'},{part:'tail',partId:'dusk-tail-03',partClass:'Dusk',name:'Black Gourd',desc:'Target any Enemy, Reverse Heal. Whenever an enemy take damage from Cursed Cards, +7 Heal (Cap: +70). Heal equal to 25% Stat for lowest HP allied Axie.',type:'Ranged Skill'}]},
+      {id:'shufen',name:'Shufen',axieId:15,tier:5,class:'Dusk',trait:'Assassin',purity:2,atk:88,hp:1180,range:2,mystic:false,
+       attack:'Maggot',skill:'Darksea Jellyfish',skillPart:'horn',skillDesc:'Target any Ally. Apply 3 Weak to all enemies. If Enemy has Reshuffled deck, add 1 Jinx to Enemy Draw Pile.',
+       partClasses:['Aquatic','Bug','Dusk'],parts:{back:'dusk-back-01',ears:'bug-ears-05',eyes:'dusk-eyes-07',horn:'aquatic-horn-03',mouth:'bug-mouth-03',tail:'aquatic-tail-06'},
+       kit:[{part:'mouth',partId:'bug-mouth-03',partClass:'Bug',name:'Maggot',desc:'+4 DMG per Bad Luck (Cap: +80). Initial: Discard 1 random Card from Enemy Draw Pile.',type:'Melee AttackMelee'},{part:'horn',partId:'aquatic-horn-03',partClass:'Aquatic',name:'Darksea Jellyfish',desc:'Target any Ally. Apply 3 Weak to all enemies. If Enemy has Reshuffled deck, add 1 Jinx to Enemy Draw Pile.',type:'Ranged Skill'},{part:'back',partId:'dusk-back-01',partClass:'Dusk',name:'Greedy Urn',desc:'Retain. If both player Draw Pile has at least 2 Cards, both player draw 2 cards.',type:'Ranged Skill'},{part:'tail',partId:'aquatic-tail-06',partClass:'Aquatic',name:'Tadpole',desc:'Ambush. Initial: Add 1 Jinx to Enemy Draw Pile; otherwise, to Discard Pile.',type:'Ranged AttackRanged'}]},
+      {id:'bard',name:'Bard',axieId:20,tier:5,class:'Plant',trait:'Mage',purity:3,atk:68,hp:1250,range:3,mystic:true,
+       attack:'Buddy Chorus',skill:'Ballad Of The Shore',skillPart:'horn',skillDesc:'Summon a True Fan Hermit Crab with HP equal to this Card\'s Heal Stat.',
+       partClasses:['Bird','Dawn','Plant'],parts:{back:'bird-back-07',ears:'plant-ears-01',eyes:'dusk-eyes-05',horn:'plant-horn-05',mouth:'dawn-mouth-03',tail:'plant-tail-07'},
+       kit:[{part:'mouth',partId:'dawn-mouth-03',partClass:'Dawn',name:'Buddy Chorus',desc:'Randomly deal 2 hits. Deal 1 bonus hit per Minion.',type:'Ranged AttackRanged'},{part:'horn',partId:'plant-horn-05',partClass:'Plant',name:'Ballad Of The Shore',desc:'Summon a True Fan Hermit Crab with HP equal to this Card\'s Heal Stat.',type:'Ranged Skill'},{part:'back',partId:'bird-back-07',partClass:'Bird',name:'Feather Melody',desc:'Summon a Sparrow. Alterable by Power Charms',type:'Ranged Skill'},{part:'tail',partId:'plant-tail-07',partClass:'Plant',name:'Tropical Guardian',desc:'Retain. Heal and Shield this Axie and all Summons',type:'Ranged Skill'}]},
     ];
     const UMAP = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,u]));
-    // ---- Axie Origins art -------------------------------------------------
-    // Every unit is skinned with a first-party starter Axie from
-    // axieinfinity/axie-origins-asset-kit. Board sprites are single frames
-    // rendered out of the kit's Spine 3.8 skeletons (one per combat state);
-    // portraits are the kit's shipped avatar art. See assets/origins/manifest.json.
-    const ORIGINS_ART_ROOT = 'assets/origins';
-    const ORIGINS_SKINS = {
-      peon:'Puffy', bubbles:'Shufen', nemo:'Noir', siren:'Rouge (awakened)',
-      immanuel:'Mit (awakened)',
-      sprout:'Olek', cactus:'Bard', pumpkin:'Ena', yggdrasil:'Olek (awakened)',
-      lotus:'Ena (awakened)',
-      nut:'Tripp', gnasher:'Xia', zoro:'Buba', goliath:'Xia (awakened)',
-      chonky:'Hope (awakened)',
-      pips:'Momo', kestrel:'Pomodoro', falcon:'Bing', raven:'Machito (awakened)',
-      kallaway:'Momo (awakened)'
-    };
+    const CLASS_OF = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,u.class]));
+
+    // Merging an Axie to 3 stars awakens it: Origins ships a second, upgraded
+    // body stage per starter, and that is the sprite set a 3-star unit wears.
+    const AWAKEN_STAR = 3;
+    function isAwakened(star){ return (star||1) >= AWAKEN_STAR; }
     const MODEL_POSES = ['idle','move','attack','cast','hit','death'];
-    function originsUnitSprite(id,pose='idle'){
+    function originsUnitSprite(id,pose='idle',awakened=false){
+      const body = awakened ? `${id}-awakened` : id;
       return pose==='idle'
-        ? `${ORIGINS_ART_ROOT}/units/${id}.png`
-        : `${ORIGINS_ART_ROOT}/units/${id}-${pose}.png`;
+        ? `${ORIGINS_ART_ROOT}/units/${body}.png`
+        : `${ORIGINS_ART_ROOT}/units/${body}-${pose}.png`;
     }
     const UNIT_ASSETS = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,originsUnitSprite(u.id)]));
     const UNIT_PORTRAITS = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,`${ORIGINS_ART_ROOT}/portraits/${u.id}.png`]));
     const UNIT_MODEL_MANIFEST = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,{
       runtime:'spine-frames',
-      axie: ORIGINS_SKINS[u.id]||u.name,
+      axie:u.name, axieId:u.axieId,
       performanceTier: u.tier>=4?'high':'low',
       scale: u.tier>=4?1.10:1.04,
       anchor:{x:0.5,y:0.86},
-      files:Object.fromEntries(MODEL_POSES.map(p=>[p,originsUnitSprite(u.id,p)])),
+      files:Object.fromEntries(MODEL_POSES.map(p=>[p,originsUnitSprite(u.id,p,false)])),
+      awakenedFiles:Object.fromEntries(MODEL_POSES.map(p=>[p,originsUnitSprite(u.id,p,true)])),
       animMap:{idle:'idle',move:'move',attack:'attack',cast:'cast',hit:'hit',death:'death',crit:'attack'}
     }]));
+
+    // Bard's Ballad Of The Shore and Feather Melody summon real Origins
+    // summoner bodies, so the kit's Spine sets stand in for them.
+    const SUMMON_POSES = ['idle','attack','hit','death'];
+    const SUMMON_DEFS = {
+      sparrow:{id:'sparrow',name:'Sparrow',class:'Bird',atk:34,hp:260,range:3},
+      hermitcrab:{id:'hermitcrab',name:'True Fan Hermit Crab',class:'Aquatic',atk:20,hp:440,range:1}
+    };
+    function summonSprite(id,pose='idle'){
+      return pose==='idle'
+        ? `${ORIGINS_ART_ROOT}/summons/${id}.png`
+        : `${ORIGINS_ART_ROOT}/summons/${id}-${pose}.png`;
+    }
+
     const BOSS_POSES = ['idle','attack','hit','death'];
     function originsBossSprite(phase,pose='idle'){
       return pose==='idle'
@@ -712,19 +896,43 @@
       phase1:Object.fromEntries(BOSS_POSES.map(p=>[p,originsBossSprite('phase1',p)])),
       phase2:Object.fromEntries(BOSS_POSES.map(p=>[p,originsBossSprite('phase2',p)]))
     };
-    // Story / class arenas shipped with the kit, one per stage flavour.
-    const ARENA_CYCLE = ['arena-plant','arena-beast','arena-aquatic','arena-bird'];
+
+    // gtk2d ships part icons for the six main classes only; the three secret
+    // classes fall back to their class badge.
+    const PART_ICON_CLASSES = new Set(['beast','bug','bird','plant','aquatic','reptile']);
+    const PART_ORDER = ['eyes','ears','mouth','horn','back','tail'];
+    function classIcon(cls){
+      const c=AXIE_CLASSES[cls];
+      return c ? `${ORIGINS_ART_ROOT}/icons/class/${c.icon}` : '';
+    }
+    function classTint(cls){ return (AXIE_CLASSES[cls]||{}).tint || '#8f96a8'; }
+    function partIcon(partId){
+      const bits=String(partId||'').split('-');
+      const cls=bits[0]||'', type=bits[1]||'';
+      if(PART_ICON_CLASSES.has(cls)) return `${ORIGINS_ART_ROOT}/icons/part/${cls}-${type}.png`;
+      return classIcon(cls.charAt(0).toUpperCase()+cls.slice(1));
+    }
+    function statusIcon(name){ return `${ORIGINS_ART_ROOT}/icons/status/${name}.png`; }
+    function relicIcon(id){ return `${ORIGINS_ART_ROOT}/icons/relic/${id}.png`; }
+    function nodeIcon(name){ return `${ORIGINS_ART_ROOT}/icons/node/${name}.png`; }
+
+    // One class arena per stage, and the gauntlet arena on every boss stage.
+    const ARENA_CYCLE = ['Plant','Beast','Aquatic','Bird','Bug','Reptile','Dawn','Dusk','Mech'];
     function arenaForStage(stage){
       const s=Math.max(1,stage|0);
-      if(s%5===0) return 'arena-boss';
-      return ARENA_CYCLE[(s-1)%ARENA_CYCLE.length];
+      if(s%5===0) return 'arena-boss.jpg';
+      return AXIE_CLASSES[ARENA_CYCLE[(s-1)%ARENA_CYCLE.length]].arena;
     }
-    function arenaBgUrl(stage){
-      return `${ORIGINS_ART_ROOT}/arena/${arenaForStage(stage)}.jpg`;
-    }
-    const CLASS_ARENA = {Aqua:'arena-aquatic',Plant:'arena-plant',Beast:'arena-beast',Bird:'arena-bird'};
+    function arenaBgUrl(stage){ return `${ORIGINS_ART_ROOT}/arena/${arenaForStage(stage)}`; }
     function classArenaUrl(cls){
-      return `${ORIGINS_ART_ROOT}/arena/${CLASS_ARENA[cls]||'arena-plant'}.jpg`;
+      return `${ORIGINS_ART_ROOT}/arena/${(AXIE_CLASSES[cls]||AXIE_CLASSES.Plant).arena}`;
+    }
+    function bloodlineMult(srcCls,dstCls){
+      const a=CLASS_BLOODLINE[srcCls], b=CLASS_BLOODLINE[dstCls];
+      if(!a||!b||a===b) return 1;
+      if(BLOODLINE_BEATS[a]===b) return 1+CLASS_ADVANTAGE;
+      if(BLOODLINE_BEATS[b]===a) return 1-CLASS_ADVANTAGE;
+      return 1;
     }
     const RELICS = [
       {id:'mint',name:"Lunacia's Mint",desc:'+2 prep energy income',apply:s=>s.mods.incomeBonus+=2},
@@ -745,10 +953,10 @@
       {id:'battery',name:'Overclock Battery',desc:'+1 prep income, +10 start energy',apply:s=>{s.mods.incomeBonus+=1;s.mods.startEnergy+=10}},
       {id:'tax',name:"Tax Collector's Badge",desc:'Win +1 energy, Loss +2 energy',apply:s=>{s.mods.winBonusEnergy+=1;s.mods.lossBonusEnergy+=2}}
     ];
-    const RELIC_ICONS = {
-      mint:'🪙',cloak:'🕶️',spores:'🦠',crest:'🛡️',banner:'🏴',runestone:'🪨',scope:'🔭',capacitor:'🔋',watch:'⌚',
-      scrap:'🧲',gem:'💎',glass:'🔮',elixir:'🧪',adrenaline:'💉',secondwind:'🫀',battery:'⚡',tax:'🧾'
-    };
+    // Relic art is gtk2d land items (weapons, armour, potions, shells, jewellery).
+    function relicImg(id,size=22){
+      return `<img class="relicIcon" src="${relicIcon(id)}" alt="" style="width:${size}px;height:${size}px" onerror="this.style.display='none'">`;
+    }
     const DAILY_MODS = [
       {id:'bloodmoon',name:'Bloodmoon Skies',desc:'All units gain +20% attack.',apply:units=>units.forEach(u=>u.atk*=1.2)},
       {id:'ironwall',name:'Ironwall March',desc:'All units gain +18% max HP.',apply:units=>units.forEach(u=>{u.maxHp*=1.18;u.hp*=1.18;})},
@@ -757,9 +965,10 @@
       {id:'slowtime',name:'Slow Time',desc:'All units -20% attack speed.',apply:units=>units.forEach(u=>u.attackSpeed*=0.8)},
       {id:'bounty',name:'Bounty Hunt',desc:'Wins grant +2 extra energy, losses grant +1.',applyState:s=>{s.mods.winBonusEnergy+=2;s.mods.lossBonusEnergy+=1}}
     ];
-    const DAILY_ART = {
-      bloodmoon:'🌕',ironwall:'🪵',arcane:'✨',glass:'🔮',slowtime:'⏳',bounty:'🧭'
-    };
+    function dailyIcon(id){ return `${ORIGINS_ART_ROOT}/icons/daily/${id}.png`; }
+    function dailyImg(id,size=22){
+      return `<img class="relicIcon" src="${dailyIcon(id)}" alt="" style="width:${size}px;height:${size}px" onerror="this.style.display='none'">`;
+    }
 
     const state = {
       stage:1,playerHp:24,playerMaxHp:24,energy:4,enemyHp:24,enemyMaxHp:24,
@@ -801,11 +1010,11 @@
     function placedPlayerCount(){let n=0;for(let r=5;r<10;r++)for(let c=0;c<5;c++)if(state.grid[r][c])n++;return n;}
     function classSlug(cls){return String(cls||'').toLowerCase();}
     function buyCost(def){return (def?.tier||1)+1;}
-    function unitImgTag(defId,cls='unitArt',alt='unit'){
+    function unitImgTag(defId,cls='unitArt',alt='unit',star=1){
       // Small inline icons read better as the kit's circular Axie avatars;
       // anything sitting on the board or in a card banner uses the body sprite.
       const wantsPortrait=/(^|\s)unitArt(\s|$)/.test(cls);
-      const src=(wantsPortrait?UNIT_PORTRAITS[defId]:null)||UNIT_ASSETS[defId];
+      const src=(wantsPortrait?UNIT_PORTRAITS[defId]:null)||unitPoseSrc(defId,'idle',star);
       if(!src) return '';
       const fallback=UNIT_ASSETS[defId]||'';
       const onerr=fallback&&fallback!==src
@@ -813,24 +1022,72 @@
         : `this.style.display='none'`;
       return `<img class="${cls}" src="${src}" alt="${alt}" loading="lazy" onerror="${onerr}">`;
     }
-    function unitPoseSrc(defId,anim='idle'){
+    function unitPoseSrc(defId,anim='idle',star=1){
       const m=UNIT_MODEL_MANIFEST[defId];
       if(!m) return UNIT_ASSETS[defId]||'';
-      return m.files[m.animMap?.[anim]||anim]||m.files.idle;
+      const pose=m.animMap?.[anim]||anim;
+      const files=isAwakened(star)?m.awakenedFiles:m.files;
+      return files[pose]||files.idle;
     }
     function actorArtSrc(u,anim='idle'){
       if(!u) return '';
+      if(u.summon) return summonSprite(u.summonKind,SUMMON_POSES.includes(anim)?anim:'idle');
       if(u.defId==='chimera'){
         const set=BOSS_MODEL_MANIFEST[u.phase2?'phase2':'phase1'];
-        return set[anim]||set.idle;
+        return set[BOSS_POSES.includes(anim)?anim:'idle']||set.idle;
       }
-      return unitPoseSrc(u.defId,anim);
+      return unitPoseSrc(u.defId,anim,u.star);
     }
     function actorArtFallback(u){
       if(!u) return '';
+      if(u.summon) return summonSprite(u.summonKind);
       return u.defId==='chimera'
         ? (u.phase2?BOSS_ASSETS.phase2:BOSS_ASSETS.phase1)
         : (UNIT_ASSETS[u.defId]||'');
+    }
+    // Status flashes reuse the kit's Origins status icons.
+    function statusFloat(u,key){
+      const a=el('actor-'+u.id); if(!a) return;
+      const pip=document.createElement('img');
+      pip.className='statusPop'; pip.src=statusIcon(key); pip.alt=key;
+      a.appendChild(pip);
+      setTimeout(()=>{pip.remove();},900);
+    }
+    const STATUS_PIPS = [
+      ['poison',u=>u.poison>0], ['bleed',u=>u.bleed>0], ['weak',u=>u.weak>0],
+      ['fear',u=>u.fear>0], ['sleep',u=>u.stunned>0], ['taunt',u=>!!u.tauntedBy],
+      ['bulwark',u=>u.shield>0], ['stealth',u=>u.untargetable>0]
+    ];
+    function renderStatusPips(u,node){
+      const bar=node.querySelector('.actorStatus'); if(!bar) return;
+      const on=STATUS_PIPS.filter(([,test])=>{try{return test(u)}catch(e){return false}})
+                          .map(([k])=>k);
+      const key=on.join(',');
+      if(bar.dataset.pips===key) return;
+      bar.dataset.pips=key;
+      bar.innerHTML=on.slice(0,4).map(k=>`<img src="${statusIcon(k)}" alt="${k}" title="${k}">`).join('');
+    }
+    // Bard's Ballad Of The Shore / Feather Melody bring in real Origins summoners.
+    function summonFor(u,units,kind){
+      const d=SUMMON_DEFS[kind]; if(!d) return null;
+      const cell=findFreeCellNear(u.row,u.col,units,u.id); if(!cell) return null;
+      const pow=u.skillPow||1;
+      const su={
+        id:'s'+(state.nextUid++),owner:u.owner,row:cell.r,col:cell.c,
+        defId:'summon-'+kind,summonKind:kind,summonOf:u.id,summon:true,
+        name:d.name,tier:1,class:d.class,trait:'Vanguard',star:1,
+        hp:d.hp*pow,maxHp:d.hp*pow,atk:d.atk*pow,range:d.range+1,mystic:false,
+        maxEnergy:100,energy:0,attackCd:0,moveCd:0,
+        stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:0,reflect:0,
+        tauntedBy:null,physImmune:0,untargetable:0,
+        poison:0,bleed:0,weak:0,fear:0,poisonTick:0,bleedTick:0,
+        attackSpeed:1.2,crit:0.05,resUsed:false,nirvana:false,
+        targetId:null,damageDone:0,healingDone:0,lastRow:cell.r,lastCol:cell.c
+      };
+      units.push(su);
+      spawnActorFor(su);
+      log(`<b>${u.name}</b> summons a ${d.name}.`);
+      return su;
     }
     function applyArenaBackdrop(){
       const bg=el('boardBg'); if(!bg) return;
@@ -839,10 +1096,10 @@
       bg.dataset.arena=url;
       bg.style.backgroundImage=`url('${url}')`;
     }
-    function modelAsset(defId,anim='idle'){
+    function modelAsset(defId,anim='idle',star=1){
       const m=UNIT_MODEL_MANIFEST[defId];
       if(!m) return null;
-      const file=m.files[m.animMap?.[anim]||anim] || m.files.idle;
+      const file=unitPoseSrc(defId,anim,star);
       return file?{manifest:m,file}:null;
     }
     function primeModelCache(){
@@ -851,9 +1108,18 @@
         const img=new Image(); img.src=file; state.modelCache.set(file,img);
       };
       for(const id of Object.keys(UNIT_MODEL_MANIFEST)){
-        for(const pose of MODEL_POSES) warm(unitPoseSrc(id,pose));
+        for(const pose of MODEL_POSES){
+          warm(unitPoseSrc(id,pose,1));
+          warm(unitPoseSrc(id,pose,AWAKEN_STAR));
+        }
         warm(UNIT_PORTRAITS[id]);
       }
+      for(const kind of Object.keys(SUMMON_DEFS)){
+        for(const pose of SUMMON_POSES) warm(summonSprite(kind,pose));
+      }
+      for(const c of CLASS_LIST) warm(classIcon(c));
+      for(const [,test] of STATUS_PIPS) void test;
+      for(const k of ['poison','bleed','weak','fear','sleep','taunt','bulwark','stealth']) warm(statusIcon(k));
       for(const phase of Object.keys(BOSS_MODEL_MANIFEST)){
         for(const pose of BOSS_POSES) warm(BOSS_MODEL_MANIFEST[phase][pose]);
       }
@@ -862,11 +1128,12 @@
     }
     function renderUnitVisual(defId,viewState={anim:'idle'},opts={}){
       const cls=opts.className||'unitBg', alt=opts.alt||'unit', anim=viewState.anim||'idle', surface=opts.surface||'board';
+      const star=opts.star||viewState.star||1;
       const useModel = state.settings.renderMode==='model' && surface==='board';
-      const a = useModel ? modelAsset(defId,anim) : null;
-      if(!a) return unitImgTag(defId,cls,alt);
+      const a = useModel ? modelAsset(defId,anim,star) : null;
+      if(!a) return unitImgTag(defId,cls,alt,star);
       const perf = a.manifest.performanceTier||'low';
-      const fallback=UNIT_ASSETS[defId]||a.file;
+      const fallback=unitPoseSrc(defId,'idle',star)||a.file;
       const modeClass = surface==='combat'?'model-combat':(surface==='board'?'model-board':'');
       const scaleStyle = surface==='combat' ? '' : `transform:scale(${a.manifest.scale||1.18})`;
       return `<div class="${cls} unitModel ${modeClass}" data-model="true" data-def="${defId}" data-anim="${anim}" data-perf="${perf}" style="${scaleStyle}"><img class="modelFallback" src="${a.file}" alt="${alt}" loading="lazy" onerror="this.src='${fallback}'"></div>`;
@@ -895,6 +1162,24 @@
     function acquireActorNode(){
       return document.createElement('div');
     }
+    function spawnActorFor(u){
+      if(!actorLayer || el('actor-'+u.id)) return null;
+      const a=acquireActorNode();
+      a.className='actor class-'+classSlug(u.class)+' '+(u.owner==='enemy'?'enemy':'')
+        + (u.summon?' summon':'') + (isAwakened(u.star)?' awakened':'');
+      a.id='actor-'+u.id;
+      a.dataset.anim='idle';
+      const artSrc=actorArtSrc(u,'idle'), fallback=actorArtFallback(u);
+      const stars=u.summon?'':'★'.repeat(u.star||1);
+      a.innerHTML=`<img class="actorArt" src="${artSrc}" alt="${u.name}" loading="eager" decoding="sync" onerror="this.onerror=null;this.src='${fallback}'">`
+        + `<div class="actorShade"></div><div class="actorStars">${stars}</div>`
+        + `<div class="actorStatus"></div>`
+        + `<div class="actorHp"><div class="actorHpFill"></div></div>`
+        + `<div class="actorMana"><div class="actorManaFill"></div></div>`;
+      a.onclick=(e)=>{e.stopPropagation();state.selected={type:'combat',id:u.id};renderSelectedInfo();};
+      actorLayer.appendChild(a);
+      return a;
+    }
     function releaseActorNodes(){
       [...actorLayer.children].forEach(n=>{n.onclick=null; if(n._animBackTimer) clearTimeout(n._animBackTimer);});
       actorLayer.innerHTML='';
@@ -907,7 +1192,7 @@
     function attacksToCast(def){return Math.ceil(unitMaxEnergy(def)/20);}
     function getChimeraConfig(stage){
       return {
-        name:'Chimera Elite',emoji:'🐉',class:'Beast',trait:'Vanguard',
+        name:'Chimera Elite',class:'Beast',trait:'Vanguard',
         hp:3600 + stage*260,maxHp:3600 + stage*260,atk:120 + stage*10,range:2,maxEnergy:100,attackSpeed:1.35,dr:0.12
       };
     }
@@ -969,15 +1254,40 @@
       state.enemyPreviewStage = state.stage;
       renderEnemyIntent();
     }
+    // Origins telegraphs what an enemy is about to do with intent icons; each
+    // trait maps to the kit icon that matches how that Axie fights.
+    const TRAIT_INTENT = {
+      Assassin:['attack-melee','dives the backline'],
+      Sniper:['attack-ranged','picks off range targets'],
+      Vanguard:['strong-attack','frontline pressure'],
+      Bastion:['strong-defend','shields and holds'],
+      Mage:['buff','buffs and controls'],
+      Spikes:['debuff','stacks damage over time']
+    };
+    function intentIcon(name){ return `${ORIGINS_ART_ROOT}/icons/intent/${name}.png`; }
+    function intentFor(defId){
+      const d=UMAP[defId];
+      return TRAIT_INTENT[d&&d.trait] || ['moderate-attack','attacks'];
+    }
+    function intentChip(defId,size=18){
+      const [icon,label]=intentFor(defId);
+      return `<img class="intentIcon" src="${intentIcon(icon)}" alt="${label}" title="${label}" style="width:${size}px;height:${size}px">`;
+    }
+    // Note: #enemyIntent is not in the markup, so this only runs if the panel
+    // is ever added back. Intent art is shown on spawn ghosts and in the
+    // inspect panel below.
     function renderEnemyIntent(){
       const box=el('enemyIntent'); if(!box) return;
       if(!state.enemyPreview || !state.enemyPreview.length){box.innerHTML='<span class="small">No enemy preview.</span>';return;}
       const lines=state.enemyPreview.slice(0,8).map(p=>{
-        if(p.boss) return `• <img class="unitArt lg" src="${BOSS_ASSETS.token}" alt="Chimera"> Chimera Elite at [${p.row+1},${p.col+1}] — phase shift at 50% HP`;
-        const d=UMAP[p.defId], intent = d.trait==='Assassin'?'dives backline':d.trait==='Sniper'?'focuses range picks':'frontline pressure';
-        return `• ${unitImgTag(p.defId,'unitArt lg',d.name)} ${d.name} ${'★'.repeat(p.star)} at [${p.row+1},${p.col+1}] — ${intent}`;
+        if(p.boss) return `<div class="intentRow"><img class="unitArt lg" src="${BOSS_ASSETS.token}" alt="Chimera">`
+          + `<img class="intentIcon" src="${intentIcon('dangerous-action')}" alt="dangerous" title="dangerous action" style="width:18px;height:18px">`
+          + ` Chimera Elite at [${p.row+1},${p.col+1}] — phase shift at 50% HP</div>`;
+        const d=UMAP[p.defId];
+        return `<div class="intentRow">${unitImgTag(p.defId,'unitArt lg',d.name)}${intentChip(p.defId)}`
+          + ` ${d.name} ${'★'.repeat(p.star)} at [${p.row+1},${p.col+1}] — ${intentFor(p.defId)[1]}</div>`;
       });
-      box.innerHTML = lines.join('<br>');
+      box.innerHTML = lines.join('');
     }
     function placeFloatingOverlayNearAnchor(overlayId,anchorEl){
       const ov=el(overlayId); if(!ov) return;
@@ -1013,13 +1323,12 @@
     function renderDailyMod(){
       const box=el('dailyMod'); if(!box) return;
       if(!state.daily){box.innerHTML='<span class="small">None</span>';return;}
-      const artId=UNIT_DEFS[hashString(state.daily.id)%UNIT_DEFS.length].id;
-      box.innerHTML = `<div><b>${state.daily.name}</b></div><div class="small">${state.daily.desc}</div>`;
+      box.innerHTML = `<div class="relicRow">${dailyImg(state.daily.id,24)} <b>${state.daily.name}</b></div><div class="small">${state.daily.desc}</div>`;
       const onBoard=el('dailyOnBoard');
       if(onBoard){
-        onBoard.innerHTML = `<span style="font-size:20px">${DAILY_ART[state.daily.id]||'🌿'}</span>`;
+        onBoard.innerHTML = dailyImg(state.daily.id,22);
         onBoard.style.cursor='pointer';
-        onBoard.onclick=(e)=>openSideInfo(`Daily Challenge: ${state.daily.name}`,`<div class="small">${state.daily.desc}</div>`,e.currentTarget);
+        onBoard.onclick=(e)=>openSideInfo(`Daily Challenge: ${state.daily.name}`,`<div class="relicRow">${dailyImg(state.daily.id,28)} <b>${state.daily.name}</b></div><div class="small">${state.daily.desc}</div>`,e.currentTarget);
       }
     }
     function renderBattleRecap(){
@@ -1064,10 +1373,25 @@
     function renderGlossaryBody(){
       const g=el('glossaryBody'); if(!g) return;
       g.innerHTML = `
-        <div><b>Stars</b>: 2★ = base ×1.6, 3★ = base ×2.5.</div>
+        <div><b>Stars</b>: 2★ = base ×1.6, 3★ = base ×2.5. Merging to ${AWAKEN_STAR}★
+          <b>awakens</b> an Axie — it fights in its second Origins body stage.</div>
         <div><b>Energy</b>: basic attacks give +20 energy. Cast at Max Energy.</div>
         <hr style="border-color:#36457f66">
-        <div>Synergy effects are shown in the <b>Active Synergies</b> badges on board and in side panel.</div>
+        <div><b>Class synergy</b> counts every Axie carrying that class on one of its
+          four ability parts (mouth, horn, back, tail) — the way an Origins deck is
+          built — so one Axie can feed two or three classes. ${CLASS_SYN_AT[0]} for Lv1,
+          ${CLASS_SYN_AT[1]} for Lv2.</div>
+        <div><b>Trait synergy</b> counts distinct Axies of that trait:
+          ${TRAIT_SYN_AT[0]} for Lv1, ${TRAIT_SYN_AT[1]} for Lv2.</div>
+        <hr style="border-color:#36457f66">
+        <div><b>Class advantage</b> (${Math.round(CLASS_ADVANTAGE*100)}%):
+          <b>Verdant</b> (Plant, Reptile, Dusk) beats <b>Tidal</b> (Aquatic, Bird, Dawn),
+          which beats <b>Primal</b> (Beast, Bug, Mech), which beats Verdant.</div>
+        <div><b>Statuses</b>: Poison and Bleed tick down each second. Weak cuts the
+          afflicted Axie's damage by 25%; Fear makes it take 25% more; Sleep stuns.</div>
+        <hr style="border-color:#36457f66">
+        <div>Synergy effects are shown in the <b>Active Synergies</b> badges on board and in side panel.
+          Every Axie's four ability cards are its real Origins cards — see the <b>Axie Codex</b>.</div>
       `;
     }
     function renderOddsModal(){
@@ -1121,7 +1445,7 @@
         state.runStats.damageByDef[u.defId]=(state.runStats.damageByDef[u.defId]||0)+(u.damageDone||0);
         state.runStats.fieldCounts[u.defId]=(state.runStats.fieldCounts[u.defId]||0)+1;
       });
-      state.lastBattleBreakdown=p.map(u=>({defId:u.defId,name:u.name,emoji:u.emoji,damage:u.damageDone||0})).sort((a,b)=>b.damage-a.damage);
+      state.lastBattleBreakdown=p.map(u=>({defId:u.defId,name:u.name,damage:u.damageDone||0})).sort((a,b)=>b.damage-a.damage);
     }
     function openSummary(win){
       const body=el('summaryBody'); if(!body) return;
@@ -1167,8 +1491,8 @@
       const hp = u.hp && u.maxHp ? Math.max(0,Math.round(100*u.hp/u.maxHp)) : 100;
       const stroke = {1:'#4b515a',2:'#b9c2cf',3:'#f2cc57',4:'#ffffff'}[u.star||1]||'#4b515a';
       const sw = {1:2,2:3,3:4,4:5}[u.star||1]||2;
-      return `<div class="slotUnit class-${classSlug(d.class)} ${enemy?'enemy':''}" data-uid="${u.uid||''}" style="border-color:${stroke};border-width:${sw}px">
-          ${renderUnitVisual(d.id,{anim:'idle'},{className:'unitBg',alt:d.name,surface:'board'})}
+      return `<div class="slotUnit class-${classSlug(d.class)} ${enemy?'enemy':''} ${isAwakened(u.star)?'awakened':''}" data-uid="${u.uid||''}" style="--cls:${classTint(d.class)};border-color:${stroke};border-width:${sw}px">
+          ${renderUnitVisual(d.id,{anim:'idle'},{className:'unitBg',alt:d.name,surface:'board',star:u.star||1})}
           <div class="unitShade"></div>
           <div class="hpbar"><div class="hpfill" style="width:${hp}%"></div></div>
       </div>`;
@@ -1231,10 +1555,15 @@
         state.enemyPreview.forEach(p=>{
           const h=document.querySelector(`.hex[data-r="${p.row}"][data-c="${p.col}"]`);
           if(!h || h.querySelector('.slotUnit')) return;
-          const d=p.boss?{emoji:'🐉',name:'Chimera Elite'}:UMAP[p.defId];
+          const d=p.boss?{name:'Chimera Elite'}:UMAP[p.defId];
           const g=document.createElement('div');g.className='spawnGhost';g.title=`Spawn: ${p.boss?'Chimera Elite':d.name}`;
-          if(p.boss) g.innerHTML=`<img src="${BOSS_ASSETS.token}" alt="Boss">`;
-          else g.innerHTML=`<img src="${UNIT_ASSETS[p.defId]}" alt="${d.name}">`;
+          if(p.boss){
+            g.innerHTML=`<img src="${BOSS_ASSETS.token}" alt="Boss">`
+              + `<img class="ghostIntent" src="${intentIcon('dangerous-action')}" alt="">`;
+          } else {
+            g.innerHTML=`<img src="${unitPoseSrc(p.defId,'idle',p.star||1)}" alt="${d.name}">`
+              + `<img class="ghostIntent" src="${intentIcon(intentFor(p.defId)[0])}" alt="">`;
+          }
           h.appendChild(g);
         });
       }
@@ -1245,7 +1574,7 @@
     function startDragPreview(uid){
       const g=el('dragGhost'); if(!g||!uid||!state.units[uid]) return;
       const d=UMAP[state.units[uid].defId];
-      g.innerHTML=unitImgTag(d.id,'unitBg',d.name);
+      g.innerHTML=unitImgTag(d.id,'unitBg',d.name,(state.units[uid]||{}).star||1);
       g.style.display='block';
       showDragRangeHint(uid);
       const sellOverlay=el('shopSellOverlay');
@@ -1415,7 +1744,7 @@
             ${opp?`<div class="shopMergeTag">${'★'.repeat(opp.star)}</div>`:''}
             <div class="cardBanner" style="background-image:url('${classArenaUrl(d.class)}')"><div class="shopCostOverlay">${cost} 🪙</div>${unitImgTag(d.id,'',d.name)}</div>
             <div class="cardInner">
-            <div class="shopNameRow"><span class="name">${d.name}</span><span class="small">${{Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️'}[d.class]||''} ${{Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'}[d.trait]||''}</span></div>
+            <div class="shopNameRow"><span class="name">${d.name}</span><span class="small classChip"><img src="${classIcon(d.class)}" alt="${d.class}" title="${d.class}">${TRAIT_ICONS[d.trait]||''}</span></div>
             </div>`;
           c.style.cursor=canBuy?'pointer':'not-allowed';
           c.style.opacity=visualReady?'1':'0.42';
@@ -1459,7 +1788,15 @@
       if(pf) pf.style.width=`${Math.max(0,Math.min(100,Math.round(100*state.playerHp/state.playerMaxHp)))}%`;
       if(ef) ef.style.width=`${Math.max(0,Math.min(100,Math.round(100*state.enemyHp/state.enemyMaxHp)))}%`;
       const cap=el('dragCapOverlay'); if(cap){cap.textContent=`${placedPlayerCount()}/${boardCapForStage(state.stage)}`;cap.style.display='block';cap.style.opacity=state.dragging?'0.92':'0.2';}
-      const track=[]; for(let i=1;i<=10;i++){track.push(`<span class="stageNode ${i<state.stage?'done':''} ${i===state.stage?'current':''} ${i===5||i===10?'boss':''}" data-stage="${i}">${i}</span>`); if(i<10) track.push('<span class="stageLine"></span>');}
+      const track=[];
+      for(let i=1;i<=10;i++){
+        const done=i<state.stage, cur=i===state.stage, boss=i===5||i===10;
+        const art = boss ? 'stage-boss' : (done?'node_win':cur?'node_current':'node_default');
+        const src = boss ? `${ORIGINS_ART_ROOT}/ui/stage-boss.png` : nodeIcon(art);
+        track.push(`<span class="stageNode ${done?'done':''} ${cur?'current':''} ${boss?'boss':''}" data-stage="${i}">`
+          + `<img src="${src}" alt="" onerror="this.style.display='none'"><i>${i}</i></span>`);
+        if(i<10) track.push('<span class="stageLine"></span>');
+      }
       el('stageTrack').innerHTML=track.join('');
       el('stageTrack').querySelectorAll('.stageNode').forEach(n=>n.onclick=()=>openBossModal(+n.dataset.stage));
       applyArenaBackdrop();
@@ -1490,45 +1827,145 @@
       return units;
     }
 
+    const TRAIT_LIST = ['Assassin','Bastion','Vanguard','Mage','Spikes','Sniper'];
+    // An Origins deck is built from an Axie's four ability parts, so a unit
+    // feeds the class synergy of every class among its mouth, horn, back and
+    // tail — not just its own class. Beast and Plant parts are common, the
+    // secret classes are rare, which is what sets the thresholds apart.
+    const CLASS_SYN_AT = [3,5];
+    const TRAIT_SYN_AT = [2,3];
+    function classFeeds(defId){
+      const d=UMAP[defId];
+      if(!d) return [];
+      return d.partClasses && d.partClasses.length ? d.partClasses : (d.class?[d.class]:[]);
+    }
+    function classCounts(units){
+      const sets={};
+      for(const c of CLASS_LIST) sets[c]=new Set();
+      units.forEach(u=>{
+        const id=u.defId||u.id;
+        classFeeds(id).forEach(c=>{ if(sets[c]) sets[c].add(id); });
+      });
+      const out={};
+      for(const c of CLASS_LIST) out[c]=sets[c].size;
+      return out;
+    }
+    function traitCounts(units){
+      const sets={};
+      for(const t of TRAIT_LIST) sets[t]=new Set();
+      units.forEach(u=>{
+        const d=UMAP[u.defId||u.id];
+        if(d && sets[d.trait]) sets[d.trait].add(d.id);
+      });
+      const out={};
+      for(const t of TRAIT_LIST) out[t]=sets[t].size;
+      return out;
+    }
+    function levelsFor(counts,keys,at){
+      const out={};
+      for(const k of keys) out[k]=counts[k]>=at[1]?2:counts[k]>=at[0]?1:0;
+      return out;
+    }
     function getSynergyState(){
       const units = getPlayerPlacedUnits();
-      const clsSets={Aqua:new Set(),Plant:new Set(),Beast:new Set(),Bird:new Set()};
-      const trSets={Assassin:new Set(),Bastion:new Set(),Vanguard:new Set(),Mage:new Set(),Spikes:new Set(),Sniper:new Set()};
-      units.forEach(u=>{const d=UMAP[u.defId];if(clsSets[d.class])clsSets[d.class].add(d.id);if(trSets[d.trait])trSets[d.trait].add(d.id);});
-      const cls={Aqua:clsSets.Aqua.size,Plant:clsSets.Plant.size,Beast:clsSets.Beast.size,Bird:clsSets.Bird.size};
-      const tr={Assassin:trSets.Assassin.size,Bastion:trSets.Bastion.size,Vanguard:trSets.Vanguard.size,Mage:trSets.Mage.size,Spikes:trSets.Spikes.size,Sniper:trSets.Sniper.size};
-      const lvl=(n,a,b)=>n>=b?2:n>=a?1:0;
+      const cls = classCounts(units), tr = traitCounts(units);
       return {
-        units,cls,tr,
-        cLv:{Aqua:lvl(cls.Aqua,2,4),Plant:lvl(cls.Plant,2,4),Beast:lvl(cls.Beast,2,4),Bird:lvl(cls.Bird,2,4)},
-        tLv:{Assassin:lvl(tr.Assassin,2,3),Bastion:lvl(tr.Bastion,2,3),Vanguard:lvl(tr.Vanguard,2,3),Mage:lvl(tr.Mage,2,3),Spikes:lvl(tr.Spikes,2,3),Sniper:lvl(tr.Sniper,2,3)}
+        units, cls, tr,
+        cLv: levelsFor(cls,CLASS_LIST,CLASS_SYN_AT),
+        tLv: levelsFor(tr,TRAIT_LIST,TRAIT_SYN_AT)
       };
     }
 
+    // Traits are a Merge Tactics concept with no first-party badge, so each one
+    // borrows the Origins status icon that matches what it does.
+    function traitIcon(trait){ return `${ORIGINS_ART_ROOT}/icons/trait/${String(trait).toLowerCase()}.png`; }
+    function traitChip(trait,size=16){
+      if(!trait) return '';
+      return `<img class="traitIcon" src="${traitIcon(trait)}" alt="${trait}" title="${trait}" style="width:${size}px;height:${size}px">`;
+    }
+    const TRAIT_ICONS = Object.fromEntries(TRAIT_LIST.map(t=>[t,traitChip(t)]));
+    const CLASS_SYN_TIPS = {
+      Beast:['+20% ATK, 12% execute','+45% ATK, 22% execute'],
+      Bug:['Attacks apply 2 Poison','Attacks apply 3 Poison'],
+      Bird:['+18% crit, 8% dodge','+35% crit, 16% dodge'],
+      Plant:['+20% HP, 1.5% regen/s','+50% HP, 3% regen/s'],
+      Aquatic:['+20% attack speed, 12% splash','+40% attack speed, 22% splash'],
+      Reptile:['+10% DR, attacks apply 2 Bleed','+20% DR, attacks apply 3 Bleed'],
+      Mech:['+55 cast shield, 20% pierce','+120 cast shield, 40% pierce'],
+      Dawn:['Casts heal 75 and cleanse','Casts heal 160 and cleanse'],
+      Dusk:['12% of damage as true, 2 Weak','25% of damage as true, 3 Weak']
+    };
+    const TRAIT_SYN_TIPS = {
+      Assassin:['22% lifesteal, 18% backstab','40% lifesteal, 35% backstab'],
+      Bastion:['22% DR, +70 cast shield','45% DR, +150 cast shield'],
+      Vanguard:['+30 start energy, taunt pulse','+65 start energy, wider taunt pulse'],
+      Mage:['+30% skill power, 12 mana burn','+65% skill power, 24 mana burn'],
+      Spikes:['22% reflect, 45 thorn burst','45% reflect, 95 thorn burst'],
+      Sniper:['+1 range, 25% pierce','+3 range, 50% pierce']
+    };
+    function synergyTip(key){
+      const t = CLASS_SYN_TIPS[key] || TRAIT_SYN_TIPS[key] || [];
+      return t.length ? `Lv1 ${t[0]}; Lv2 ${t[1]}` : key;
+    }
+    function synergyBadge(key,count,lv,isClass){
+      const at = isClass ? CLASS_SYN_AT : TRAIT_SYN_AT;
+      const face = isClass
+        ? `<img src="${classIcon(key)}" alt="${key}">`
+        : traitChip(key,18);
+      const style = isClass ? ` style="--syn:${classTint(key)}"` : '';
+      return `<button class="synBadge synBtn lv${lv} ${isClass?'clsBadge':'trBadge'}"${style} data-syn="${key}" `
+        + `title="${key} ${count}/${at[lv===2?1:0]} — ${synergyTip(key)}">${face}<i>${count}</i></button>`;
+    }
     function renderSynergy(){
       const s=getSynergyState();
-      const icons={Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️',Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'};
-      const tips={
-        Aqua:'Lv1 +20% AS and 12% splash, Lv2 +40% AS and 22% splash',
-        Plant:'Lv1 +20% HP and 1.5% regen/s, Lv2 +50% HP and 3% regen/s',
-        Beast:'Lv1 +20% ATK and 12% execute, Lv2 +45% ATK and 22% execute',
-        Bird:'Lv1 +18% crit and 8% dodge, Lv2 +35% crit and 16% dodge',
-        Assassin:'Lv1 22% lifesteal and 18% backstab, Lv2 40% lifesteal and 35% backstab',
-        Bastion:'Lv1 22% DR and +70 cast shield, Lv2 45% DR and +150 cast shield',
-        Vanguard:'Lv1 +30 start energy + taunt pulse, Lv2 +65 start energy + wider taunt pulse',
-        Mage:'Lv1 +30% skill power + 12 mana burn, Lv2 +65% skill power + 24 mana burn',
-        Spikes:'Lv1 22% reflect + 45 thorn burst, Lv2 45% reflect + 95 thorn burst',
-        Sniper:'Lv1 +1 range + 25% pierce, Lv2 +3 range + 50% pierce'
-      };
       const badges=[];
-      for(const k of ['Aqua','Plant','Beast','Bird']) if(s.cls[k]>0) badges.push(`<button class="synBadge synBtn lv${s.cLv[k]}" data-syn="${k}" title="${tips[k]}">${icons[k]}</button>`);
-      for(const k of ['Assassin','Bastion','Vanguard','Mage','Spikes','Sniper']) if(s.tr[k]>0) badges.push(`<button class="synBadge synBtn lv${s.tLv[k]}" data-syn="${k}" title="${tips[k]}">${icons[k]}</button>`);
-      el('synergyActive').innerHTML = badges.join('');
-      el('boardSynergy').innerHTML = badges.join('');
+      for(const k of CLASS_LIST) if(s.cls[k]>0) badges.push(synergyBadge(k,s.cls[k],s.cLv[k],true));
+      for(const k of TRAIT_LIST) if(s.tr[k]>0) badges.push(synergyBadge(k,s.tr[k],s.tLv[k],false));
+      const markup = badges.join('');
+      el('synergyActive').innerHTML = markup;
+      el('boardSynergy').innerHTML = markup;
       el('synergy').innerHTML = '';
       document.querySelectorAll('.synBtn').forEach(b=>b.onclick=(e)=>openSynergyModal(b.dataset.syn,e.currentTarget));
     }
 
+    // An Axie's six body parts, drawn with the gtk2d part icons.
+    function axiePartsRow(d){
+      if(!d || !d.parts) return '';
+      const pips=PART_ORDER.map(k=>{
+        const id=d.parts[k]; if(!id) return '';
+        return `<img src="${partIcon(id)}" alt="${id}" title="${k}: ${id}">`;
+      }).join('');
+      return `<div class="partRow" title="Body parts">${pips}`
+        + `<span class="purity" title="Parts matching ${d.class}">${d.purity}/6 pure</span></div>`;
+    }
+    // The four real Origins ability cards this Axie's parts grant.
+    function axieKitRows(d){
+      if(!d || !d.kit) return '';
+      return `<div class="kitList">` + d.kit.map(c=>{
+        const isSkill = c.part===d.skillPart;
+        return `<div class="kitCard ${isSkill?'skill':''}">`
+          + `<img src="${partIcon(c.partId)}" alt="${c.partClass} ${c.part}">`
+          + `<div><b>${c.name}</b>${isSkill?' <i>skill</i>':''}`
+          + `<div class="kitDesc">${c.desc||'—'}</div></div></div>`;
+      }).join('') + `</div>`;
+    }
+    function renderCodex(){
+      const box=el('codexBody'); if(!box) return;
+      const byTier={};
+      UNIT_DEFS.forEach(d=>{(byTier[d.tier]=byTier[d.tier]||[]).push(d);});
+      box.innerHTML = Object.keys(byTier).sort().map(t=>
+        `<div class="codexTier"><h4>Tier ${t}</h4>` + byTier[t].map(d=>
+          `<div class="codexRow" style="--cls:${classTint(d.class)}">
+             <img class="codexBody" src="${UNIT_ASSETS[d.id]}" alt="${d.name}">
+             <div class="codexMeta">
+               <div class="codexName"><img src="${classIcon(d.class)}" alt="${d.class}"> <b>${d.name}</b>
+                 <span class="small">${d.class} • ${TRAIT_ICONS[d.trait]||''} ${d.trait} • Axie #${d.axieId}</span></div>
+               ${axiePartsRow(d)}
+               ${axieKitRows(d)}
+             </div>
+             <img class="codexAwk" src="${originsUnitSprite(d.id,'idle',true)}" alt="${d.name} awakened" title="Awakened at ${AWAKEN_STAR}★">
+           </div>`).join('') + `</div>`).join('');
+    }
     function renderSelectedInfo(){
       const slot = el('unitInfoFloating');
       if(!slot) return;
@@ -1543,13 +1980,13 @@
       const castPct=Math.min(100,Math.round((castScore/6)*100));
       slot.innerHTML = `
         <div style="font-weight:700;display:flex;gap:6px;align-items:center">${boss?`<img class="unitArt lg" src="${BOSS_ASSETS.phase1}" alt="Chimera">`:unitImgTag(d.id,'unitArt lg',d.name)} ${d.name}</div>
-        <div class="small">${enemy?'Enemy':'Ally'}${preview?' Preview':''} • ${{Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️'}[d.class]||''} ${d.class} / ${{Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'}[d.trait]||''} ${d.trait} • ${'★'.repeat(u.star)}</div>
-        ${boss?'':`<div class="small" style="color:#9fb2e8">Origins body: ${ORIGINS_SKINS[d.id]||d.name}</div>`}
+        <div class="small classChip">${boss?'':`<img src="${classIcon(d.class)}" alt="${d.class}">`}${enemy?'Enemy':'Ally'}${preview?' Preview':''} • ${d.class} / ${TRAIT_ICONS[d.trait]||''} ${d.trait} • ${'★'.repeat(u.star)}${isAwakened(u.star)?' <b style="color:#ffd86a">awakened</b>':''}</div>
+        ${boss?'':axiePartsRow(d)}
+        ${(enemy||preview)&&!boss?`<div class="small intentRow">${intentChip(d.id,16)} Intent: ${intentFor(d.id)[1]}</div>`:''}
         <div class="small">ATK: ${atk}</div><div class="statBar"><span style="width:${atkPct}%"></span></div>
         <div class="small">HP: ${hp}</div><div class="statBar"><span style="width:${hpPct}%"></span></div>
         <div class="small">Cast Speed: ${castsIn} attacks</div><div class="statBar"><span style="width:${castPct}%"></span></div>
-        <div class="small">${d.attack} <span style="color:#ffdca1">(${d.atk})</span></div>
-        <div class="small">${d.skill}</div>
+        ${boss?`<div class="small">${d.attack||''}</div><div class="small">${d.skill||''}</div>`:axieKitRows(d)}
       `;
       if(sel){
         const br=el('boardWrap').getBoundingClientRect();
@@ -1580,36 +2017,36 @@
     }
 
     function renderRelics(){
-      const rl=el('relicList'); if(rl) rl.innerHTML = state.relics.length?state.relics.map(r=>`<div>${RELIC_ICONS[r.id]||'🔹'} <b>${r.name}</b> <span class="small">${r.desc}</span></div>`).join(''):'<span class="small">None yet</span>';
+      const rl=el('relicList'); if(rl) rl.innerHTML = state.relics.length?state.relics.map(r=>`<div class="relicRow">${relicImg(r.id,24)} <b>${r.name}</b> <span class="small">${r.desc}</span></div>`).join(''):'<span class="small">None yet</span>';
       const br=el('boardRelics');
       if(br){
-        br.innerHTML = state.relics.length?state.relics.map(r=>`<span class="badge" title="${r.desc}" style="font-size:16px;padding:4px 7px">${RELIC_ICONS[r.id]||'🔹'}</span>`).join(''):'';
+        br.innerHTML = state.relics.length?state.relics.map(r=>`<span class="badge relicBadge" title="${r.name} — ${r.desc}">${relicImg(r.id,20)}</span>`).join(''):'';
         br.style.cursor=state.relics.length?'pointer':'default';
-        if(state.relics.length) br.onclick=(e)=>openSideInfo('Active Relics',state.relics.map(r=>`<div>${RELIC_ICONS[r.id]||'🔹'} <b>${r.name}</b><div class="small">${r.desc}</div></div>`).join('<hr style="border-color:#36457f66">'),e.currentTarget);
+        if(state.relics.length) br.onclick=(e)=>openSideInfo('Active Relics',state.relics.map(r=>`<div class="relicRow">${relicImg(r.id,24)} <b>${r.name}</b><div class="small">${r.desc}</div></div>`).join('<hr style="border-color:#36457f66">'),e.currentTarget);
       }
     }
     function openSynergyModal(key,anchorEl=null){
       const title=el('synergyModalTitle'), body=el('synergyUnitsBody'); if(!title||!body) return;
-      const isClass=['Aqua','Plant','Beast','Bird'].includes(key);
-      const tips={
-        Aqua:'Lv1 +20% AS and 12% splash, Lv2 +40% AS and 22% splash',
-        Plant:'Lv1 +20% HP and 1.5% regen/s, Lv2 +50% HP and 3% regen/s',
-        Beast:'Lv1 +20% ATK and 12% execute, Lv2 +45% ATK and 22% execute',
-        Bird:'Lv1 +18% crit and 8% dodge, Lv2 +35% crit and 16% dodge',
-        Assassin:'Lv1 22% lifesteal and 18% backstab, Lv2 40% lifesteal and 35% backstab',
-        Bastion:'Lv1 22% DR and +70 cast shield, Lv2 45% DR and +150 cast shield',
-        Vanguard:'Lv1 +30 start energy + taunt pulse, Lv2 +65 start energy + wider taunt pulse',
-        Mage:'Lv1 +30% skill power + 12 mana burn, Lv2 +65% skill power + 24 mana burn',
-        Spikes:'Lv1 22% reflect + 45 thorn burst, Lv2 45% reflect + 95 thorn burst',
-        Sniper:'Lv1 +1 range + 25% pierce, Lv2 +3 range + 50% pierce'
-      };
+      const isClass=CLASS_LIST.includes(key);
       const s=getSynergyState();
       const lv = isClass ? s.cLv[key] : s.tLv[key];
-      const defs=UNIT_DEFS.filter(u=>isClass?u.class===key:u.trait===key);
+      const count = isClass ? s.cls[key] : s.tr[key];
+      const at = isClass ? CLASS_SYN_AT : TRAIT_SYN_AT;
+      const tiers = (isClass ? CLASS_SYN_TIPS[key] : TRAIT_SYN_TIPS[key]) || [];
+      // A class synergy counts every Axie carrying that class on one of its four
+      // ability parts, which is how an Origins deck is actually assembled.
+      const defs=UNIT_DEFS.filter(d=>isClass?classFeeds(d.id).includes(key):d.trait===key);
       const have=new Set(getPlayerPlacedUnits().map(u=>u.defId));
-      title.textContent=`${key} • Lv${lv}`;
+      title.innerHTML = isClass
+        ? `<img class="synTitleIcon" src="${classIcon(key)}" alt="${key}"> ${key} ${count} • Lv${lv}`
+        : `${TRAIT_ICONS[key]||''} ${key} ${count} • Lv${lv}`;
       body.style.display='grid';
-      body.innerHTML = `<div style="grid-column:1/-1" class="small">${tips[key]}</div>` + defs.map(d=>`<div class="unitMini ${have.has(d.id)?'':'off'}">${unitImgTag(d.id,'unitArt lg',d.name)} <span>${d.name}</span></div>`).join('');
+      const rows=tiers.map((t,i)=>`<div class="synTier ${lv>i?'on':''}"><b>${at[i]}</b> ${t}</div>`).join('');
+      const why = isClass
+        ? `<div class="small">Counts Axies with a <b>${key}</b> mouth, horn, back or tail card.</div>`
+        : '';
+      body.innerHTML = `<div class="synTiers">${rows}${why}</div>`
+        + defs.map(d=>`<div class="unitMini ${have.has(d.id)?'':'off'}">${unitImgTag(d.id,'unitArt lg',d.name)} <span>${d.name}</span></div>`).join('');
       const so=el('synergyOverlay');
       if(so){
         placeFloatingOverlayNearAnchor('synergyOverlay',anchorEl||el('boardWrap'));
@@ -1621,7 +2058,7 @@
       if(state.stage===5 || state.stage===10){
         const c=getChimeraConfig(state.stage);
         box.innerHTML = `
-          <div style="display:flex;gap:8px;align-items:center"><img class="unitArt lg" src="${BOSS_ASSETS.phase1}" alt="Chimera"><b>${c.emoji} ${c.name}</b> <span class="badge">Stage ${state.stage}</span></div>
+          <div style="display:flex;gap:8px;align-items:center"><img class="unitArt lg" src="${BOSS_ASSETS.phase1}" alt="Chimera"><b>${c.name}</b> <span class="badge">Stage ${state.stage}</span></div>
           <div class="small">${c.class} / ${c.trait} • Boss</div>
           <div class="small">HP: ${Math.round(c.maxHp)} • ATK: ${Math.round(c.atk)} • Range: ${c.range}</div>
           <div class="small">Cast: ${Math.ceil(c.maxEnergy/20)} attacks • DR: ${Math.round(c.dr*100)}%</div>
@@ -1631,7 +2068,7 @@
         if(next){
           const c=getChimeraConfig(next);
           box.innerHTML = `
-            <div style="display:flex;gap:8px;align-items:center"><img class="unitArt lg" src="${BOSS_ASSETS.phase1}" alt="Chimera"><b>${c.emoji} ${c.name}</b> <span class="badge">Stage ${next}</span></div>
+            <div style="display:flex;gap:8px;align-items:center"><img class="unitArt lg" src="${BOSS_ASSETS.phase1}" alt="Chimera"><b>${c.name}</b> <span class="badge">Stage ${next}</span></div>
             <div class="small">Upcoming boss preview</div>
             <div class="small">HP: ${Math.round(c.maxHp)} • ATK: ${Math.round(c.atk)} • Range: ${c.range}</div>
             <div class="small">Cast: ${Math.ceil(c.maxEnergy/20)} attacks • DR: ${Math.round(c.dr*100)}%</div>
@@ -1807,16 +2244,46 @@
     }
 
     function synergiesForBattle(playerUnits){
-      const clsSets={Aqua:new Set(),Plant:new Set(),Beast:new Set(),Bird:new Set()};
-      const trSets={Assassin:new Set(),Bastion:new Set(),Vanguard:new Set(),Mage:new Set(),Spikes:new Set(),Sniper:new Set()};
-      playerUnits.forEach(u=>{clsSets[u.class]?.add(u.defId);trSets[u.trait]?.add(u.defId);});
-      const cls={Aqua:clsSets.Aqua.size,Plant:clsSets.Plant.size,Beast:clsSets.Beast.size,Bird:clsSets.Bird.size};
-      const tr={Assassin:trSets.Assassin.size,Bastion:trSets.Bastion.size,Vanguard:trSets.Vanguard.size,Mage:trSets.Mage.size,Spikes:trSets.Spikes.size,Sniper:trSets.Sniper.size};
-      const lv=(n,a,b)=>n>=b?2:n>=a?1:0;
+      const cls = classCounts(playerUnits), tr = traitCounts(playerUnits);
       return {
-        classes:{Aqua:lv(cls.Aqua,2,4),Plant:lv(cls.Plant,2,4),Beast:lv(cls.Beast,2,4),Bird:lv(cls.Bird,2,4)},
-        traits:{Assassin:lv(tr.Assassin,2,3),Bastion:lv(tr.Bastion,2,3),Vanguard:lv(tr.Vanguard,2,3),Mage:lv(tr.Mage,2,3),Spikes:lv(tr.Spikes,2,3),Sniper:lv(tr.Sniper,2,3)}
+        classes: levelsFor(cls,CLASS_LIST,CLASS_SYN_AT),
+        traits: levelsFor(tr,TRAIT_LIST,TRAIT_SYN_AT)
       };
+    }
+    // Each class synergy lands on units that actually carry that class's parts.
+    function applyClassSynergy(u,levels){
+      for(const c of classFeeds(u.defId)){
+        const lv = levels[c]||0;
+        if(!lv) continue;
+        switch(c){
+          case 'Beast':
+            u.atk *= lv===2?1.45:1.20;
+            u.executePct = Math.max(u.executePct||0, lv===2?0.22:0.12); break;
+          case 'Plant':
+            u.maxHp *= lv===2?1.5:1.2;
+            u.plantRegen = Math.max(u.plantRegen||0, lv===2?0.03:0.015); break;
+          case 'Aquatic':
+            u.attackSpeed += lv===2?0.40:0.20;
+            u.aquaSplash = Math.max(u.aquaSplash||0, lv===2?0.22:0.12); break;
+          case 'Bird':
+            u.crit += lv===2?0.35:0.18;
+            u.evasion = Math.max(u.evasion||0, lv===2?0.16:0.08); break;
+          case 'Bug':
+            u.onHitPoison = Math.max(u.onHitPoison||0, lv===2?3:2); break;
+          case 'Reptile':
+            u.dr += lv===2?0.20:0.10;
+            u.onHitBleed = Math.max(u.onHitBleed||0, lv===2?3:2); break;
+          case 'Mech':
+            u.castShield = (u.castShield||0) + (lv===2?120:55);
+            u.pierceShot = Math.max(u.pierceShot||0, lv===2?0.40:0.20); break;
+          case 'Dawn':
+            u.castHeal = (u.castHeal||0) + (lv===2?160:75);
+            u.castCleanse = true; break;
+          case 'Dusk':
+            u.trueDmgPct = Math.max(u.trueDmgPct||0, lv===2?0.25:0.12);
+            u.onHitWeak = Math.max(u.onHitWeak||0, lv===2?3:2); break;
+        }
+      }
     }
 
     function makeCombatUnit(uid,owner,r,c){
@@ -1827,10 +2294,11 @@
       const rangeAdj = tank ? Math.max(1,(d.range+1)-1) : (d.range+1);
       const asAdj = tank ? 0.9 : 1.35;
       return {
-        id:uid,owner,row:r,col:c,defId:d.id,name:d.name,emoji:d.emoji,tier:d.tier,class:d.class,trait:d.trait,star:pu.star,
+        id:uid,owner,row:r,col:c,defId:d.id,name:d.name,tier:d.tier,class:d.class,trait:d.trait,star:pu.star,
         hp:hpBase*hpAdj,maxHp:hpBase*hpAdj,atk:atkBase,range:rangeAdj,mystic:d.mystic,maxEnergy,energy:0,attackCd:0,moveCd:0,
         stunned:0,rooted:0,charmed:0,shield:0,immuneCC:0,armorShred:0,dr:0,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,
-        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:d.id==='lotus',targetId:null,damageDone:0,healingDone:0,lastRow:r,lastCol:c
+        poison:0,bleed:0,weak:0,fear:0,poisonTick:0,bleedTick:0,
+        attackSpeed:asAdj,crit:0.05,resUsed:false,nirvana:d.id==='bard',targetId:null,damageDone:0,healingDone:0,lastRow:r,lastCol:c
       };
     }
     function makeEnemy(defId,star,r,c,powerScale=1.05){
@@ -1841,18 +2309,21 @@
       const rangeAdj = tank ? Math.max(1,(d.range+1)-1) : (d.range+1);
       const asAdj = tank ? 0.9 : 1.35;
       return {
-        id:'e'+(state.nextUid++),owner:'enemy',row:r,col:c,defId:d.id,name:d.name,emoji:d.emoji,tier:d.tier,class:d.class,trait:d.trait,star,
+        id:'e'+(state.nextUid++),owner:'enemy',row:r,col:c,defId:d.id,name:d.name,tier:d.tier,class:d.class,trait:d.trait,star,
         hp:d.hp*mult*powerScale*hpAdj,maxHp:d.hp*mult*powerScale*hpAdj,atk:d.atk*mult*powerScale,range:rangeAdj,mystic:d.mystic,maxEnergy,energy:0,attackCd:0,moveCd:0,
         stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:0,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,
-        attackSpeed:asAdj,crit:0.05,resUsed:false,auraLotus:false,targetId:null,damageDone:0,healingDone:0,lastRow:r,lastCol:c
+        poison:0,bleed:0,weak:0,fear:0,poisonTick:0,bleedTick:0,
+        attackSpeed:asAdj,crit:0.05,resUsed:false,nirvana:false,targetId:null,damageDone:0,healingDone:0,lastRow:r,lastCol:c
       };
     }
     function makeChimera(stage){
       const cfg=getChimeraConfig(stage);
       return {
-        id:'boss'+state.nextUid++,owner:'enemy',row:2,col:2,defId:'chimera',name:'Chimera Elite',emoji:'🐉',tier:6,class:'Beast',trait:'Vanguard',star:1,
+        id:'boss'+state.nextUid++,owner:'enemy',row:2,col:2,defId:'chimera',name:'Chimera Elite',tier:6,class:'Beast',trait:'Vanguard',star:1,
         hp:cfg.maxHp,maxHp:cfg.maxHp,atk:cfg.atk,range:cfg.range,mystic:false,maxEnergy:cfg.maxEnergy,energy:0,attackCd:0,moveCd:0,
-        stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:cfg.dr,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,attackSpeed:cfg.attackSpeed,crit:0.1,resUsed:false,auraLotus:false,boss:true,targetId:null,damageDone:0,healingDone:0,lastRow:2,lastCol:2
+        stunned:0,rooted:0,charmed:0,immuneCC:0,shield:0,armorShred:0,dr:cfg.dr,reflect:0,tauntedBy:null,physImmune:0,untargetable:0,
+        poison:0,bleed:0,weak:0,fear:0,poisonTick:0,bleedTick:0,
+        attackSpeed:cfg.attackSpeed,crit:0.1,resUsed:false,nirvana:false,boss:true,targetId:null,damageDone:0,healingDone:0,lastRow:2,lastCol:2
       };
     }
 
@@ -1890,31 +2361,12 @@
         u.energy = Math.min(u.maxEnergy, u.energy + state.mods.startEnergy);
         u.maxHp *= (1 + state.mods.globalHP);
         if(u.trait==='Bastion') u.maxHp *= (1 + state.mods.guardianHP);
-        if(u.class==='Plant'){
-          const pLv=s.classes.Plant;
-          u.maxHp *= pLv===2?1.5:pLv===1?1.2:1;
-          u.plantRegen = pLv===2?0.03:pLv===1?0.015:0;
-        }
+        applyClassSynergy(u,s.classes);
         u.hp=u.maxHp;
 
         if(u.class==='Beast') u.atk += state.mods.beastFlatAtk;
-        if(u.class==='Beast'){
-          const bLv=s.classes.Beast;
-          u.atk *= bLv===2?1.45:bLv===1?1.20:1;
-          u.executePct = bLv===2?0.22:bLv===1?0.12:0;
-        }
-        if(u.class==='Bird'){
-          const bLv=s.classes.Bird;
-          u.crit += bLv===2?0.35:bLv===1?0.18:0;
-          u.evasion = bLv===2?0.16:bLv===1?0.08:0;
-        }
         if(u.class==='Bird') u.moveBonus=(u.moveBonus||0)+state.mods.birdMove;
-        if(u.class==='Aqua'){
-          const aLv=s.classes.Aqua;
-          u.attackSpeed += aLv===2?0.40:aLv===1?0.20:0;
-          u.aquaSplash = aLv===2?0.22:aLv===1?0.12:0;
-        }
-        if(u.class==='Aqua') u.attackSpeed += state.mods.aquaAS;
+        if(u.class==='Aquatic') u.attackSpeed += state.mods.aquaAS;
 
         if(u.trait==='Assassin'){
           const aLv=s.traits.Assassin;
@@ -1972,16 +2424,7 @@
         if(state.raf) cancelAnimationFrame(state.raf);
         if(state.battleTimer) clearInterval(state.battleTimer);
         releaseActorNodes(); fxLayer.innerHTML='';
-        units.forEach(u=>{
-          const a=acquireActorNode();
-          a.className='actor class-'+classSlug(u.class)+' '+(u.owner==='enemy'?'enemy':'');
-          a.id='actor-'+u.id;
-          const artSrc = actorArtSrc(u,'idle');
-          const fallback = actorArtFallback(u);
-          a.innerHTML=`<img class="actorArt" src="${artSrc}" alt="${u.name}" loading="eager" decoding="sync" onerror="this.src='${fallback}'"><div class="actorShade"></div><div class="actorStars">${'★'.repeat(u.star||1)}</div><div class="actorHp"><div class="actorHpFill"></div></div><div class="actorMana"><div class="actorManaFill"></div></div>`;
-          a.onclick=(e)=>{e.stopPropagation();state.selected={type:'combat',id:u.id};renderSelectedInfo();};
-          actorLayer.appendChild(a);
-        });
+        units.forEach(spawnActorFor);
         renderActorPositions(true);
         log(`<b>Battle started</b> on Stage ${state.stage}${state.stage===5||state.stage===10?' vs Chimera Elite':''}.`);
         if(state.stage===5||state.stage===10) playCue('boss');
@@ -2011,6 +2454,8 @@
         if(initial) a.style.transition='none'; else a.style.transition='transform .18s linear';
         const w=Math.max(0,Math.round(100*u.hp/u.maxHp)); a.querySelector('.actorHpFill').style.width=w+'%';
         const mw=Math.max(0,Math.round(100*u.energy/u.maxEnergy)); const mana=a.querySelector('.actorManaFill'); if(mana) mana.style.width=mw+'%';
+        renderStatusPips(u,a);
+        if(!u.summon) a.classList.toggle('awakened',isAwakened(u.star));
       }
     }
 
@@ -2020,9 +2465,16 @@
       if(type==='physical' && t.physImmune>0) return 0;
       if(type==='physical' && t.evasion && rand()<t.evasion){floatNum(t.row,t.col,'MISS','energy');return 0;}
       let dmg=amt;
+      // Axie class advantage: Verdant > Tidal > Primal > Verdant.
+      if(src && src.class && t.class) dmg *= bloodlineMult(src.class,t.class);
+      if(src && src.weak>0) dmg *= 0.75;      // Weak: this Axie deals less
+      if(t.fear>0) dmg *= 1.25;               // Fear: this Axie takes more
+      const trueCut = (src && src.trueDmgPct) ? dmg*src.trueDmgPct : 0;
+      dmg -= trueCut;
       const shred = t.armorShred>0 ? 0.5 : 0;
       const dr = clamp((t.dr||0)-shred,-0.5,0.85);
       dmg *= (1-dr);
+      dmg += trueCut;                          // Dusk true damage skips DR
       if(t.shield>0){
         const s=Math.min(t.shield,dmg);t.shield-=s;dmg-=s;
       }
@@ -2220,6 +2672,8 @@
       floatNum(u.row,u.col,'CAST!','energy');
       const sp = (u.skillPow||1) * (1+state.mods.skillPower);
       if(u.castShield) u.shield=(u.shield||0)+u.castShield*sp;
+      if(u.castHeal) units.filter(a=>a.owner===u.owner&&!a.dead).forEach(a=>heal(a,u.castHeal*sp,u));
+      if(u.castCleanse){u.poison=0;u.bleed=0;u.weak=0;u.fear=0;u.rooted=0;}
       if(u.tauntPulse){
         const rad=u.tauntPulse===2?2:1;
         units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=rad).forEach(e=>e.tauntedBy=u.id);
@@ -2229,87 +2683,192 @@
       const times = doubleCast?2:1;
       for(let rep=0;rep<times;rep++){
         switch(u.defId){
-          case 'peon':{
-            const enemies=units.filter(x=>x.owner!==u.owner&&!x.dead); if(!enemies.length) break;
-            const t=enemies.sort((a,b)=> (u.owner==='player'?a.row-b.row:b.row-a.row))[0];
-            const landing=findFreeCellNear(t.row,Math.max(0,Math.min(4,t.col+(u.owner==='player'?-1:1))),units,u.id);
-            if(landing){u.row=landing.r;u.col=landing.c;}
-            const dmg=150*sp;const dealt=applyDamage(u,t,dmg,'magic');heal(u,dealt);
+          // ---- tier 1 ----
+          case 'buba':{                                  // Buba Brush
+            // Retain. Deal 85% Splash DMG in Fury form.
+            const dir=u.owner==='player'?-1:1;
+            const cells=[[u.row+dir,u.col],[u.row+dir,u.col-1],[u.row+dir,u.col+1]];
+            units.filter(x=>x.owner!==u.owner&&!x.dead)
+                 .forEach(e=>{ if(cells.some(([r,c])=>e.row===r&&e.col===c)) applyDamage(u,e,120*sp,'physical'); });
+            u.atk *= 1.06;                                // Fury builds each cast
             break;
           }
-          case 'sprout':{
-            u.rooted=1200;u.shield+=150*sp;
-            const ally=nearest(units,u,u.owner); if(ally) ally.shield+=150*sp;
+          case 'puffy':{                                 // Jellytacle
+            // Randomly deal 2 hits. +1 Bubble to allied Axies.
+            if(target){ for(let i=0;i<2;i++) applyDamage(u,target,80*sp,'physical'); }
+            units.filter(a=>a.owner===u.owner&&!a.dead).forEach(a=>{a.shield+=45*sp;});
             break;
           }
-          case 'nut':{
-            const dir=u.owner==='player'?-1:1, cells=[[u.row+dir,u.col],[u.row+dir,u.col-1],[u.row+dir,u.col+1]];
-            units.filter(x=>x.owner!==u.owner&&!x.dead).forEach(e=>{if(cells.some(([r,c])=>e.row===r&&e.col===c))applyDamage(u,e,110*sp,'physical')});
+          case 'olek':{                                  // Rusty Helm
+            // +35 Shield to self and an allied Axie with the lowest HP.
+            u.shield+=150*sp;
+            const ally=units.filter(a=>a.owner===u.owner&&!a.dead&&a.id!==u.id)
+                            .sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0];
+            if(ally) ally.shield+=150*sp;
             break;
           }
-          case 'pips':{
-            units.filter(a=>a.owner===u.owner&&!a.dead&&hexDist(a,u)<=1&&a.id!==u.id).forEach(a=>{a.energy=Math.min(a.maxEnergy,a.energy+40);floatNum(a.row,a.col,'+40E','energy')});
+          case 'momo':{                                  // Death Shower
+            // Ambush. Deal 5 hits.
+            if(target){ for(let i=0;i<5;i++) applyDamage(u,target,42*sp,'physical'); }
             break;
           }
-          case 'bubbles':{
-            const ally=units.filter(a=>a.owner===u.owner&&!a.dead).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0];
-            if(ally){ally.shield+=200*sp;ally.immuneCC=2500;}
+
+          // ---- tier 2 ----
+          case 'tripp':{                                 // Acorn Cap
+            // +1 Bulwark. Draw 1 Card. Nut Cracker Cards get +10 ATK.
+            u.shield+=120*sp;
+            u.atk*=1.12;
+            floatNum(u.row,u.col,'+ATK','energy');
             break;
           }
-          case 'cactus':{
-            units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=1).forEach(e=>applyDamage(u,e,75*sp,'magic')); break;
+          case 'ena':{                                   // Aegis Talisman
+            // +1 Bulwark; draw 1 card & apply 1 Sleep to a random Enemy Axie.
+            const ally=units.filter(a=>a.owner===u.owner&&!a.dead)
+                            .sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0];
+            if(ally){ally.shield+=190*sp;ally.immuneCC=2500;}
+            const foes=units.filter(e=>e.owner!==u.owner&&!e.dead&&e.immuneCC<=0);
+            if(foes.length){const t=rnd(foes);t.stunned=1600;statusFloat(t,'sleep');}
+            break;
           }
-          case 'gnasher':{
-            if(target){applyDamage(u,target,120*sp,'physical');target.armorShred=4000;} break;
+          case 'pomodoro':{                              // Lost Dream
+            // +1 Bulwark. Ethereal: when banished, grant 25 Shield to allies.
+            units.filter(a=>a.owner===u.owner&&!a.dead).forEach(a=>{a.shield+=110*sp;});
+            u.dr+=0.12;
+            break;
           }
-          case 'kestrel':{
+          case 'shillin':{                               // Shield Shattering
+            // Deal 120% of shield DMG done as Splash DMG.
+            if(target){
+              const stripped=Math.min(target.shield||0,260*sp);
+              target.shield-=stripped;
+              applyDamage(u,target,140*sp,'physical');
+              target.armorShred=4000;
+              if(stripped>0){
+                units.filter(e=>e.owner!==u.owner&&!e.dead&&e.id!==target.id&&hexDist(e,target)<=1)
+                     .forEach(e=>applyDamage(u,e,stripped*1.2,'magic'));
+              }
+            }
+            break;
+          }
+
+          // ---- tier 3 ----
+          case 'venoki':{                                // Death Shroom
+            // Apply 3 Poison to a random Enemy 3 times.
+            const foes=units.filter(e=>e.owner!==u.owner&&!e.dead);
+            for(let i=0;i<3;i++){
+              if(!foes.length) break;
+              const t=rnd(foes);
+              t.poison=Math.min(12,(t.poison||0)+3);
+              statusFloat(t,'poison');
+            }
+            heal(u,60*sp,u);                             // Chemical Fang drain
+            break;
+          }
+          case 'xia':{                                   // Pangolin
+            // Attack all enemies. +1 Shield per unblocked DMG.
+            let gained=0;
+            units.filter(e=>e.owner!==u.owner&&!e.dead)
+                 .forEach(e=>{gained+=applyDamage(u,e,70*sp,'physical');});
+            u.shield+=Math.min(400*sp,gained*0.5);
+            break;
+          }
+          case 'bing':{                                  // Toy Ball
+            // Target the lowest HP enemy. Apply 2 Taunt.
             const t=units.filter(e=>e.owner!==u.owner&&!e.dead).sort((a,b)=>a.hp-b.hp)[0];
-            if(t){u.untargetable=600;const landing=findFreeCellNear(t.row,t.col,units,u.id);if(landing){u.row=landing.r;u.col=landing.c;}applyDamage(u,t,160*sp,'physical')}
+            if(t){applyDamage(u,t,120*sp,'physical');t.tauntedBy=u.id;statusFloat(t,'taunt');}
+            units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=2)
+                 .forEach(e=>{e.tauntedBy=u.id;});
+            u.dr+=0.20;
+            setTimeout(()=>{u.dr=Math.max(0,u.dr-0.20);},2400);
             break;
           }
-          case 'nemo':{
-            if(target){for(let i=0;i<3;i++)applyDamage(u,target,50*sp,'physical');u.reflect+=0.25;}
+          case 'rouge':{                                 // Lotus
+            // Target's next Single Attack +65 DMG.
+            const ally=units.filter(a=>a.owner===u.owner&&!a.dead&&a.id!==u.id)
+                            .sort((a,b)=>b.atk-a.atk)[0];
+            if(ally){ally.atk*=1.18;floatNum(ally.row,ally.col,'+DMG','energy');}
+            if(target) applyDamage(u,target,130*sp,'magic');
             break;
           }
-          case 'pumpkin':{
-            u.dr += 0.50;
-            units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=2).forEach(e=>e.tauntedBy=u.id);
-            setTimeout(()=>{u.dr=Math.max(0,u.dr-0.50);},2200);
+
+          // ---- tier 4 ----
+          case 'noir':{                                  // Sponge
+            // Shield allied Axies. +1 Bulwark. Convert Bubble into Bubble Bomb.
+            units.filter(a=>a.owner===u.owner&&!a.dead).forEach(a=>{a.shield+=150*sp;});
+            units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=2)
+                 .forEach(e=>applyDamage(u,e,90*sp,'magic'));
             break;
           }
-          case 'zoro':{
-            if(target){const landing=findFreeCellNear(target.row,Math.max(0,Math.min(4,target.col+(u.owner==='player'?-1:1))),units,u.id);if(landing){u.row=landing.r;u.col=landing.c;}applyDamage(u,target,140*sp,'physical')}
+          case 'mit':{                                   // Dream Eater
+            // Apply 3 Meditate. Sleeping targets take bonus damage.
+            units.filter(e=>e.owner!==u.owner&&!e.dead).forEach(e=>{
+              const asleep=e.stunned>0;
+              if(e.immuneCC<=0){e.stunned=Math.max(e.stunned,1500);statusFloat(e,'sleep');}
+              applyDamage(u,e,(asleep?170:120)*sp,'magic');
+            });
             break;
           }
-          case 'falcon':{
-            if(target){applyDamage(u,target,130*sp,'physical');const dir=u.owner==='player'?-1:1;target.row=clamp(target.row+2*dir,0,9);}
+          case 'machito':{                               // Maraca
+            // Taunt and apply Weak to all Enemies for 3 turns.
+            units.filter(e=>e.owner!==u.owner&&!e.dead).forEach(e=>{
+              e.tauntedBy=u.id;
+              e.weak=Math.max(e.weak||0,3000);
+              e.bleed=Math.min(12,(e.bleed||0)+3);
+              statusFloat(e,'weak');
+            });
             break;
           }
-          case 'siren':{
-            const t=nearest(units,u,u.owner==='player'?'enemy':'player'); if(t&&t.immuneCC<=0)t.charmed=3500; break;
-          }
-          case 'yggdrasil':{
-            units.filter(e=>e.owner!==u.owner&&!e.dead).forEach(e=>{if(e.immuneCC<=0){e.rooted=1200;e.stunned=1200;}applyDamage(u,e,150*sp,'magic')});break;
-          }
-          case 'goliath':{
-            units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,target||u)<=1).forEach(e=>{if(e.immuneCC<=0)e.stunned=2500;applyDamage(u,e,100*sp,'true')});break;
-          }
-          case 'raven':{
-            units.filter(e=>e.owner!==u.owner&&!e.dead&&e.row===u.row).forEach(e=>{applyDamage(u,e,200*sp,'physical');if(e.hp/e.maxHp<0.25)e.dead=true;});
+          case 'hope':{                                  // Mainspring
+            // Randomly deal 2 hits, +1 hit per Fragment (Cap: +3 hits).
+            const foes=units.filter(e=>e.owner!==u.owner&&!e.dead);
+            const hits=Math.min(5,2+(u.fragments||0));
+            for(let i=0;i<hits;i++){
+              if(!foes.length) break;
+              applyDamage(u,rnd(foes),95*sp,'physical');
+            }
+            u.fragments=Math.min(3,(u.fragments||0)+1);
             break;
           }
-          case 'immanuel':{
-            units.filter(a=>a.owner===u.owner&&!a.dead).forEach(a=>heal(a,300*sp));
-            units.filter(e=>e.owner!==u.owner&&!e.dead).forEach(e=>e.row=clamp(e.row+(u.owner==='player'?-2:2),0,9));
+
+          // ---- tier 5 ----
+          case 'bard':{                                  // Ballad Of The Shore
+            // Summon a True Fan Hermit Crab; Feather Melody summons a Sparrow.
+            const kin=units.filter(a=>a.summonOf===u.id&&!a.dead).length;
+            if(kin<2) summonFor(u,units,kin===0?'hermitcrab':'sparrow');
+            u.tropicalGuardian=4000;                     // Tropical Guardian
+            units.filter(a=>a.owner===u.owner&&!a.dead&&(a.id===u.id||a.summonOf===u.id))
+                 .forEach(a=>{a.shield+=140*sp;});
             break;
           }
-          case 'lotus': break;
-          case 'chonky':{
-            if(target){applyDamage(u,target,150*sp + target.maxHp*0.25*sp,'physical')}break;
+          case 'temujin':{                               // Black Gourd
+            // Reverse Heal; Cursed Cards keep draining the target.
+            units.filter(e=>e.owner!==u.owner&&!e.dead).forEach(e=>{
+              e.fear=Math.max(e.fear||0,3000);
+              e.poison=Math.min(12,(e.poison||0)+2);
+              statusFloat(e,'fear');
+              applyDamage(u,e,110*sp,'magic');
+            });
+            heal(u,140*sp,u);
+            break;
           }
-          case 'kallaway':{
-            u.physImmune=3000;u.bladeStorm=3000;u.bladeTick=0;break;
+          case 'shufen':{                                // Darksea Jellyfish
+            // Apply 3 Weak to all enemies; Tadpole ambushes from the dark.
+            units.filter(e=>e.owner!==u.owner&&!e.dead).forEach(e=>{
+              e.weak=Math.max(e.weak||0,3000);
+              statusFloat(e,'weak');
+            });
+            const t=units.filter(e=>e.owner!==u.owner&&!e.dead)
+                         .sort((a,b)=>(u.owner==='player'?a.row-b.row:b.row-a.row))[0];
+            if(t){
+              const landing=findFreeCellNear(t.row,clamp(t.col+(u.owner==='player'?-1:1),0,4),units,u.id);
+              if(landing){u.row=landing.r;u.col=landing.c;}
+              u.untargetable=600;
+              const dealt=applyDamage(u,t,210*sp,'magic');
+              heal(u,dealt*0.5,u);
+            }
+            break;
           }
+
           default:{
             if(u.boss){
               units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=1).forEach(e=>{if(e.immuneCC<=0)e.stunned=1000;applyDamage(u,e,260*sp,'magic')});
@@ -2337,7 +2896,11 @@
       if(u.pierceShot){
         units.filter(e=>e.owner!==u.owner&&!e.dead&&e.id!==t.id&&hexDist(e,t)<=1).forEach(e=>applyDamage(u,e,dmg*u.pierceShot,'physical'));
       }
-      if(u.defId==='cactus' && rand()<0.3) units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,t)<=1).forEach(e=>applyDamage(u,e,75,'magic'));
+      if(!t.dead){
+        if(u.onHitPoison) t.poison=Math.min(12,(t.poison||0)+u.onHitPoison);
+        if(u.onHitBleed) t.bleed=Math.min(12,(t.bleed||0)+u.onHitBleed);
+        if(u.onHitWeak) t.weak=Math.max(t.weak||0,u.onHitWeak*1000);
+      }
       u.energy=Math.min(u.maxEnergy,u.energy+20);
       if(u.energy>=u.maxEnergy){u.energy=0;castSkill(u,units,t);}
       u.attackCd = 1000/Math.max(0.3, u.attackSpeed + ((u.hp/u.maxHp<0.5&&u.owner==='player')?state.mods.lowHpAS:0));
@@ -2383,15 +2946,28 @@
           u.stunned=Math.max(0,u.stunned-dt);
           u.rooted=Math.max(0,u.rooted-dt);
           u.charmed=Math.max(0,u.charmed-dt);
+          u.weak=Math.max(0,(u.weak||0)-dt);
+          u.fear=Math.max(0,(u.fear||0)-dt);
+          if(u.poison>0){
+            u.poisonTick=(u.poisonTick||0)+dt;
+            if(u.poisonTick>=900){u.poisonTick-=900;applyDamage(null,u,9*u.poison,'magic');u.poison--;actions++;}
+          }
+          if(u.bleed>0){
+            u.bleedTick=(u.bleedTick||0)+dt;
+            if(u.bleedTick>=900){u.bleedTick-=900;applyDamage(null,u,11*u.bleed,'physical');u.bleed--;actions++;}
+          }
           u.immuneCC=Math.max(0,u.immuneCC-dt);
           u.armorShred=Math.max(0,u.armorShred-dt);
           u.untargetable=Math.max(0,u.untargetable-dt);
           u.physImmune=Math.max(0,u.physImmune-dt);
-          if(u.auraLotus){const allies=units.filter(a=>a.owner===u.owner&&!a.dead);allies.forEach(a=>heal(a,a.maxHp*0.05*(dt/1000)));}
+          if(u.tropicalGuardian>0){
+            u.tropicalGuardian-=dt;
+            units.filter(a=>a.owner===u.owner&&!a.dead&&(a.id===u.id||a.summonOf===u.id))
+                 .forEach(a=>heal(a,a.maxHp*0.05*(dt/1000),u));
+          }
           if(u.plantRegen) heal(u,u.maxHp*u.plantRegen*(dt/1000));
           if(u.boss && !u.phase2 && u.hp/u.maxHp<=0.5){u.phase2=true;u.attackSpeed+=0.25;const av=el('actor-'+u.id);const im=av&&av.querySelector('img.actorArt');if(im) im.src=actorArtSrc(u,av.dataset.anim||'idle');playCue('boss');log('<b>Chimera enrages at 50% HP!</b>');}
-          if(u.defId==='kallaway'&&u.bladeStorm>0){u.bladeStorm-=dt;u.bladeTick=(u.bladeTick||0)+dt;if(u.bladeTick>=250){u.bladeTick=0;units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=1).forEach(e=>applyDamage(u,e,20,'magic')); actions++;}}
-          if(u.defId==='lotus' && !u.resUsed && u.hp<=0){u.resUsed=true;u.dead=false;u.hp=u.maxHp*0.5;actions++;}
+          if(u.nirvana && !u.resUsed && u.hp<=0){u.resUsed=true;u.dead=false;u.hp=u.maxHp*0.5;actions++;}
         }
 
         reviveCheck(units);
@@ -2441,7 +3017,7 @@
       el('relicChoices').innerHTML='';
       picks.forEach(r=>{
         const c=document.createElement('div');c.className='relicCard';
-        c.innerHTML=`<div class="augIcon">${RELIC_ICONS[r.id]||'🔹'}</div><div style="font-weight:800;margin-bottom:4px">${r.name}</div><div class="small" style="margin-bottom:10px">${r.desc}</div><button class="btn" style="width:100%">Choose Augment</button>`;
+        c.innerHTML=`<div class="augIcon">${relicImg(r.id,52)}</div><div style="font-weight:800;margin-bottom:4px">${r.name}</div><div class="small" style="margin-bottom:10px">${r.desc}</div><button class="btn" style="width:100%">Choose Augment</button>`;
         c.querySelector('button').onclick=()=>{
           state.relics.push({id:r.id,name:r.name,desc:r.desc});state.relicTaken[r.id]=1;r.apply(state);
           el('relicOverlay').classList.remove('show');
@@ -2533,6 +3109,8 @@
     el('closeLeaderboardBtn').onclick=()=>el('leaderboardOverlay').classList.remove('show');
     el('openBagBtn').onclick=()=>{renderBag();placeCenterOverlayOnArena('bagOverlay');el('bagOverlay').classList.add('show');};
     el('closeBagBtn').onclick=()=>el('bagOverlay').classList.remove('show');
+    el('openCodexBtn').onclick=()=>{renderCodex();placeCenterOverlayOnArena('codexOverlay');el('codexOverlay').classList.add('show');};
+    el('closeCodexBtn').onclick=()=>el('codexOverlay').classList.remove('show');
     el('closeResultBtn').onclick=()=>{el('resultOverlay').classList.remove('show');if(state.pendingAutoReset) resetRun();};
     el('toggleRecapBtn').onclick=()=>{state.recapVisible=!state.recapVisible;renderTop();};
     el('toggleLogBtn').onclick=()=>{state.logVisible=!state.logVisible;renderTop();};
