@@ -33,7 +33,7 @@
     .sub{color:var(--muted);font-size:12px}
     .stats{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .hpWidget{min-width:220px;padding:8px 10px;border-radius:12px;border:1px solid #46563c;background:#182018;display:flex;gap:8px;align-items:center}
-    .avatar{width:34px;height:34px;border-radius:50%;border:2px solid #6f8b66;object-fit:cover}
+    .avatar{width:34px;height:34px;border-radius:50%;border:2px solid #6f8b66;object-fit:cover;background:#0d1220}
     .hpWrap{flex:1}
     .hpTop{font-size:10px;color:#d7e6ce;display:flex;justify-content:space-between}
     .hpBar{height:5px;border-radius:99px;background:#0d1410;border:1px solid #476046;overflow:hidden}
@@ -72,9 +72,10 @@
       box-shadow:inset 0 0 0 6px #3f423f, inset 0 0 0 10px #2e312f, inset 0 0 22px #000b;
     }
     #boardBg{
-      position:absolute;inset:0;opacity:.25;pointer-events:none;
-      background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="%2367e8ff"/><stop offset="1" stop-color="%23000000" stop-opacity="0"/></radialGradient></defs><circle cx="30" cy="30" r="20" fill="url(%23g)"/><circle cx="120" cy="100" r="26" fill="url(%23g)"/></svg>');
-      mix-blend-mode:screen;
+      position:absolute;inset:0;pointer-events:none;z-index:0;
+      background-repeat:no-repeat;background-size:cover;background-position:center 58%;
+      opacity:.42;filter:saturate(.85) brightness(.55) blur(1.5px);
+      transition:background-image .2s linear;
     }
     .zoneLabel{position:absolute;left:10px;font-size:11px;padding:3px 6px;border-radius:8px;border:1px solid #4e5f9f;z-index:5;background:#131a34c9}
     .zoneLabel.enemy{top:8px;border-color:#ad6380;background:#3a1f2ec9}
@@ -105,7 +106,7 @@
       left:4px;top:4px;width:calc(var(--hexw) - 8px);height:calc(var(--hexh) - 8px);border-radius:0;
       clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
     }
-    .spawnGhost img{width:100%;height:100%;object-fit:cover;object-position:center 18%;filter:saturate(1.05)}
+    .spawnGhost img{width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:saturate(1.05)}
     .slotUnit{
       position:absolute;left:7px;top:7px;width:80px;height:66px;border-radius:12px;overflow:hidden;
       background:linear-gradient(180deg,#1f2b54,#151d37);
@@ -132,13 +133,13 @@
     .unitNameOverlay{position:absolute;left:6px;right:6px;bottom:4px;font-size:10px;font-weight:700;text-shadow:0 1px 2px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .uName{font-weight:700;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .uBody{display:flex;justify-content:space-between;align-items:center}
-    .unitArt{width:26px;height:26px;border-radius:6px;object-fit:cover;border:1px solid #6a7bb3;box-shadow:0 0 10px #0008}
-    .unitBg{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 40%;transform:scale(1.18)}
-    .unitModel{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);overflow:hidden;transform:scale(1.18);transform-origin:center 68%;z-index:1}
-    .unitModel .modelFallback{width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:saturate(1.05)}
-    .unitModel.model-board .modelFallback{transform:scale(1.04);object-position:center 30%;filter:saturate(1.12) contrast(1.06) drop-shadow(0 2px 6px #0008)}
-    .unitModel.model-combat{inset:0;width:100%;height:100%;transform:none;transform-origin:center center;z-index:1}
-    .unitModel.model-combat .modelFallback{object-position:center 22%;filter:saturate(1.1) contrast(1.06)}
+    .unitArt{width:26px;height:26px;border-radius:50%;object-fit:cover;border:1px solid #6a7bb3;box-shadow:0 0 10px #0008;background:#0d1220}
+    .unitBg{position:absolute;left:-12%;right:-12%;bottom:0;top:-42%;width:124%;height:142%;object-fit:contain;object-position:center bottom;transform:scale(1.05);filter:drop-shadow(0 2px 5px #000a)}
+    .unitModel{position:absolute;left:-12%;right:-12%;bottom:0;top:-42%;width:124%;height:142%;overflow:visible;transform:scale(1.05);transform-origin:center 88%;z-index:1}
+    .unitModel .modelFallback{width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:saturate(1.05)}
+    .unitModel.model-board .modelFallback{object-position:center bottom;filter:saturate(1.12) contrast(1.04) drop-shadow(0 2px 6px #0008)}
+    .unitModel.model-combat{left:-14%;right:-14%;top:-54%;bottom:12px;height:auto;width:128%;transform:none;transform-origin:center bottom;z-index:1}
+    .unitModel.model-combat .modelFallback{object-position:center bottom;filter:saturate(1.1) contrast(1.04)}
     .unitModel[data-anim="idle"]{animation:modelIdle 1.2s ease-in-out infinite}
     .unitModel[data-anim="move"]{animation:modelMove .35s linear infinite}
     .unitModel[data-anim="attack"]{animation:modelAttack .22s ease}
@@ -173,10 +174,11 @@
     #shopSellOverlay.show{display:flex}
     .card{background:linear-gradient(180deg,#1a2142,#131834);border:1px solid #344172;border-radius:12px;padding:0;overflow:hidden}
     .cardInner{padding:7px 8px}
-    .cardBanner{height:108px;background:#10152d;border-bottom:1px solid #2f3c70;position:relative;overflow:hidden}
-    .cardBanner img{width:100%;height:100%;object-fit:cover;object-position:center 10%}
+    .cardBanner{height:108px;background:#10152d center 62%/cover no-repeat;border-bottom:1px solid #2f3c70;position:relative;overflow:hidden}
+    .cardBanner::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0b0f1e33,#0b0f1eb0);z-index:0}
+    .cardBanner img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 3px 6px #000a)}
     .cardBanner .unitModel{inset:0;width:100%;height:100%;transform:none}
-    .cardBanner .unitModel .modelFallback{object-position:center 10%}
+    .cardBanner .unitModel .modelFallback{object-position:center bottom}
     .shopCostOverlay{
       position:absolute;left:6px;top:6px;z-index:4;
       font-size:18px;font-weight:900;line-height:1;background:#0f172bd9;border:1px solid #5d77bf;
@@ -201,7 +203,7 @@
     }
     .benchSlot.selected{box-shadow:0 0 0 2px #7aa2ff inset}
     .benchSlot .slotUnit{left:0;top:0;width:100%;height:100%;border-width:2px}
-    .benchSlot .unitBg{inset:0;transform:scale(1.08);object-position:center 15%}
+    .benchSlot .unitBg{left:-6%;right:-6%;width:112%;top:-30%;height:130%;transform:scale(1.02);object-position:center bottom}
     .benchSlot .unitNameOverlay{font-size:11px;bottom:6px}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
     #synergy,#relicList,#bagList,#log{font-size:12px;color:#d6ddf5;line-height:1.35}
@@ -229,8 +231,8 @@
     .actor.class-plant{background:linear-gradient(180deg,#3b7a45,#275933)}
     .actor.class-beast{background:linear-gradient(180deg,#8a5c35,#613f24)}
     .actor.class-bird{background:linear-gradient(180deg,#866f29,#5f501f)}
-    .actor .actorArt{position:absolute;inset:-8px -6px 0 -6px;width:calc(100% + 12px);height:calc(100% + 8px);object-fit:cover;object-position:center 33%;transform:scale(1.17);z-index:1}
-    .actor .actorShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 42%,#0006 74%,#000a);z-index:2}
+    .actor .actorArt{position:absolute;left:-14%;right:-14%;top:-54%;bottom:12px;width:128%;height:auto;object-fit:contain;object-position:center bottom;transform:scale(1.08);z-index:1;filter:drop-shadow(0 3px 5px #000b)}
+    .actor .actorShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 66%,#0004 86%,#0008);z-index:2}
     .actor .actorStars{position:absolute;left:50%;top:2px;transform:translateX(-50%);font-size:12px;color:#ffd86a;text-shadow:0 1px 2px #000;z-index:4}
     .actor .actorHp{position:absolute;left:6px;right:6px;bottom:12px;height:6px;border-radius:99px;background:#000a;border:1px solid #35507a;overflow:hidden;z-index:5}
     .actor .actorHpFill{height:100%;background:linear-gradient(90deg,#53ef95,#90ffc1)}
@@ -435,14 +437,14 @@
           <div id="boardRelics" class="zoneLabel" style="left:10px;top:58px;max-width:300px;display:flex;gap:6px;align-items:center;flex-wrap:wrap"></div>
           <div id="boardHpHud">
             <div class="hpWidget">
-              <img class="avatar" src="assets/extracted/units/peon.png" alt="Player">
+              <img class="avatar" src="assets/origins/portraits/peon.png" alt="Player">
               <div class="hpWrap">
                 <div class="hpTop"><span>You</span><span id="playerHpText"></span></div>
                 <div class="hpBar"><div id="playerHpFill" class="hpFill"></div></div>
               </div>
             </div>
             <div class="hpWidget">
-              <img class="avatar" src="assets/extracted/boss/chimera_token.png" alt="Enemy">
+              <img class="avatar" src="assets/origins/boss/chimera_token.png" alt="Enemy">
               <div class="hpWrap">
                 <div class="hpTop"><span>Enemy</span><span id="enemyHpText"></span></div>
                 <div class="hpBar"><div id="enemyHpFill" class="hpFill enemy"></div></div>
@@ -662,27 +664,68 @@
       {id:'kallaway',name:'Kallaway',emoji:'🦚',tier:5,class:'Bird',trait:'Assassin',atk:85,hp:1180,mystic:false,range:1,attack:'Razor Wing',skill:'Bladestorm phys-immune whirlwind dealing 80 magic dmg/sec'}
     ];
     const UMAP = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,u]));
-    const UNIT_ASSETS = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,`assets/extracted/units/${u.id}.png`]));
-    const UNIT_MODEL_MANIFEST = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,{
-      runtime:'spritesheet',
-      performanceTier: u.tier>=4?'high':'low',
-      scale: u.tier>=4?1.22:1.18,
-      anchor:{x:0.5,y:0.68},
-      files:{
-        idle: `assets/extracted/units/${u.id}.png`,
-        move: `assets/extracted/units/${u.id}.png`,
-        attack: `assets/extracted/units/${u.id}.png`,
-        cast: `assets/extracted/units/${u.id}.png`,
-        hit: `assets/extracted/units/${u.id}.png`,
-        death: `assets/extracted/units/${u.id}.png`
-      },
-      animMap:{idle:'idle',move:'move',attack:'attack',cast:'cast',hit:'hit',death:'death',crit:'crit'}
-    }]));
-    const BOSS_ASSETS = {
-      phase1:'assets/extracted/boss/chimera_phase1.png',
-      phase2:'assets/extracted/boss/chimera_phase2.png',
-      token:'assets/extracted/boss/chimera_token.png'
+    // ---- Axie Origins art -------------------------------------------------
+    // Every unit is skinned with a first-party starter Axie from
+    // axieinfinity/axie-origins-asset-kit. Board sprites are single frames
+    // rendered out of the kit's Spine 3.8 skeletons (one per combat state);
+    // portraits are the kit's shipped avatar art. See assets/origins/manifest.json.
+    const ORIGINS_ART_ROOT = 'assets/origins';
+    const ORIGINS_SKINS = {
+      peon:'Puffy', bubbles:'Shufen', nemo:'Noir', siren:'Rouge (awakened)',
+      immanuel:'Mit (awakened)',
+      sprout:'Olek', cactus:'Bard', pumpkin:'Ena', yggdrasil:'Olek (awakened)',
+      lotus:'Ena (awakened)',
+      nut:'Tripp', gnasher:'Xia', zoro:'Buba', goliath:'Xia (awakened)',
+      chonky:'Hope (awakened)',
+      pips:'Momo', kestrel:'Pomodoro', falcon:'Bing', raven:'Machito (awakened)',
+      kallaway:'Momo (awakened)'
     };
+    const MODEL_POSES = ['idle','move','attack','cast','hit','death'];
+    function originsUnitSprite(id,pose='idle'){
+      return pose==='idle'
+        ? `${ORIGINS_ART_ROOT}/units/${id}.png`
+        : `${ORIGINS_ART_ROOT}/units/${id}-${pose}.png`;
+    }
+    const UNIT_ASSETS = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,originsUnitSprite(u.id)]));
+    const UNIT_PORTRAITS = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,`${ORIGINS_ART_ROOT}/portraits/${u.id}.png`]));
+    const UNIT_MODEL_MANIFEST = Object.fromEntries(UNIT_DEFS.map(u=>[u.id,{
+      runtime:'spine-frames',
+      axie: ORIGINS_SKINS[u.id]||u.name,
+      performanceTier: u.tier>=4?'high':'low',
+      scale: u.tier>=4?1.10:1.04,
+      anchor:{x:0.5,y:0.86},
+      files:Object.fromEntries(MODEL_POSES.map(p=>[p,originsUnitSprite(u.id,p)])),
+      animMap:{idle:'idle',move:'move',attack:'attack',cast:'cast',hit:'hit',death:'death',crit:'attack'}
+    }]));
+    const BOSS_POSES = ['idle','attack','hit','death'];
+    function originsBossSprite(phase,pose='idle'){
+      return pose==='idle'
+        ? `${ORIGINS_ART_ROOT}/boss/chimera_${phase}.png`
+        : `${ORIGINS_ART_ROOT}/boss/chimera_${phase}-${pose}.png`;
+    }
+    const BOSS_ASSETS = {
+      phase1:originsBossSprite('phase1'),
+      phase2:originsBossSprite('phase2'),
+      token:`${ORIGINS_ART_ROOT}/boss/chimera_token.png`
+    };
+    const BOSS_MODEL_MANIFEST = {
+      phase1:Object.fromEntries(BOSS_POSES.map(p=>[p,originsBossSprite('phase1',p)])),
+      phase2:Object.fromEntries(BOSS_POSES.map(p=>[p,originsBossSprite('phase2',p)]))
+    };
+    // Story / class arenas shipped with the kit, one per stage flavour.
+    const ARENA_CYCLE = ['arena-plant','arena-beast','arena-aquatic','arena-bird'];
+    function arenaForStage(stage){
+      const s=Math.max(1,stage|0);
+      if(s%5===0) return 'arena-boss';
+      return ARENA_CYCLE[(s-1)%ARENA_CYCLE.length];
+    }
+    function arenaBgUrl(stage){
+      return `${ORIGINS_ART_ROOT}/arena/${arenaForStage(stage)}.jpg`;
+    }
+    const CLASS_ARENA = {Aqua:'arena-aquatic',Plant:'arena-plant',Beast:'arena-beast',Bird:'arena-bird'};
+    function classArenaUrl(cls){
+      return `${ORIGINS_ART_ROOT}/arena/${CLASS_ARENA[cls]||'arena-plant'}.jpg`;
+    }
     const RELICS = [
       {id:'mint',name:"Lunacia's Mint",desc:'+2 prep energy income',apply:s=>s.mods.incomeBonus+=2},
       {id:'cloak',name:'Shadowstep Cloak',desc:'Assassins gain +30% crit',apply:s=>s.mods.rogueCrit+=0.30},
@@ -759,9 +802,42 @@
     function classSlug(cls){return String(cls||'').toLowerCase();}
     function buyCost(def){return (def?.tier||1)+1;}
     function unitImgTag(defId,cls='unitArt',alt='unit'){
-      const src=UNIT_ASSETS[defId];
+      // Small inline icons read better as the kit's circular Axie avatars;
+      // anything sitting on the board or in a card banner uses the body sprite.
+      const wantsPortrait=/(^|\s)unitArt(\s|$)/.test(cls);
+      const src=(wantsPortrait?UNIT_PORTRAITS[defId]:null)||UNIT_ASSETS[defId];
       if(!src) return '';
-      return `<img class="${cls}" src="${src}" alt="${alt}" loading="lazy" onerror="this.style.display='none'">`;
+      const fallback=UNIT_ASSETS[defId]||'';
+      const onerr=fallback&&fallback!==src
+        ? `this.onerror=null;this.src='${fallback}'`
+        : `this.style.display='none'`;
+      return `<img class="${cls}" src="${src}" alt="${alt}" loading="lazy" onerror="${onerr}">`;
+    }
+    function unitPoseSrc(defId,anim='idle'){
+      const m=UNIT_MODEL_MANIFEST[defId];
+      if(!m) return UNIT_ASSETS[defId]||'';
+      return m.files[m.animMap?.[anim]||anim]||m.files.idle;
+    }
+    function actorArtSrc(u,anim='idle'){
+      if(!u) return '';
+      if(u.defId==='chimera'){
+        const set=BOSS_MODEL_MANIFEST[u.phase2?'phase2':'phase1'];
+        return set[anim]||set.idle;
+      }
+      return unitPoseSrc(u.defId,anim);
+    }
+    function actorArtFallback(u){
+      if(!u) return '';
+      return u.defId==='chimera'
+        ? (u.phase2?BOSS_ASSETS.phase2:BOSS_ASSETS.phase1)
+        : (UNIT_ASSETS[u.defId]||'');
+    }
+    function applyArenaBackdrop(){
+      const bg=el('boardBg'); if(!bg) return;
+      const url=arenaBgUrl(state.stage);
+      if(bg.dataset.arena===url) return;
+      bg.dataset.arena=url;
+      bg.style.backgroundImage=`url('${url}')`;
     }
     function modelAsset(defId,anim='idle'){
       const m=UNIT_MODEL_MANIFEST[defId];
@@ -770,10 +846,19 @@
       return file?{manifest:m,file}:null;
     }
     function primeModelCache(){
+      const warm=(file)=>{
+        if(!file||state.modelCache.has(file)) return;
+        const img=new Image(); img.src=file; state.modelCache.set(file,img);
+      };
       for(const id of Object.keys(UNIT_MODEL_MANIFEST)){
-        const a=modelAsset(id,'idle'); if(!a||state.modelCache.has(a.file)) continue;
-        const img=new Image(); img.src=a.file; state.modelCache.set(a.file,img);
+        for(const pose of MODEL_POSES) warm(unitPoseSrc(id,pose));
+        warm(UNIT_PORTRAITS[id]);
       }
+      for(const phase of Object.keys(BOSS_MODEL_MANIFEST)){
+        for(const pose of BOSS_POSES) warm(BOSS_MODEL_MANIFEST[phase][pose]);
+      }
+      warm(BOSS_ASSETS.token);
+      for(let stage=1;stage<=10;stage++) warm(arenaBgUrl(stage));
     }
     function renderUnitVisual(defId,viewState={anim:'idle'},opts={}){
       const cls=opts.className||'unitBg', alt=opts.alt||'unit', anim=viewState.anim||'idle', surface=opts.surface||'board';
@@ -788,11 +873,23 @@
     }
     function setCombatAnim(u,anim='idle',duration=220){
       const a=el('actor-'+u.id); if(!a) return;
-      const m=a.querySelector('[data-model]'); if(!m) return;
-      m.dataset.anim=anim;
+      const m=a.querySelector('[data-model]');
+      const art=a.querySelector('img.actorArt')||a.querySelector('img.modelFallback');
+      const apply=(name)=>{
+        if(m) m.dataset.anim=name;
+        if(!art) return;
+        const src=actorArtSrc(u,name);
+        if(src && !art.src.endsWith(src)) art.src=src;
+      };
+      if(!m && !art) return;
+      apply(anim);
+      a.dataset.anim=anim;
       if(anim!=='death'){
         clearTimeout(a._animBackTimer);
-        a._animBackTimer=setTimeout(()=>{if(m.dataset.anim!=='death') m.dataset.anim='idle';},duration);
+        a._animBackTimer=setTimeout(()=>{
+          if(a.dataset.anim==='death') return;
+          apply('idle'); a.dataset.anim='idle';
+        },duration);
       }
     }
     function acquireActorNode(){
@@ -989,7 +1086,7 @@
     function openBossModal(stage){
       if(!(stage===5||stage===10)) return;
       const c=getChimeraConfig(stage);
-      el('bossBody').innerHTML = `<div style="display:flex;gap:12px;align-items:center"><img src="${BOSS_ASSETS.phase2}" alt="Chimera" style="width:150px;height:120px;border-radius:12px;border:2px solid #b35a5a;object-fit:cover"><div><div style="font-size:22px;font-weight:800;color:#ffd1d1">${c.name}</div><div class="badge">Stage ${stage}</div><div class="small">HP ${Math.round(c.maxHp)} • ATK ${Math.round(c.atk)} • Range ${c.range}</div><div class="small">Phase 2 at 50% HP. Massive AoE control and burst.</div></div></div>`;
+      el('bossBody').innerHTML = `<div style="display:flex;gap:12px;align-items:center"><img src="${BOSS_ASSETS.phase2}" alt="Chimera" style="width:150px;height:120px;border-radius:12px;border:2px solid #b35a5a;object-fit:contain;background:#1a1020 url('${ORIGINS_ART_ROOT}/arena/arena-boss.jpg') center 60%/cover no-repeat"><div><div style="font-size:22px;font-weight:800;color:#ffd1d1">${c.name}</div><div class="badge">Stage ${stage}</div><div class="small">HP ${Math.round(c.maxHp)} • ATK ${Math.round(c.atk)} • Range ${c.range}</div><div class="small">Phase 2 at 50% HP. Massive AoE control and burst.</div></div></div>`;
       el('bossOverlay').classList.add('show');
     }
     function ensureAudio(){
@@ -1311,12 +1408,12 @@
           const cost=buyCost(d);
           const canBuyNow = ()=>!(state.energy<cost||state.inBattle);
           const canBuy = canBuyNow();
-          const visualReady = canBuy || !!opp;
           const opp=shopMergeOpportunity(d.id);
+          const visualReady = canBuy || !!opp;
           if(opp) c.classList.add('shopPulse','star'+opp.star);
           c.innerHTML=`
             ${opp?`<div class="shopMergeTag">${'★'.repeat(opp.star)}</div>`:''}
-            <div class="cardBanner"><div class="shopCostOverlay">${cost} 🪙</div>${unitImgTag(d.id,'',d.name)}</div>
+            <div class="cardBanner" style="background-image:url('${classArenaUrl(d.class)}')"><div class="shopCostOverlay">${cost} 🪙</div>${unitImgTag(d.id,'',d.name)}</div>
             <div class="cardInner">
             <div class="shopNameRow"><span class="name">${d.name}</span><span class="small">${{Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️'}[d.class]||''} ${{Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'}[d.trait]||''}</span></div>
             </div>`;
@@ -1365,6 +1462,7 @@
       const track=[]; for(let i=1;i<=10;i++){track.push(`<span class="stageNode ${i<state.stage?'done':''} ${i===state.stage?'current':''} ${i===5||i===10?'boss':''}" data-stage="${i}">${i}</span>`); if(i<10) track.push('<span class="stageLine"></span>');}
       el('stageTrack').innerHTML=track.join('');
       el('stageTrack').querySelectorAll('.stageNode').forEach(n=>n.onclick=()=>openBossModal(+n.dataset.stage));
+      applyArenaBackdrop();
       renderSynergy();
       renderDailyMod();
       renderEnemyIntent();
@@ -1446,6 +1544,7 @@
       slot.innerHTML = `
         <div style="font-weight:700;display:flex;gap:6px;align-items:center">${boss?`<img class="unitArt lg" src="${BOSS_ASSETS.phase1}" alt="Chimera">`:unitImgTag(d.id,'unitArt lg',d.name)} ${d.name}</div>
         <div class="small">${enemy?'Enemy':'Ally'}${preview?' Preview':''} • ${{Aqua:'💧',Plant:'🌿',Beast:'🦁',Bird:'🕊️'}[d.class]||''} ${d.class} / ${{Assassin:'🗡️',Bastion:'🛡️',Vanguard:'⚔️',Mage:'✨',Spikes:'🌵',Sniper:'🎯'}[d.trait]||''} ${d.trait} • ${'★'.repeat(u.star)}</div>
+        ${boss?'':`<div class="small" style="color:#9fb2e8">Origins body: ${ORIGINS_SKINS[d.id]||d.name}</div>`}
         <div class="small">ATK: ${atk}</div><div class="statBar"><span style="width:${atkPct}%"></span></div>
         <div class="small">HP: ${hp}</div><div class="statBar"><span style="width:${hpPct}%"></span></div>
         <div class="small">Cast Speed: ${castsIn} attacks</div><div class="statBar"><span style="width:${castPct}%"></span></div>
@@ -1877,8 +1976,8 @@
           const a=acquireActorNode();
           a.className='actor class-'+classSlug(u.class)+' '+(u.owner==='enemy'?'enemy':'');
           a.id='actor-'+u.id;
-          const artSrc = u.defId==='chimera' ? BOSS_ASSETS.token : UNIT_ASSETS[u.defId];
-          const fallback = u.defId==='chimera' ? BOSS_ASSETS.phase1 : UNIT_ASSETS[u.defId];
+          const artSrc = actorArtSrc(u,'idle');
+          const fallback = actorArtFallback(u);
           a.innerHTML=`<img class="actorArt" src="${artSrc}" alt="${u.name}" loading="eager" decoding="sync" onerror="this.src='${fallback}'"><div class="actorShade"></div><div class="actorStars">${'★'.repeat(u.star||1)}</div><div class="actorHp"><div class="actorHpFill"></div></div><div class="actorMana"><div class="actorManaFill"></div></div>`;
           a.onclick=(e)=>{e.stopPropagation();state.selected={type:'combat',id:u.id};renderSelectedInfo();};
           actorLayer.appendChild(a);
@@ -2290,7 +2389,7 @@
           u.physImmune=Math.max(0,u.physImmune-dt);
           if(u.auraLotus){const allies=units.filter(a=>a.owner===u.owner&&!a.dead);allies.forEach(a=>heal(a,a.maxHp*0.05*(dt/1000)));}
           if(u.plantRegen) heal(u,u.maxHp*u.plantRegen*(dt/1000));
-          if(u.boss && !u.phase2 && u.hp/u.maxHp<=0.5){u.phase2=true;u.attackSpeed+=0.25;const av=el('actor-'+u.id);const im=av&&av.querySelector('img.actorArt');if(im) im.src=BOSS_ASSETS.phase2;playCue('boss');log('<b>Chimera enrages at 50% HP!</b>');}
+          if(u.boss && !u.phase2 && u.hp/u.maxHp<=0.5){u.phase2=true;u.attackSpeed+=0.25;const av=el('actor-'+u.id);const im=av&&av.querySelector('img.actorArt');if(im) im.src=actorArtSrc(u,av.dataset.anim||'idle');playCue('boss');log('<b>Chimera enrages at 50% HP!</b>');}
           if(u.defId==='kallaway'&&u.bladeStorm>0){u.bladeStorm-=dt;u.bladeTick=(u.bladeTick||0)+dt;if(u.bladeTick>=250){u.bladeTick=0;units.filter(e=>e.owner!==u.owner&&!e.dead&&hexDist(e,u)<=1).forEach(e=>applyDamage(u,e,20,'magic')); actions++;}}
           if(u.defId==='lotus' && !u.resUsed && u.hp<=0){u.resUsed=true;u.dead=false;u.hp=u.maxHp*0.5;actions++;}
         }

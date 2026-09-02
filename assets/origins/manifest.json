@@ -1,0 +1,811 @@
+{
+  "arena": {
+    "arena-aquatic": "Assets/OriginsKit/PvE/Backgrounds/class/bg-aquatic.jpg",
+    "arena-beast": "Assets/OriginsKit/PvE/Backgrounds/class/bg-beast.jpg",
+    "arena-bird": "Assets/OriginsKit/PvE/Backgrounds/class/bg-bird.jpg",
+    "arena-boss": "Assets/OriginsKit/PvE/Backgrounds/class/bg-dusk.jpg",
+    "arena-plant": "Assets/OriginsKit/PvE/Backgrounds/class/bg-plant.jpg"
+  },
+  "boss": {
+    "chimera_phase1": {
+      "chimera": "gray-wolf",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "chimera_phase1-attack.png",
+          "time": 0.39
+        },
+        "death": {
+          "animation": "defense/hit-die",
+          "file": "chimera_phase1-death.png",
+          "time": 0.1
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal",
+          "file": "chimera_phase1-hit.png",
+          "time": 0.25
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "chimera_phase1.png",
+          "time": 0.0
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Chimeras/gray-wolf"
+    },
+    "chimera_phase2": {
+      "chimera": "werewolf",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "chimera_phase2-attack.png",
+          "time": 0.825
+        },
+        "death": {
+          "animation": "defense/hit-die",
+          "file": "chimera_phase2-death.png",
+          "time": 2.28
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal",
+          "file": "chimera_phase2-hit.png",
+          "time": 0.917
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "chimera_phase2.png",
+          "time": 0.0
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Chimeras/werewolf"
+    },
+    "chimera_token": {
+      "chimera": "gray-wolf",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/portraits/gray-wolf.png"
+    }
+  },
+  "note": "Sprites rendered from the kit's official Spine 3.8 starter-Axie and chimera skeletons (Assets/OriginsKit/PvE). Portraits and arena backdrops are shipped kit art, resized only.",
+  "source": "https://github.com/axieinfinity/axie-origins-asset-kit",
+  "units": {
+    "bubbles": {
+      "axie": "Shufen",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/15.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "bubbles-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "bubbles-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "bubbles-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "bubbles-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "bubbles.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "bubbles-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/15"
+    },
+    "cactus": {
+      "axie": "Bard",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/20.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "cactus-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "cactus-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "cactus-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "cactus-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "cactus.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "cactus-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/20"
+    },
+    "chonky": {
+      "axie": "Hope (awakened)",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/19.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "chonky-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "chonky-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "chonky-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "chonky-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "chonky.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "chonky-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/19-1"
+    },
+    "falcon": {
+      "axie": "Bing",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/22.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "falcon-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "falcon-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "falcon-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "falcon-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "falcon.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "falcon-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/22"
+    },
+    "gnasher": {
+      "axie": "Xia",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/21.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "gnasher-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "gnasher-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "gnasher-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "gnasher-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "gnasher.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "gnasher-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/21"
+    },
+    "goliath": {
+      "axie": "Xia (awakened)",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/21.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "goliath-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "goliath-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "goliath-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "goliath-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "goliath.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "goliath-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/21-1"
+    },
+    "immanuel": {
+      "axie": "Mit (awakened)",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/25.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "immanuel-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "immanuel-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "immanuel-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "immanuel-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "immanuel.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "immanuel-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/25-1"
+    },
+    "kallaway": {
+      "axie": "Momo (awakened)",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/12.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "kallaway-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "kallaway-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "kallaway-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "kallaway-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "kallaway.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "kallaway-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/12-1"
+    },
+    "kestrel": {
+      "axie": "Pomodoro",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/17.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "kestrel-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "kestrel-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "kestrel-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "kestrel-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "kestrel.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "kestrel-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/17"
+    },
+    "lotus": {
+      "axie": "Ena (awakened)",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/16.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "lotus-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "lotus-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "lotus-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "lotus-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "lotus.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "lotus-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/16-1"
+    },
+    "nemo": {
+      "axie": "Noir",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/23.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "nemo-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "nemo-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "nemo-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "nemo-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "nemo.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "nemo-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/23"
+    },
+    "nut": {
+      "axie": "Tripp",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/5.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "nut-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "nut-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "nut-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "nut-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "nut.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "nut-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/5"
+    },
+    "peon": {
+      "axie": "Puffy",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/3.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "peon-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "peon-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "peon-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "peon-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "peon.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "peon-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/3"
+    },
+    "pips": {
+      "axie": "Momo",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/12.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "pips-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "pips-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "pips-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "pips-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "pips.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "pips-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/12"
+    },
+    "pumpkin": {
+      "axie": "Ena",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/16.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "pumpkin-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "pumpkin-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "pumpkin-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "pumpkin-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "pumpkin.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "pumpkin-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/16"
+    },
+    "raven": {
+      "axie": "Machito (awakened)",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/18.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "raven-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "raven-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "raven-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "raven-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "raven.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "raven-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/18-1"
+    },
+    "siren": {
+      "axie": "Rouge (awakened)",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/24.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "siren-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "siren-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "siren-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "siren-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "siren.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "siren-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/24-1"
+    },
+    "sprout": {
+      "axie": "Olek",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/2.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "sprout-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "sprout-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "sprout-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "sprout-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "sprout.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "sprout-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/2"
+    },
+    "yggdrasil": {
+      "axie": "Olek (awakened)",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/2.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "yggdrasil-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "yggdrasil-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "yggdrasil-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "yggdrasil-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "yggdrasil.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "yggdrasil-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/2-1"
+    },
+    "zoro": {
+      "axie": "Buba",
+      "portrait": "Assets/OriginsKit/PvE/Avatars/starters/1.png",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "zoro-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "zoro-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "zoro-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "zoro-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "zoro.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "zoro-move.png",
+          "time": 0.338
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Starters/1"
+    }
+  }
+}
