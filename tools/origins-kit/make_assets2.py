@@ -256,17 +256,28 @@ def main():
         copy_icon(src, os.path.join(DEST, 'icons', 'relic', f'{rid}.png'), 96)
         manifest['icons']['relic'][rid] = rel
 
-    # ---- battle UI bits (kit) ----
-    for src, dst in [('PvE/UI/HpBar2/hp-bar-small.png', 'hp-bar.png'),
-                     ('PvE/UI/HpBar2/hp-small.png', 'hp-fill.png'),
-                     ('PvE/UI/InBattle/avatar_frame.png', 'avatar-frame.png'),
-                     ('PvE/UI/Frames/frame_border.png', 'frame-border.png'),
-                     ('PvE/UI/Chapter/icon_stage_boss.png', 'stage-boss.png')]:
-        p = f'{KIT}/{src}'
-        if os.path.exists(p):
-            copy_icon(p, os.path.join(DEST, 'ui', dst), 256)
-        else:
+    # ---- battle UI chrome (kit) ----
+    # Sizes are per-piece: 9-slice frames need resolution, pips do not.
+    UI_ART = [
+        ('PvE/UI/Frames/frame_border.png', 'frame-border.png', 192),
+        ('PvE/UI/Frames/frame_back.png', 'frame-back.png', 128),
+        ('PvE/UI/Frames/star.png', 'star.png', 48),
+        ('PvE/UI/HpBar2/hp-bar-small.png', 'hp-track.png', 192),
+        ('PvE/UI/HpBar2/hp-small.png', 'hp-fill.png', 192),
+        ('PvE/UI/InBattle/avatar_frame.png', 'avatar-frame.png', 128),
+        ('PvE/UI/InBattle/energy_jar.png', 'energy-jar.png', 128),
+        ('PvE/UI/InBattle/name_panel.png', 'name-panel.png', 256),
+        ('PvE/UI/InBattle/icon_shield.png', 'icon-shield.png', 48),
+        ('PvE/UI/Chapter/icon_stage_boss.png', 'stage-boss.png', 64),
+    ]
+    manifest['icons']['ui'] = {}
+    for src, dst, box in UI_ART:
+        path = f'{KIT}/{src}'
+        if not os.path.exists(path):
             print('  missing ui art', src)
+            continue
+        copy_icon(path, os.path.join(DEST, 'ui', dst), box)
+        manifest['icons']['ui'][dst] = src
 
     with open(os.path.join(DEST, 'manifest.json'), 'w') as f:
         json.dump(manifest, f, indent=2, sort_keys=True)

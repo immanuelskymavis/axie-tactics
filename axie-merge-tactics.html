@@ -5,22 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Axie Merge Tactics</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap');
+    /* Origins wood-and-gold chrome, warm rather than the old cold olive. The
+       class tints come from the official gtk2d class icons. */
     :root{
-      --bg:#0f140f;--panel:#1d231b;--panel2:#232c1f;--ink:#eef6e7;--muted:#b4c3a9;
-      --good:#5fdd9a;--bad:#ff7c90;--gold:#ffd76a;--vio:#9a85ff;--cyan:#67e8ff;
+      --wood:#7c4f2c;--wood-lt:#c98a52;--wood-dk:#4a2c15;
+      --gold:#ffcf5c;--gold-dk:#a9701c;--parch:#efdcb4;
+      --deep:#1c1409;--bg:#151009;--panel:#3a2515;--panel2:#4a3220;
+      --ink:#f7f0e1;--muted:#cbb894;
+      --good:#5fdd9a;--bad:#ff7c90;--vio:#9a85ff;--cyan:#67e8ff;
+      --ally:#5cb3ff;--foe:#ff6b7d;
+      --display:'Baloo 2',ui-rounded,'Trebuchet MS',system-ui,sans-serif;
       --hexw:94px;--hexh:90px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;background:
-      radial-gradient(1200px 700px at 20% -10%,#35523055 0%,transparent 65%),
-      radial-gradient(900px 700px at 100% 0%,#56432944 0%,transparent 60%),
-      linear-gradient(180deg,#10150f,#171f16 45%,#0f140f);
+      radial-gradient(1200px 700px at 20% -10%,#6b451f55 0%,transparent 65%),
+      radial-gradient(900px 700px at 100% 0%,#8a5a2444 0%,transparent 60%),
+      linear-gradient(180deg,#1a1309,#241a0e 45%,#150f08);
       color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
       min-height:100vh;
     }
     .app{max-width:1480px;margin:0 auto;padding:14px;display:block}
-    .panel{background:linear-gradient(180deg,#2a3424,#1b2318);border:1px solid #46563c;border-radius:14px;box-shadow:0 8px 25px #0008}
+    /* Panels wear the kit's wooden frame as a 9-slice border. */
+    .panel{
+      background:linear-gradient(180deg,#3d2716,#2a1a0d);
+      border:14px solid transparent;border-radius:16px;
+      border-image:url('assets/origins/ui/frame-border.png') 62 fill stretch;
+      box-shadow:0 10px 28px #000a;
+    }
+    h1,h2,h4,.btn,.name,.uName,.titleWord,.synBadge i,.stageNode i,
+    .shopCostOverlay,#energy,.codexName b,.kitCard b{font-family:var(--display)}
     .header{padding:5px 8px;display:flex;align-items:center;justify-content:space-between}
     h1{margin:0;font-size:18px;letter-spacing:.6px}
     .titleWord{
@@ -32,18 +48,31 @@
     }
     .sub{color:var(--muted);font-size:12px}
     .stats{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .hpWidget{min-width:220px;padding:8px 10px;border-radius:12px;border:1px solid #46563c;background:#182018;display:flex;gap:8px;align-items:center}
-    .avatar{width:34px;height:34px;border-radius:50%;border:2px solid #6f8b66;object-fit:cover;background:#0d1220}
+    .hpWidget{min-width:220px;padding:8px 10px;border-radius:12px;border:2px solid #6b4410;background:linear-gradient(180deg,#3a2515,#241608);display:flex;gap:10px;align-items:center}
+    /* Portraits sit inside the kit's ornate battle-UI ring. */
+    .avatar{
+      width:38px;height:38px;border-radius:50%;border:0;object-fit:cover;background:#1c1409;
+      padding:3px;box-sizing:border-box;
+      -webkit-mask:radial-gradient(circle,#000 98%,transparent 100%);
+              mask:radial-gradient(circle,#000 98%,transparent 100%);
+    }
+    .hpWidget{position:relative}
+    .hpWidget::before{
+      content:'';position:absolute;left:6px;top:50%;transform:translateY(-50%);
+      width:44px;height:44px;pointer-events:none;z-index:2;
+      background:url('assets/origins/ui/avatar-frame.png') center/contain no-repeat;
+    }
     .hpWrap{flex:1}
     .hpTop{font-size:10px;color:#d7e6ce;display:flex;justify-content:space-between}
-    .hpBar{height:5px;border-radius:99px;background:#0d1410;border:1px solid #476046;overflow:hidden}
+    .hpBar{height:7px;border-radius:99px;background:#16100799;box-shadow:inset 0 1px 3px #000a;overflow:hidden}
     .hpFill{height:100%;background:linear-gradient(90deg,#62db95,#a7ffc7)}
     .hpFill.enemy{background:linear-gradient(90deg,#ff7d92,#ffb2bf)}
     #boardHpHud{
       position:absolute;right:10px;top:8px;z-index:30;display:flex;flex-direction:column;gap:6px;max-width:250px
     }
-    #boardHpHud .hpWidget{min-width:176px;padding:6px 8px;background:#101813da;border-color:#4b5f45}
-    #boardHpHud .avatar{width:24px;height:24px}
+    #boardHpHud .hpWidget{min-width:180px;padding:6px 8px;background:#241608e0;border-color:#6b4410}
+    #boardHpHud .avatar{width:30px;height:30px}
+    #boardHpHud .hpWidget::before{width:36px;height:36px;left:5px}
     #boardHpHud .hpTop{font-size:10px}
     #boardHpHud .hpBar{height:4px}
     .pill{padding:6px 10px;border-radius:999px;background:#182018;border:1px solid #46563c;font-size:12px}
@@ -51,9 +80,9 @@
     .statLabel{font-size:10px;color:#9fb0dd;text-transform:uppercase;letter-spacing:.5px}
     .statValue{font-size:19px;font-weight:800;line-height:1.05}
     .mainBoard{padding:12px 10px;position:relative}
-    .subSection{margin:10px;border:1px solid #2a3258;border-radius:12px;background:linear-gradient(180deg,#151a30,#101428);padding:10px}
+    .subSection{margin:10px;border:2px solid #6b4410;border-radius:12px;background:linear-gradient(180deg,#33200f,#241608);padding:10px}
     .benchAttached{margin-top:0;border-top-left-radius:0;border-top-right-radius:0;border-top:0}
-    .subTitle{font-size:12px;color:#aab3d5;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+    .subTitle{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
     #stageTrack{display:flex;gap:6px;margin-top:8px;align-items:center;flex-wrap:wrap}
     .stageNode{width:20px;height:20px;border-radius:999px;position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer}
     .stageNode img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:.85}
@@ -66,70 +95,88 @@
     .stageLine{width:8px;height:2px;background:#3b4d8d}
     .heart.full{color:#ff5e7d;text-shadow:0 0 8px #ff5e7d99}
     .heart.empty{color:#4b536f}
-    #boardWrap{position:relative;padding:8px;background:#10180f;border:1px solid #46563c;border-radius:14px;overflow:hidden}
+    #boardWrap{position:relative;padding:8px;background:#1c1409;border:2px solid #7c4f2c;border-radius:14px;overflow:hidden}
     #boardWrap::before{
-      content:'';position:absolute;left:6px;right:6px;bottom:6px;height:38%;pointer-events:none;z-index:1;
-      background:radial-gradient(120% 100% at 50% 100%,#56714866,#2f3f2a66 55%,transparent 70%);
+      content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+      background:radial-gradient(120% 85% at 50% 42%,transparent 40%,#1c140966 82%,#1c1409aa);
     }
     #boardWrap::after{
       content:'';position:absolute;inset:0;pointer-events:none;z-index:2;border-radius:14px;
-      box-shadow:inset 0 0 0 6px #3f423f, inset 0 0 0 10px #2e312f, inset 0 0 22px #000b;
+      box-shadow:inset 0 0 0 5px #7c4f2c, inset 0 0 0 9px #4a2c15, inset 0 0 26px #000a;
     }
     #boardBg{
       position:absolute;inset:0;pointer-events:none;z-index:0;
       background-repeat:no-repeat;background-size:cover;background-position:center 58%;
-      opacity:.42;filter:saturate(.85) brightness(.55) blur(1.5px);
+      opacity:.95;filter:saturate(1.08) brightness(.86) blur(0px);
       transition:background-image .2s linear;
     }
-    .zoneLabel{position:absolute;left:10px;font-size:11px;padding:3px 6px;border-radius:8px;border:1px solid #4e5f9f;z-index:5;background:#131a34c9}
+    .zoneLabel{position:absolute;left:10px;font-size:11px;padding:3px 6px;border-radius:8px;border:1px solid #6b4410;z-index:5;background:#241608d9}
+    /* Deploy count, centred over the field. */
+    #dragCapOverlay{
+      position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);z-index:6;
+      font-family:var(--display);font-size:46px;font-weight:800;line-height:1;
+      color:#fff;opacity:.42;pointer-events:none;white-space:nowrap;
+      text-shadow:0 3px 0 #00000055,0 6px 16px #0008;
+      font-variant-numeric:tabular-nums;
+      transition:opacity .15s;
+    }
+    #dragCapOverlay::before{
+      content:'';display:inline-block;width:.62em;height:.72em;margin-right:.16em;
+      vertical-align:-.06em;background:currentColor;
+      -webkit-mask:radial-gradient(circle at 50% 26%,#000 21%,transparent 22%) no-repeat,
+        radial-gradient(80% 60% at 50% 118%,#000 44%,transparent 45%) no-repeat;
+              mask:radial-gradient(circle at 50% 26%,#000 21%,transparent 22%) no-repeat,
+        radial-gradient(80% 60% at 50% 118%,#000 44%,transparent 45%) no-repeat;
+    }
     .zoneLabel.enemy{top:8px;border-color:#ad6380;background:#3a1f2ec9}
     .zoneLabel.player{bottom:8px;border-color:#5f7ce0;background:#1a2346c9}
     #board{display:flex;flex-direction:column;align-items:center;position:relative;z-index:3}
     .boardRow{display:flex;height:var(--hexh)}
     .boardRow.odd{margin-left:calc(var(--hexw)/2)}
+    /* The cell outline lives on ::before so the hex itself never clips the
+       Axie standing on it. No fills, no frames — just the field. */
     .hex{
       width:var(--hexw);height:var(--hexh);position:relative;margin-right:0;cursor:pointer;
-      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-      background:linear-gradient(180deg,#1f242b,#171d24);
-      border:3px solid #0f1218;
-      transition:.15s transform,.15s box-shadow,.15s filter;
+      background:none;border:0;transition:.15s transform,.15s filter;
     }
-    .hex:hover{transform:translateY(-1px);box-shadow:0 0 0 1px #5f71cf,inset 0 0 0 1px #5f71cf}
-    .hex.playerZone{background:linear-gradient(180deg,#263626,#1c2a1f)}
-    .hex.enemyZone{background:linear-gradient(180deg,#3e2f22,#2b2118)}
+    .hex::before{
+      content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+      background:#ffe9b510;
+      box-shadow:inset 0 0 0 2px #ffe9b52e;
+      transition:.15s background,.15s box-shadow;
+    }
+    .hex:hover::before{background:#ffe9b524;box-shadow:inset 0 0 0 2px #ffe9b566}
+    .hex.playerZone::before{background:#8fd6ff12;box-shadow:inset 0 0 0 2px #8fd6ff33}
+    .hex.enemyZone::before{background:#ff9aa812;box-shadow:inset 0 0 0 2px #ff9aa833}
     .hex .coord{display:none}
-    .hex.selected{box-shadow:0 0 0 2px #7aa2ff,inset 0 0 0 1px #7aa2ff}
-    .hex.inRange{filter:grayscale(1) brightness(.9);box-shadow:inset 0 0 0 2px #8e95afaa}
-    .hex.dragRange{box-shadow:inset 0 0 0 2px #7ec7ffcc;background:linear-gradient(180deg,#29454c,#1c2d31)}
-    .hex.dragOrigin{box-shadow:inset 0 0 0 3px #ffd87a}
+    .hex.selected::before{background:#ffe9b530;box-shadow:inset 0 0 0 3px var(--gold)}
+    .hex.inRange::before{background:#00000038;box-shadow:inset 0 0 0 2px #ffffff26}
+    .hex.dragRange::before{background:#7ec7ff26;box-shadow:inset 0 0 0 3px #7ec7ffcc}
+    .hex.dragOrigin::before{box-shadow:inset 0 0 0 3px var(--gold)}
     .spawnGhost{
-      position:absolute;left:7px;top:7px;width:80px;height:66px;border-radius:12px;overflow:hidden;
-      border:2px dashed #ff9bb3;background:#7e334a4d;color:#ffd6e1;font-size:12px;display:flex;align-items:center;justify-content:center
+      position:absolute;inset:0;z-index:2;pointer-events:none;
+      background:none;border:0;opacity:.62;
     }
-    .spawnGhost{
-      left:4px;top:4px;width:calc(var(--hexw) - 8px);height:calc(var(--hexh) - 8px);border-radius:0;
-      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+    .spawnGhost img:not(.ghostIntent){
+      position:absolute;left:50%;bottom:8%;width:126%;height:126%;transform:translateX(-50%);
+      object-fit:contain;object-position:center bottom;
+      filter:grayscale(.35) drop-shadow(0 3px 4px #0008);
     }
-    .spawnGhost img{width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:saturate(1.05)}
+    /* An Axie stands on the board, it is not mounted in a tile: no border,
+       no fill, just the body, its ground shadow and a floating HP capsule. */
     .slotUnit{
-      position:absolute;left:7px;top:7px;width:80px;height:66px;border-radius:12px;overflow:hidden;
-      background:linear-gradient(180deg,#1f2b54,#151d37);
-      border:3px solid #5f86ff;display:flex;flex-direction:column;justify-content:flex-end;
-      box-shadow:0 6px 14px #0007;touch-action:none;
+      position:absolute;inset:0;background:none;border:0;box-shadow:none;
+      overflow:visible;touch-action:none;z-index:4;
     }
-    .hex .slotUnit{
-      left:4px;top:4px;width:calc(var(--hexw) - 8px);height:calc(var(--hexh) - 8px);border-radius:0;
-      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+    .hex .slotUnit{inset:0;clip-path:none}
+    .slotUnit::before{
+      content:'';position:absolute;left:50%;bottom:9%;width:58%;height:15%;
+      transform:translateX(-50%);border-radius:50%;pointer-events:none;z-index:0;
+      background:radial-gradient(50% 50% at 50% 50%,#00000078,#00000000 72%);
     }
-    .hex .slotUnit::after{
-      content:'';position:absolute;inset:0;pointer-events:none;
-      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-      box-shadow:inset 0 0 0 3px #7aa7ffcc;
-    }
-    .slotUnit.enemy{border-color:#ff6f95;filter:brightness(.9) saturate(.85)}
-    /* One rule for all nine Axie classes; the tint comes from the official
-       class icon and is set inline as --cls. */
-    .slotUnit[class*="class-"]{background:linear-gradient(180deg,#2a3242,#1b2130)}
+    .slotUnit.enemy{filter:saturate(.94)}
+    /* class tints still drive the HP capsule and the awakened glow */
     .slotUnit.class-beast{--cls:#ffa400}
     .slotUnit.class-bug{--cls:#fe4434}
     .slotUnit.class-bird{--cls:#e75393}
@@ -139,8 +186,26 @@
     .slotUnit.class-mech{--cls:#cac2db}
     .slotUnit.class-dawn{--cls:#8facff}
     .slotUnit.class-dusk{--cls:#0e759e}
-    .slotUnit[class*="class-"]{background:linear-gradient(180deg,color-mix(in srgb,var(--cls,#5b6478) 34%,#141a26),#141a26)}
-    .slotUnit.awakened{box-shadow:0 0 0 1px #ffd86a88,0 0 12px #ffd86a55}
+    .slotUnit.awakened .unitBg,.slotUnit.awakened .modelFallback{
+      filter:drop-shadow(0 0 7px #ffd86aaa) drop-shadow(0 3px 5px #000a);
+    }
+    /* floating HP capsule with the kit's gold hex star as the rank pip */
+    .uHp{
+      position:absolute;left:14%;right:14%;top:1px;height:9px;z-index:6;
+      border-radius:99px;background:#1c140988;box-shadow:0 0 0 1.5px #00000073;
+    }
+    .uHp>span{
+      display:block;height:100%;border-radius:99px;
+      background:linear-gradient(180deg,#b9e2ff,var(--ally));
+    }
+    .slotUnit.enemy .uHp>span,.actor.enemy .uHp>span{background:linear-gradient(180deg,#ffc2c9,var(--foe))}
+    .uStar{
+      position:absolute;left:-10px;top:50%;transform:translateY(-50%);
+      width:19px;height:19px;font-style:normal;font-size:10px;font-weight:800;
+      color:#4a2b06;text-shadow:0 1px 0 #ffe6ab;
+      display:flex;align-items:center;justify-content:center;
+      background:url('assets/origins/ui/star.png') center/contain no-repeat;
+    }
     .uTop{display:flex;justify-content:space-between;font-size:11px}
     .unitShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 35%,#000b 70%,#000e)}
     .starOverlay{position:absolute;left:50%;top:0;transform:translateX(-50%);font-size:11px;color:#ffd76a;text-shadow:0 1px 2px #000;z-index:6;background:#0008;padding:0 4px;border-radius:0 0 6px 6px}
@@ -148,11 +213,11 @@
     .uName{font-weight:700;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .uBody{display:flex;justify-content:space-between;align-items:center}
     .unitArt{width:26px;height:26px;border-radius:50%;object-fit:cover;border:1px solid #6a7bb3;box-shadow:0 0 10px #0008;background:#0d1220}
-    .unitBg{position:absolute;left:-12%;right:-12%;bottom:0;top:-42%;width:124%;height:142%;object-fit:contain;object-position:center bottom;transform:scale(1.05);filter:drop-shadow(0 2px 5px #000a)}
-    .unitModel{position:absolute;left:-12%;right:-12%;bottom:0;top:-42%;width:124%;height:142%;overflow:visible;transform:scale(1.05);transform-origin:center 88%;z-index:1}
+    .unitBg{position:absolute;left:50%;margin-left:-71%;bottom:7%;width:142%;height:142%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 3px 5px #000a);z-index:1}
+    .unitModel{position:absolute;left:50%;margin-left:-71%;bottom:7%;width:142%;height:142%;overflow:visible;transform-origin:center 92%;z-index:1}
     .unitModel .modelFallback{width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:saturate(1.05)}
     .unitModel.model-board .modelFallback{object-position:center bottom;filter:saturate(1.12) contrast(1.04) drop-shadow(0 2px 6px #0008)}
-    .unitModel.model-combat{left:-14%;right:-14%;top:-54%;bottom:12px;height:auto;width:128%;transform:none;transform-origin:center bottom;z-index:1}
+    .unitModel.model-combat{left:50%;margin-left:-75%;width:150%;height:150%;bottom:5%;transform-origin:center bottom;z-index:1}
     .unitModel.model-combat .modelFallback{object-position:center bottom;filter:saturate(1.1) contrast(1.04)}
     .unitModel[data-anim="idle"]{animation:modelIdle 1.2s ease-in-out infinite}
     .unitModel[data-anim="move"]{animation:modelMove .35s linear infinite}
@@ -161,12 +226,12 @@
     .unitModel[data-anim="hit"]{animation:modelHit .22s ease}
     .unitModel[data-anim="death"]{animation:modelDeath .5s ease forwards}
     .unitModel[data-anim="crit"]{animation:modelCrit .28s ease}
-    @keyframes modelIdle{0%,100%{transform:translateY(0) scale(1.18)}50%{transform:translateY(-1px) scale(1.19)}}
-    @keyframes modelMove{0%{transform:translateX(-2px) scale(1.17)}50%{transform:translateX(2px) scale(1.19)}100%{transform:translateX(-2px) scale(1.17)}}
-    @keyframes modelAttack{0%{transform:translateX(0) scale(1.18)}50%{transform:translateX(5px) scale(1.22)}100%{transform:translateX(0) scale(1.18)}}
+    @keyframes modelIdle{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-1.5px) scale(1.012)}}
+    @keyframes modelMove{0%{transform:translateX(-2px) scale(1)}50%{transform:translateX(2px) scale(1.015)}100%{transform:translateX(-2px) scale(1)}}
+    @keyframes modelAttack{0%{transform:translateX(0) scale(1)}50%{transform:translateX(6px) scale(1.05)}100%{transform:translateX(0) scale(1)}}
     @keyframes modelCast{0%{filter:brightness(1)}50%{filter:brightness(1.4)}100%{filter:brightness(1)}}
     @keyframes modelHit{0%{filter:brightness(1)}50%{filter:brightness(.65)}100%{filter:brightness(1)}}
-    @keyframes modelDeath{to{opacity:0;transform:translateY(10px) scale(.92)}}
+    @keyframes modelDeath{to{opacity:0;transform:translateY(10px) scale(.9)}}
     @keyframes modelCrit{0%{filter:saturate(1)}50%{filter:saturate(1.8)}100%{filter:saturate(1)}}
     .unitArt.lg{width:24px;height:24px}
     .unitArt.actor{width:42px;height:42px;border-radius:10px;position:relative;z-index:2}
@@ -186,58 +251,87 @@
       font-size:18px;font-weight:800;backdrop-filter:blur(2px)
     }
     #shopSellOverlay.show{display:flex}
-    .card{background:linear-gradient(180deg,#1a2142,#131834);border:1px solid #344172;border-radius:12px;padding:0;overflow:hidden}
+    .card{
+      background:linear-gradient(180deg,#4a3220,#2a1a0d);
+      border:3px solid #7c4f2c;border-radius:14px;padding:0;overflow:hidden;
+      box-shadow:0 5px 0 #2a1a0d,0 9px 18px #0007;
+    }
     .cardInner{padding:7px 8px}
-    .cardBanner{height:108px;background:#10152d center 62%/cover no-repeat;border-bottom:1px solid #2f3c70;position:relative;overflow:hidden}
+    .cardBanner{height:120px;background:#1c1409 center 62%/cover no-repeat;border-bottom:2px solid #7c4f2c;position:relative;overflow:hidden}
     .cardBanner::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0b0f1e33,#0b0f1eb0);z-index:0}
-    .cardBanner img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 3px 6px #000a)}
+    .cardBanner img{position:relative;z-index:1;width:112%;height:112%;left:-6%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 4px 6px #000a)}
     .cardBanner .unitModel{inset:0;width:100%;height:100%;transform:none}
     .cardBanner .unitModel .modelFallback{object-position:center bottom}
+    /* Cost reads as a struck gold coin, top-left, like the reference cards. */
     .shopCostOverlay{
       position:absolute;left:6px;top:6px;z-index:4;
-      font-size:18px;font-weight:900;line-height:1;background:#0f172bd9;border:1px solid #5d77bf;
-      border-radius:10px;padding:2px 7px;color:#fff;text-shadow:0 1px 2px #000
+      width:30px;height:30px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:15px;font-weight:800;line-height:1;
+      background:radial-gradient(120% 120% at 50% 25%,#ffe6a4,#e0a531 60%,#a9701c);
+      border:2px solid #6b4410;color:#4a2b06;text-shadow:0 1px 0 #ffeec2;
+      box-shadow:0 2px 0 #6b4410,0 4px 8px #0007;
+      font-variant-numeric:tabular-nums;
     }
+    .shopCostOverlay .coinSuffix{display:none}
     .shopNameRow{
-      display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700
+      display:flex;align-items:center;justify-content:space-between;gap:6px;
+      white-space:nowrap;overflow:hidden;font-weight:700;font-size:14px;color:var(--ink)
     }
+    .shopNameRow .classChip img,.shopNameRow .traitIcon{width:20px;height:20px}
     .shopNameRow .name{overflow:hidden;text-overflow:ellipsis}
     .shopBuyBtn{width:100%;border-radius:0 0 12px 12px;padding:9px 10px;font-size:13px}
-    .badge{font-size:10px;padding:2px 6px;border-radius:999px;background:#0d1224;border:1px solid #314279}
+    .badge{font-size:10px;padding:2px 6px;border-radius:999px;background:#241608;border:1px solid #6b4410;color:var(--muted)}
     .btn{
-      background:linear-gradient(180deg,#2f60ff,#274ee0);color:#fff;border:0;border-radius:10px;padding:8px 10px;
-      font-weight:700;cursor:pointer;font-size:12px
+      background:linear-gradient(180deg,#f0b64c,#c8862a);color:#3b2205;border:2px solid #6b4410;
+      border-radius:11px;padding:8px 10px;font-weight:800;cursor:pointer;font-size:12px;
+      box-shadow:0 3px 0 #6b4410,0 5px 10px #0006;text-shadow:0 1px 0 #ffe3a6;
     }
+    .btn:active{transform:translateY(2px);box-shadow:0 1px 0 #6b4410,0 3px 6px #0006}
     .btn:disabled{opacity:.45;cursor:not-allowed}
-    .btn.alt{background:linear-gradient(180deg,#4f3a8f,#3a2a71)}
-    .btn.warn{background:linear-gradient(180deg,#90364e,#6f263a)}
+    .btn.alt{background:linear-gradient(180deg,#8a6a48,#5d4127);color:#f7ecd8;text-shadow:0 1px 2px #000}
+    .btn.warn{background:linear-gradient(180deg,#d4657a,#9c3a4e);color:#fff;text-shadow:0 1px 2px #000}
     #bench{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
     .benchSlot{
-      height:88px;border:1px dashed #3a457a;border-radius:12px;position:relative;background:#121833;cursor:pointer
+      height:92px;border:2px solid #6b4410;border-radius:14px;position:relative;cursor:pointer;
+      background:linear-gradient(180deg,#2a1a0d,#3a2515);box-shadow:inset 0 3px 10px #0008;
     }
-    .benchSlot.selected{box-shadow:0 0 0 2px #7aa2ff inset}
-    .benchSlot .slotUnit{left:0;top:0;width:100%;height:100%;border-width:2px}
-    .benchSlot .unitBg{left:-6%;right:-6%;width:112%;top:-30%;height:130%;transform:scale(1.02);object-position:center bottom}
+    .benchSlot.selected{border-color:var(--gold);box-shadow:inset 0 3px 10px #0008,0 0 10px #ffcf5c55}
+    .benchSlot .slotUnit{inset:0}
+    .benchSlot .slotUnit::before{bottom:6%;width:52%;height:12%}
+    .benchSlot .unitBg,.benchSlot .unitModel{width:96%;height:96%;margin-left:-48%;bottom:6%}
+    .benchSlot .uHp{display:none}
     .benchSlot .unitNameOverlay{font-size:11px;bottom:6px}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-    #synergy,#relicList,#bagList,#log{font-size:12px;color:#d6ddf5;line-height:1.35}
-    #synergyActive{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+    #synergy,#relicList,#bagList,#log{font-size:12px;color:var(--muted);line-height:1.35}
+    #synergyActive{display:flex;flex-wrap:wrap;gap:12px 10px;margin-bottom:12px}
+    /* Circular medallions with a fraction, like the Merge Tactics trait rail. */
     .synBadge{
-      padding:5px 7px;border-radius:10px;background:linear-gradient(180deg,#212b53,#171f3f);
-      border:1px solid #4d63b0;font-size:12px;font-weight:700;cursor:help;color:#fff;
-      display:inline-flex;align-items:center;gap:4px;line-height:1
+      width:36px;height:36px;padding:0;border-radius:50%;cursor:help;color:#fff;
+      background:radial-gradient(120% 120% at 50% 20%,#2f2214,#17100833);
+      border:2px solid #00000055;position:relative;
+      display:inline-flex;align-items:center;justify-content:center;line-height:1;
+      filter:grayscale(.65);opacity:.72;transition:.15s filter,.15s opacity,.15s box-shadow;
     }
-    .synBadge img{width:18px;height:18px;display:block}
-    .synBadge .traitIcon{width:18px;height:18px;display:block}
+    .synBadge img,.synBadge .traitIcon{width:22px;height:22px;display:block}
     .traitIcon{vertical-align:-3px}
-    .synBadge i{font-style:normal;font-size:10px;opacity:.85;min-width:8px;text-align:center}
-    .synBadge.clsBadge{border-color:var(--syn,#4d63b0)}
-    .synBadge.lv1{box-shadow:0 0 0 1px #7f8fd6aa}
-    .synBadge.lv2{box-shadow:0 0 0 1px #ffd86a,0 0 10px #ffd86a55}
-    .synBadge.lv2 i{opacity:1;color:#ffe8a8}
+    .synBadge i{
+      position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+      font-style:normal;font-size:9px;font-weight:800;letter-spacing:.2px;
+      padding:1px 5px;border-radius:99px;background:#160f07e6;
+      box-shadow:0 0 0 1.5px #00000066;white-space:nowrap;
+      font-variant-numeric:tabular-nums;
+    }
+    .synBadge.lv1{filter:none;opacity:1;border-color:var(--syn,#e8b45a);box-shadow:0 0 8px #0006}
+    .synBadge.lv2{
+      filter:none;opacity:1;border-color:var(--gold);
+      box-shadow:0 0 0 2px #ffcf5c55,0 0 12px #ffcf5c66;
+    }
+    .synBadge.lv1 i{color:var(--syn,#ffe8a8)}
+    .synBadge.lv2 i{color:#ffe8a8;background:#3a2606f2}
     .synTitleIcon{width:22px;height:22px;vertical-align:-5px}
     .synTiers{grid-column:1/-1;display:flex;flex-direction:column;gap:4px;margin-bottom:6px}
-    .synTier{font-size:11px;color:#9fb0dd;padding:4px 6px;border-radius:6px;border:1px solid #2f3c70;background:#131a34}
+    .synTier{font-size:11px;color:var(--muted);padding:4px 6px;border-radius:6px;border:1px solid #6b4410;background:#241608}
     .synTier.on{color:#ffe8a8;border-color:#ffd86a66;background:#241f16}
     .synTier b{display:inline-block;min-width:16px;color:#cfe0ff}
     /* class + part chips */
@@ -245,20 +339,20 @@
     .classChip img{width:16px;height:16px;display:block}
     .partRow{display:flex;align-items:center;gap:3px;margin:3px 0}
     .partRow img{width:17px;height:17px;opacity:.92}
-    .partRow .purity{font-size:10px;color:#9fb0dd;margin-left:4px}
+    .partRow .purity{font-size:10px;color:var(--muted);margin-left:4px}
     /* the four real Origins ability cards on a unit */
     .kitList{display:flex;flex-direction:column;gap:3px;margin-top:4px}
-    .kitCard{display:flex;gap:6px;align-items:flex-start;padding:3px 5px;border-radius:6px;background:#131a34;border:1px solid #28325c}
+    .kitCard{display:flex;gap:6px;align-items:flex-start;padding:3px 5px;border-radius:6px;background:#241608;border:1px solid #5d4127}
     .kitCard.skill{border-color:#ffd86a77;background:#1d1e2c}
     .kitCard img{width:16px;height:16px;margin-top:1px;flex:0 0 16px}
-    .kitCard b{font-size:11px;color:#dce6ff}
+    .kitCard b{font-size:11px;color:var(--ink)}
     .kitCard i{font-size:9px;color:#ffd86a;font-style:normal}
-    .kitDesc{font-size:10px;line-height:1.25;color:#93a3ca}
+    .kitDesc{font-size:10px;line-height:1.25;color:#bda98a}
     /* codex */
     .codexGrid{display:flex;flex-direction:column;gap:14px;max-height:70vh;overflow:auto}
-    .codexTier h4{margin:0 0 6px 0;font-size:12px;color:#9fb0dd;text-transform:uppercase;letter-spacing:1px}
+    .codexTier h4{margin:0 0 6px 0;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
     .codexRow{display:grid;grid-template-columns:74px 1fr 62px;gap:10px;align-items:start;
-      padding:8px;border-radius:10px;background:#131a34;border:1px solid #2b3560;
+      padding:8px;border-radius:10px;background:#241608;border:1px solid #5d4127;
       border-left:3px solid var(--cls,#4d63b0);margin-bottom:6px}
     .codexRow img.codexBody{width:74px;height:74px;object-fit:contain}
     .codexRow img.codexAwk{width:62px;height:62px;object-fit:contain;opacity:.9;
@@ -274,7 +368,7 @@
     .intentIcon{object-fit:contain;vertical-align:-4px;filter:drop-shadow(0 1px 2px #000a)}
     .ghostIntent{position:absolute!important;right:-2px;top:-3px;width:14px!important;height:14px!important;
       object-fit:contain;z-index:6;filter:drop-shadow(0 1px 2px #000c)}
-    #log{max-height:120px;overflow:auto;background:#0f1430;border:1px solid #2e3969;border-radius:10px;padding:8px}
+    #log{max-height:120px;overflow:auto;background:#1c1409;border:1px solid #6b4410;border-radius:10px;padding:8px}
     #actorLayer{position:absolute;inset:0;pointer-events:auto;z-index:12}
     #fxLayer{position:absolute;inset:0;pointer-events:none;z-index:14}
     #debugHud{
@@ -283,12 +377,15 @@
       font-size:11px;line-height:1.2;color:#d6ddf5;min-width:120px
     }
     .actor{
-      position:absolute;width:80px;height:66px;border-radius:12px;border:5px solid #61a3ff;
-      background:linear-gradient(180deg,#24366e,#18254a);transition:transform .18s linear;
-      box-shadow:0 8px 18px #0008;overflow:hidden;
-      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);border-radius:0;
+      position:absolute;width:80px;height:66px;transition:transform .18s linear;
+      background:none;border:0;box-shadow:none;overflow:visible;
     }
-    .actor.enemy{border-color:#ff648f;filter:brightness(.9) saturate(.88)}
+    .actor::before{
+      content:'';position:absolute;left:50%;bottom:6%;width:58%;height:16%;
+      transform:translateX(-50%);border-radius:50%;pointer-events:none;z-index:0;
+      background:radial-gradient(50% 50% at 50% 50%,#0000007a,#00000000 72%);
+    }
+    .actor.enemy{filter:saturate(.94)}
     .actor.class-beast{--cls:#ffa400}
     .actor.class-bug{--cls:#fe4434}
     .actor.class-bird{--cls:#e75393}
@@ -298,21 +395,27 @@
     .actor.class-mech{--cls:#cac2db}
     .actor.class-dawn{--cls:#8facff}
     .actor.class-dusk{--cls:#0e759e}
-    .actor[class*="class-"]{background:linear-gradient(180deg,color-mix(in srgb,var(--cls,#5b6478) 42%,#141a26),#141a26)}
-    .actor.awakened{box-shadow:0 0 0 1px #ffd86a99,0 0 14px #ffd86a55}
-    .actor.summon{width:34px;height:30px;border-width:2px;opacity:.96}
+    .actor.awakened .actorArt{filter:drop-shadow(0 0 8px #ffd86aaa) drop-shadow(0 3px 5px #000b)}
+    .actor.summon{width:52px;height:44px;opacity:.97}
     /* Origins status icons stacked under the stars. */
-    .actor .actorStatus{position:absolute;left:2px;right:2px;top:14px;display:flex;gap:1px;justify-content:center;z-index:4;pointer-events:none}
-    .actor .actorStatus img{width:11px;height:11px;filter:drop-shadow(0 1px 2px #000c)}
+    .actor .actorStatus{position:absolute;left:0;right:0;top:15px;display:flex;gap:1px;justify-content:center;z-index:7;pointer-events:none}
+    .actor .actorStatus img{width:12px;height:12px;filter:drop-shadow(0 1px 2px #000c)}
     .statusPop{position:absolute;left:50%;top:-6px;width:22px;height:22px;transform:translateX(-50%);z-index:9;pointer-events:none;animation:statusPop .9s ease forwards}
     @keyframes statusPop{0%{opacity:0;transform:translate(-50%,4px) scale(.6)}25%{opacity:1;transform:translate(-50%,-8px) scale(1.05)}100%{opacity:0;transform:translate(-50%,-24px) scale(.95)}}
-    .actor .actorArt{position:absolute;left:-14%;right:-14%;top:-54%;bottom:12px;width:128%;height:auto;object-fit:contain;object-position:center bottom;transform:scale(1.08);z-index:1;filter:drop-shadow(0 3px 5px #000b)}
-    .actor .actorShade{position:absolute;inset:0;background:linear-gradient(180deg,#0000 66%,#0004 86%,#0008);z-index:2}
-    .actor .actorStars{position:absolute;left:50%;top:2px;transform:translateX(-50%);font-size:12px;color:#ffd86a;text-shadow:0 1px 2px #000;z-index:4}
-    .actor .actorHp{position:absolute;left:6px;right:6px;bottom:12px;height:6px;border-radius:99px;background:#000a;border:1px solid #35507a;overflow:hidden;z-index:5}
-    .actor .actorHpFill{height:100%;background:linear-gradient(90deg,#53ef95,#90ffc1)}
-    .actor .actorMana{position:absolute;left:6px;right:6px;bottom:4px;height:5px;border-radius:99px;background:#00131f;border:1px solid #2a4a68;overflow:hidden;z-index:5}
-    .actor .actorManaFill{height:100%;background:linear-gradient(90deg,#58bfff,#9cd9ff)}
+    .actor .actorArt{position:absolute;left:50%;margin-left:-75%;bottom:5%;width:150%;height:150%;object-fit:contain;object-position:center bottom;z-index:1;filter:drop-shadow(0 3px 5px #000b)}
+    .actor .actorShade{display:none}
+    .actor .actorStars{
+      position:absolute;left:calc(14% - 10px);top:-2px;width:19px;height:19px;z-index:7;
+      font-size:10px;font-weight:800;color:#4a2b06;text-shadow:0 1px 0 #ffe6ab;
+      display:flex;align-items:center;justify-content:center;
+      background:url('assets/origins/ui/star.png') center/contain no-repeat;
+    }
+    .actor.summon .actorStars{display:none}
+    .actor .actorHp{position:absolute;left:14%;right:14%;top:0;height:9px;border-radius:99px;background:#1c140988;box-shadow:0 0 0 1.5px #00000073;overflow:hidden;z-index:5}
+    .actor .actorHpFill{height:100%;background:linear-gradient(180deg,#b9e2ff,var(--ally))}
+    .actor.enemy .actorHpFill{background:linear-gradient(180deg,#ffc2c9,var(--foe))}
+    .actor .actorMana{position:absolute;left:20%;right:20%;top:10px;height:4px;border-radius:99px;background:#0b1a2699;overflow:hidden;z-index:5}
+    .actor .actorManaFill{height:100%;background:linear-gradient(90deg,#7fd6ff,#d9f2ff)}
     .battleCtas{position:absolute;right:10px;bottom:10px;z-index:25;display:flex;gap:8px}
     #startBtn{
       padding:14px 20px;font-size:17px;min-width:220px;
@@ -355,16 +458,19 @@
     .relicCard{background:linear-gradient(180deg,#1b2448,#131a35);border:1px solid #4558a5;border-radius:12px;padding:10px}
     .small{font-size:11px;color:#aeb7da}
     .shopTheme{background:linear-gradient(180deg,#3c341d,#262112);border-color:#6e5e31;box-shadow:inset 0 0 0 1px #d7b75e33}
+    /* Energy is the Origins crystal jar, not a generic coin. */
     .energyCoin{
-      width:74px;height:74px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;
-      background:radial-gradient(circle at 30% 28%,#fff0a8,#f7c84a 45%,#b97824 78%);border:2px solid #f2d06a;box-shadow:0 0 0 2px #7a5b22 inset;
-      font-size:42px;line-height:1
+      width:72px;height:78px;position:relative;display:flex;align-items:flex-end;justify-content:center;
+      background:url('assets/origins/ui/energy-jar.png') center/contain no-repeat;
+      font-size:0;filter:drop-shadow(0 3px 6px #0008);
     }
     .energyCoin .num{
-      position:absolute;right:-4px;bottom:-3px;background:#0d1730;border:1px solid #4862b2;border-radius:999px;padding:2px 7px;
-      font-size:18px;font-weight:900;color:#fff
+      position:absolute;left:50%;bottom:6px;transform:translateX(-50%);
+      background:#160f07e8;border:2px solid var(--gold-dk);border-radius:999px;padding:1px 9px;
+      font-size:19px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;
+      text-shadow:0 1px 2px #000;
     }
-    #shopFightBtn{width:100%;padding:10px 8px;font-size:15px;font-weight:900;background:linear-gradient(180deg,#5cff8f,#20b95a);color:#082a16;border:1px solid #a3ffbf}
+    #shopFightBtn{width:100%;padding:11px 8px;font-size:16px;font-weight:800;background:linear-gradient(180deg,#7df3a2,#25ad5c);color:#06301a;border:2px solid #14733d;box-shadow:0 3px 0 #14733d,0 5px 12px #0006;text-shadow:0 1px 0 #bdffd4}
     #toggleAdvancedBtn{width:100%;padding:8px 8px;font-size:18px;line-height:1.1}
     #toggleAdvancedBtn.open{background:linear-gradient(180deg,#4468e1,#3450af)}
     .slotUnit img,.unitBg,.cardBanner img,.actor img{-webkit-user-drag:none;user-drag:none;user-select:none;-webkit-touch-callout:none}
@@ -380,7 +486,7 @@
       .titleWord{font-size:12px}
       .stats{gap:6px}
       .hpWidget{min-width:108px;padding:3px 5px}
-      .avatar{width:24px;height:24px}
+      .avatar{width:30px;height:30px}
       #stageTrack{width:100%;justify-content:center;margin-top:2px}
       .stageNode{width:17px;height:17px}
       .stageNode i{font-size:7px}
@@ -389,10 +495,11 @@
       #boardWrap{padding:5px}
       .boardRow{height:var(--hexh)}
       .zoneLabel{font-size:9px;padding:2px 4px}
-      #boardSynergy{grid-template-columns:repeat(2,auto);gap:3px}
-      #boardSynergy .synBadge{padding:3px 4px;font-size:9px}
-      #boardSynergy .synBadge img{width:13px;height:13px}
-      #dragCapOverlay{font-size:26px !important}
+      #boardSynergy{gap:6px;left:3px}
+      #boardSynergy .synBadge{width:26px;height:26px;border-width:1.5px}
+      #boardSynergy .synBadge img,#boardSynergy .synBadge .traitIcon{width:16px;height:16px}
+      #boardSynergy .synBadge i{font-size:8px;padding:0 3px;bottom:-6px}
+      #dragCapOverlay{font-size:30px}
       #benchSection,#shopSection{margin:4px;padding:6px}
       #bench{gap:4px}
       .benchSlot{height:44px}
@@ -402,7 +509,8 @@
       .cardInner{padding:4px 6px}
       .shopNameRow{font-size:11px}
       #shopSide{min-width:72px;gap:4px}
-      .energyCoin{width:36px;height:36px;font-size:19px}
+      .energyCoin{width:44px;height:48px}
+      .energyCoin .num{font-size:14px;padding:0 6px;bottom:3px}
       .energyCoin .num{font-size:12px;padding:1px 5px;right:-3px;bottom:-2px}
       #shopFightBtn{padding:6px 4px;font-size:11px}
       #toggleAdvancedBtn{padding:6px 4px;font-size:14px}
@@ -421,14 +529,17 @@
       .overlay .modal{width:min(96vw,420px);max-height:78vh;overflow:auto}
       #boardHpHud{right:6px;top:6px;max-width:178px}
       #boardHpHud .hpWidget{min-width:140px;padding:4px 5px}
-      #boardHpHud .avatar{width:18px;height:18px}
+      #boardHpHud .avatar{width:24px;height:24px}
+      #boardHpHud .hpWidget::before{width:30px;height:30px;left:4px}
       #boardHpHud .hpTop{font-size:9px}
       #dailyOnBoard,#boardRelics{max-width:46% !important}
     }
-    #boardSynergy{position:absolute;left:8px;bottom:8px;z-index:30;display:grid;
-      grid-template-columns:repeat(2,auto);gap:4px;max-width:40%;align-content:end;justify-items:start}
-    #boardSynergy .synBadge{padding:4px 6px;font-size:11px}
-    #boardSynergy .synBadge img{width:16px;height:16px}
+    /* The rail sits down the left edge of the arena, as in the reference. */
+    #boardSynergy{position:absolute;left:8px;top:50%;transform:translateY(-50%);z-index:30;
+      display:flex;flex-direction:column;gap:10px;align-items:center;
+      max-height:94%;flex-wrap:wrap;max-width:88px}
+    #boardSynergy .synBadge{width:34px;height:34px}
+    #boardSynergy .synBadge img,#boardSynergy .synBadge .traitIcon{width:21px;height:21px}
     #dragGhost{position:absolute;width:80px;height:66px;border-radius:12px;pointer-events:none;z-index:40;opacity:.9;display:none;box-shadow:0 0 0 2px #fff6,0 8px 20px #000a}
     #selectedOverlay{
       position:fixed;display:none;z-index:60;background:transparent;pointer-events:none
@@ -490,7 +601,7 @@
     #synergyOverlay .modal{
       width:360px;max-width:360px;pointer-events:auto;background:linear-gradient(180deg,#1f2e32ee,#162124ee);border-color:#5d8a8f
     }
-    .unitMini{display:flex;align-items:center;gap:6px;padding:6px;border:1px solid #3e4c73;border-radius:8px;background:#15213a}
+    .unitMini{display:flex;align-items:center;gap:6px;padding:6px;border:1px solid #6b4410;border-radius:8px;background:#241608}
     .unitMini.off{filter:grayscale(1);opacity:.5}
     .relicCard{position:relative;background:linear-gradient(180deg,#32422a,#1b2619);border:1px solid #7ba46f;border-radius:14px;padding:12px;box-shadow:inset 0 0 0 1px #c9ff9c22}
     .relicCard .augIcon{font-size:24px;height:52px;display:flex;align-items:center;justify-content:center}
@@ -511,7 +622,7 @@
         <div id="boardWrap">
           <div id="boardBg"></div>
           <div id="battleBanner"></div>
-          <div id="dragCapOverlay" class="zoneLabel" style="left:50%;top:22%;transform:translateX(-50%);font-size:42px;padding:10px 16px;background:#2d333655;border-color:#8f969d55;opacity:.25;display:block"></div>
+          <div id="dragCapOverlay" style="display:block"></div>
           <div id="debugHud"></div>
           <div id="dailyOnBoard" class="zoneLabel" style="left:10px;top:8px;max-width:260px;display:flex;gap:6px;align-items:center"></div>
           <div id="boardRelics" class="zoneLabel" style="left:10px;top:58px;max-width:300px;display:flex;gap:6px;align-items:center;flex-wrap:wrap"></div>
@@ -551,7 +662,7 @@
         <div id="shopRow">
           <div id="shop"></div>
           <div id="shopSide">
-            <div class="energyCoin">🪙<span id="energy" class="num">4</span></div>
+            <div class="energyCoin" title="Energy"><span id="energy" class="num">4</span></div>
             <button id="shopFightBtn" class="btn">FIGHT</button>
             <button id="endlessBtn" class="btn alt" style="display:none">∞</button>
             <button id="toggleAdvancedBtn" class="btn alt">⚙️</button>
@@ -1170,7 +1281,7 @@
       a.id='actor-'+u.id;
       a.dataset.anim='idle';
       const artSrc=actorArtSrc(u,'idle'), fallback=actorArtFallback(u);
-      const stars=u.summon?'':'★'.repeat(u.star||1);
+      const stars=u.summon?'':String(u.star||1);
       a.innerHTML=`<img class="actorArt" src="${artSrc}" alt="${u.name}" loading="eager" decoding="sync" onerror="this.onerror=null;this.src='${fallback}'">`
         + `<div class="actorShade"></div><div class="actorStars">${stars}</div>`
         + `<div class="actorStatus"></div>`
@@ -1489,12 +1600,9 @@
     function unitChip(u,enemy=false,mode='board'){
       const d = UMAP[u.defId];
       const hp = u.hp && u.maxHp ? Math.max(0,Math.round(100*u.hp/u.maxHp)) : 100;
-      const stroke = {1:'#4b515a',2:'#b9c2cf',3:'#f2cc57',4:'#ffffff'}[u.star||1]||'#4b515a';
-      const sw = {1:2,2:3,3:4,4:5}[u.star||1]||2;
-      return `<div class="slotUnit class-${classSlug(d.class)} ${enemy?'enemy':''} ${isAwakened(u.star)?'awakened':''}" data-uid="${u.uid||''}" style="--cls:${classTint(d.class)};border-color:${stroke};border-width:${sw}px">
+      return `<div class="slotUnit class-${classSlug(d.class)} ${enemy?'enemy':''} ${isAwakened(u.star)?'awakened':''}" data-uid="${u.uid||''}" style="--cls:${classTint(d.class)}">
           ${renderUnitVisual(d.id,{anim:'idle'},{className:'unitBg',alt:d.name,surface:'board',star:u.star||1})}
-          <div class="unitShade"></div>
-          <div class="hpbar"><div class="hpfill" style="width:${hp}%"></div></div>
+          <div class="uHp"><i class="uStar">${u.star||1}</i><span style="width:${hp}%"></span></div>
       </div>`;
     }
 
@@ -1742,7 +1850,7 @@
           if(opp) c.classList.add('shopPulse','star'+opp.star);
           c.innerHTML=`
             ${opp?`<div class="shopMergeTag">${'★'.repeat(opp.star)}</div>`:''}
-            <div class="cardBanner" style="background-image:url('${classArenaUrl(d.class)}')"><div class="shopCostOverlay">${cost} 🪙</div>${unitImgTag(d.id,'',d.name)}</div>
+            <div class="cardBanner" style="background-image:url('${classArenaUrl(d.class)}')"><div class="shopCostOverlay">${cost}</div>${unitImgTag(d.id,'',d.name)}</div>
             <div class="cardInner">
             <div class="shopNameRow"><span class="name">${d.name}</span><span class="small classChip"><img src="${classIcon(d.class)}" alt="${d.class}" title="${d.class}">${TRAIT_ICONS[d.trait]||''}</span></div>
             </div>`;
@@ -1909,12 +2017,14 @@
     }
     function synergyBadge(key,count,lv,isClass){
       const at = isClass ? CLASS_SYN_AT : TRAIT_SYN_AT;
+      // Show progress toward the next tier, the way Merge Tactics does.
+      const goal = lv >= 2 ? at[1] : at[lv];
       const face = isClass
         ? `<img src="${classIcon(key)}" alt="${key}">`
-        : traitChip(key,18);
-      const style = isClass ? ` style="--syn:${classTint(key)}"` : '';
-      return `<button class="synBadge synBtn lv${lv} ${isClass?'clsBadge':'trBadge'}"${style} data-syn="${key}" `
-        + `title="${key} ${count}/${at[lv===2?1:0]} — ${synergyTip(key)}">${face}<i>${count}</i></button>`;
+        : traitChip(key,20);
+      const tint = isClass ? classTint(key) : '#e8b45a';
+      return `<button class="synBadge synBtn lv${lv} ${isClass?'clsBadge':'trBadge'}" style="--syn:${tint}" data-syn="${key}" `
+        + `title="${key} ${count}/${goal} — ${synergyTip(key)}">${face}<i>${count}/${goal}</i></button>`;
     }
     function renderSynergy(){
       const s=getSynergyState();
