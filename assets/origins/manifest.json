@@ -1,0 +1,2757 @@
+{
+  "arena": {
+    "Aquatic": "arena-aquatic.jpg",
+    "Beast": "arena-beast.jpg",
+    "Bird": "arena-bird.jpg",
+    "Boss": "arena-boss.jpg",
+    "Bug": "arena-bug.jpg",
+    "Dawn": "arena-dawn.jpg",
+    "Dusk": "arena-dusk.jpg",
+    "Mech": "arena-mech.jpg",
+    "Plant": "arena-plant.jpg",
+    "Reptile": "arena-reptile.jpg"
+  },
+  "axies": {
+    "bard": {
+      "attack": "Buddy Chorus",
+      "axieId": 20,
+      "class": "Plant",
+      "kit": [
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Randomly deal 2 hits. Deal 1 bonus hit per Minion.",
+          "name": "Buddy Chorus",
+          "part": "mouth",
+          "partClass": "Dawn",
+          "partId": "dawn-mouth-03"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Summon a True Fan Hermit Crab with HP equal to this Card's Heal Stat.",
+          "name": "Ballad Of The Shore",
+          "part": "horn",
+          "partClass": "Plant",
+          "partId": "plant-horn-05"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Summon a Sparrow. Alterable by Power Charms",
+          "name": "Feather Melody",
+          "part": "back",
+          "partClass": "Bird",
+          "partId": "bird-back-07"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Retain. Heal and Shield this Axie and all Summons",
+          "name": "Tropical Guardian",
+          "part": "tail",
+          "partClass": "Plant",
+          "partId": "plant-tail-07"
+        }
+      ],
+      "name": "Bard",
+      "partClasses": [
+        "Bird",
+        "Dawn",
+        "Plant"
+      ],
+      "parts": {
+        "back": "bird-back-07",
+        "ears": "plant-ears-01",
+        "eyes": "dusk-eyes-05",
+        "horn": "plant-horn-05",
+        "mouth": "dawn-mouth-03",
+        "tail": "plant-tail-07"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "bard-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "bard-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "bard-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "bard-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "bard.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "bard-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "bard-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "bard-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "bard-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "bard-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "bard-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "bard-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 3,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/20",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/20-1",
+      "skill": "Ballad Of The Shore",
+      "skillDesc": "Summon a True Fan Hermit Crab with HP equal to this Card's Heal Stat.",
+      "skillPart": "horn",
+      "tier": 5,
+      "trait": "Mage"
+    },
+    "bing": {
+      "attack": "Puppy",
+      "axieId": 22,
+      "class": "Beast",
+      "kit": [
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Limit 1: +1 Rage to allied Axies. If an ally is in Fury form, draw 4 Cards.",
+          "name": "Puppy",
+          "part": "mouth",
+          "partClass": "Beast",
+          "partId": "beast-mouth-11"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Target the lowest HP enemy. Apply 2 Taunt.",
+          "name": "Toy Ball",
+          "part": "horn",
+          "partClass": "Beast",
+          "partId": "beast-horn-07"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any ally.",
+          "name": "Cone Shell",
+          "part": "back",
+          "partClass": "Plant",
+          "partId": "plant-back-07"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "+1 Rage to allied Axies; +1 Rage per 25% HP this Axie is missing.",
+          "name": "Shiba",
+          "part": "tail",
+          "partClass": "Beast",
+          "partId": "beast-tail-06"
+        }
+      ],
+      "name": "Bing",
+      "partClasses": [
+        "Beast",
+        "Plant"
+      ],
+      "parts": {
+        "back": "plant-back-07",
+        "ears": "beast-ears-10",
+        "eyes": "beast-eyes-08",
+        "horn": "beast-horn-07",
+        "mouth": "beast-mouth-11",
+        "tail": "beast-tail-06"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "bing-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "bing-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "bing-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "bing-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "bing.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "bing-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "bing-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "bing-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "bing-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "bing-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "bing-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "bing-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 5,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/22",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/22-1",
+      "skill": "Toy Ball",
+      "skillDesc": "Target the lowest HP enemy. Apply 2 Taunt.",
+      "skillPart": "horn",
+      "tier": 3,
+      "trait": "Vanguard"
+    },
+    "buba": {
+      "attack": "Foxy",
+      "axieId": 1,
+      "class": "Beast",
+      "kit": [
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "+2 Rage.",
+          "name": "Foxy",
+          "part": "mouth",
+          "partClass": "Beast",
+          "partId": "beast-mouth-01"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "+1 Rage. Cleanse: 4.",
+          "name": "Persimmon",
+          "part": "horn",
+          "partClass": "Plant",
+          "partId": "plant-horn-01"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "+3 ATK per Energy Spent whenever an allied Axie attacks, +6 ATK if this Axie attacks.",
+          "name": "Forest Hero",
+          "part": "back",
+          "partClass": "Plant",
+          "partId": "plant-back-03"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "Retain. Deal 85% Splash DMG in Fury form.",
+          "name": "Buba Brush",
+          "part": "tail",
+          "partClass": "Beast",
+          "partId": "beast-tail-03"
+        }
+      ],
+      "name": "Buba",
+      "partClasses": [
+        "Beast",
+        "Plant"
+      ],
+      "parts": {
+        "back": "plant-back-03",
+        "ears": "beast-ears-03",
+        "eyes": "beast-eyes-03",
+        "horn": "plant-horn-01",
+        "mouth": "beast-mouth-01",
+        "tail": "beast-tail-03"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "buba-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "buba-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "buba-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "buba-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "buba.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "buba-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "buba-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "buba-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "buba-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "buba-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "buba-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "buba-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 4,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/1",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/1-1",
+      "skill": "Buba Brush",
+      "skillDesc": "Retain. Deal 85% Splash DMG in Fury form.",
+      "skillPart": "tail",
+      "tier": 1,
+      "trait": "Vanguard"
+    },
+    "ena": {
+      "attack": "Cub",
+      "axieId": 16,
+      "class": "Plant",
+      "kit": [
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "Retain. Pick up to 2 cards on Hand, Retain them till next turn. Banish.",
+          "name": "Cub",
+          "part": "mouth",
+          "partClass": "Beast",
+          "partId": "beast-mouth-05"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any Ally or Enemy. Reverse Heal on enemies. +2 Sweet Mandarines to Hand.",
+          "name": "Mandarine",
+          "part": "horn",
+          "partClass": "Plant",
+          "partId": "plant-horn-03"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Retain. Pick a non-Power Card in Hand. On your next turn, add 1 copy of it to Hand. Exile.",
+          "name": "Magic Sack",
+          "part": "back",
+          "partClass": "Dawn",
+          "partId": "dawn-back-03"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any ally. Limit 3: +1 Bulwark; draw 1 card & apply 1 Sleep to a random Enemy Axie.",
+          "name": "Aegis Talisman",
+          "part": "tail",
+          "partClass": "Dawn",
+          "partId": "dawn-tail-03"
+        }
+      ],
+      "name": "Ena",
+      "partClasses": [
+        "Beast",
+        "Dawn",
+        "Plant"
+      ],
+      "parts": {
+        "back": "dawn-back-03",
+        "ears": "plant-ears-08",
+        "eyes": "plant-eyes-02",
+        "horn": "plant-horn-03",
+        "mouth": "beast-mouth-05",
+        "tail": "dawn-tail-03"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "ena-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "ena-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "ena-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "ena-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "ena.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "ena-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "ena-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "ena-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "ena-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "ena-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "ena-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "ena-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 3,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/16",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/16-1",
+      "skill": "Aegis Talisman",
+      "skillDesc": "Target any ally. Limit 3: +1 Bulwark; draw 1 card & apply 1 Sleep to a random Enemy Axie.",
+      "skillPart": "tail",
+      "tier": 2,
+      "trait": "Mage"
+    },
+    "hope": {
+      "attack": "Sniffle",
+      "axieId": 19,
+      "class": "Beast",
+      "kit": [
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "+2 Rage. +1 Fragment per 3 Rage on the target",
+          "name": "Sniffle",
+          "part": "mouth",
+          "partClass": "Beast",
+          "partId": "beast-mouth-09"
+        },
+        {
+          "abilityType": "Secret",
+          "attackType": "Ranged",
+          "desc": "Target any ally. +1 Bulwark. Next time the target is attacked, +1 Fragment, and +1 Rage to allied Axies at the start of next turn.",
+          "name": "Lump",
+          "part": "horn",
+          "partClass": "Beast",
+          "partId": "beast-horn-05"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Retain. If retained, +10 Heal Bonus (Cap: +30 Heal), gain +1 Fragment when played (Cap: +3). Banish.",
+          "name": "Rubber Duckling",
+          "part": "back",
+          "partClass": "Bird",
+          "partId": "bird-back-05"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Retain. Randomly deal 2 hits, gain 1 Fragment per unique enemy hit. If retained, +1 hit (Cap: +3 hits), lose 1 Fragment.",
+          "name": "Mainspring",
+          "part": "tail",
+          "partClass": "Mech",
+          "partId": "mech-tail-03"
+        }
+      ],
+      "name": "Hope",
+      "partClasses": [
+        "Beast",
+        "Bird",
+        "Mech"
+      ],
+      "parts": {
+        "back": "bird-back-05",
+        "ears": "beast-ears-06",
+        "eyes": "beast-eyes-05",
+        "horn": "beast-horn-05",
+        "mouth": "beast-mouth-09",
+        "tail": "mech-tail-03"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "hope-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "hope-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "hope-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "hope-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "hope.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "hope-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "hope-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "hope-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "hope-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "hope-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "hope-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "hope-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 4,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/19",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/19-1",
+      "skill": "Mainspring",
+      "skillDesc": "Retain. Randomly deal 2 hits, gain 1 Fragment per unique enemy hit. If retained, +1 hit (Cap: +3 hits), lose 1 Fragment.",
+      "skillPart": "tail",
+      "tier": 4,
+      "trait": "Sniper"
+    },
+    "machito": {
+      "attack": "Tiny Dino",
+      "axieId": 18,
+      "class": "Reptile",
+      "kit": [
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Retain. Each time an enemy takes Bleed DMG, +10 Heal and add 1 copy of Pacu Card to your hand (Cap: +50 Heal and 5 Pacu)",
+          "name": "Tiny Dino",
+          "part": "mouth",
+          "partClass": "Reptile",
+          "partId": "reptile-mouth-03"
+        },
+        {
+          "abilityType": "Power",
+          "attackType": "Ranged",
+          "desc": "Innate. Target any ally. Whenever you play a card, this Axie +8 Shield. Can't stack. Exile.",
+          "name": "Bumpy",
+          "part": "horn",
+          "partClass": "Reptile",
+          "partId": "reptile-horn-12"
+        },
+        {
+          "abilityType": "Secret",
+          "attackType": "Ranged",
+          "desc": "Target any ally. +1 Bulwark. Next time an enemy uses a Skill or Secret Card, apply 6 Bleed.",
+          "name": "Croc",
+          "part": "back",
+          "partClass": "Reptile",
+          "partId": "reptile-back-12"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Innate. Taunt and apply Weak to all Enemies for 3 turns.",
+          "name": "Maraca",
+          "part": "tail",
+          "partClass": "Dusk",
+          "partId": "dusk-tail-01"
+        }
+      ],
+      "name": "Machito",
+      "partClasses": [
+        "Dusk",
+        "Reptile"
+      ],
+      "parts": {
+        "back": "reptile-back-12",
+        "ears": "reptile-ears-06",
+        "eyes": "reptile-eyes-08",
+        "horn": "reptile-horn-12",
+        "mouth": "reptile-mouth-03",
+        "tail": "dusk-tail-01"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "machito-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "machito-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "machito-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "machito-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "machito.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "machito-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "machito-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "machito-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "machito-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "machito-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "machito-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "machito-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 5,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/18",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/18-1",
+      "skill": "Maraca",
+      "skillDesc": "Innate. Taunt and apply Weak to all Enemies for 3 turns.",
+      "skillPart": "tail",
+      "tier": 4,
+      "trait": "Spikes"
+    },
+    "mit": {
+      "attack": "Kidney Bean",
+      "axieId": 25,
+      "class": "Plant",
+      "kit": [
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "Target any enemy. Heal self for 15 HP. On target with Sleep, apply 4 Sleep.",
+          "name": "Kidney Bean",
+          "part": "mouth",
+          "partClass": "Plant",
+          "partId": "plant-mouth-05"
+        },
+        {
+          "abilityType": "Power",
+          "attackType": "Ranged",
+          "desc": "Innate. Target any ally. Apply 3 Meditate. Exile.",
+          "name": "Dream Eater",
+          "part": "horn",
+          "partClass": "Dusk",
+          "partId": "dusk-horn-03"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "Target any enemy. On target with Sleep, +15 DMG & apply 4 Sleep.",
+          "name": "Meadow Blanket",
+          "part": "back",
+          "partClass": "Plant",
+          "partId": "plant-back-09"
+        },
+        {
+          "abilityType": "Secret",
+          "attackType": "Ranged",
+          "desc": "Target any ally. +1 Bulwark. Next turn, if the target is attacked, apply 2 Sleep to the attacker.",
+          "name": "Drowsy Moss",
+          "part": "tail",
+          "partClass": "Plant",
+          "partId": "plant-tail-09"
+        }
+      ],
+      "name": "Mit",
+      "partClasses": [
+        "Dusk",
+        "Plant"
+      ],
+      "parts": {
+        "back": "plant-back-09",
+        "ears": "plant-ears-03",
+        "eyes": "beast-eyes-09",
+        "horn": "dusk-horn-03",
+        "mouth": "plant-mouth-05",
+        "tail": "plant-tail-09"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "mit-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "mit-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "mit-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "mit-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "mit.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "mit-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "mit-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "mit-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "mit-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "mit-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "mit-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "mit-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 4,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/25",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/25-1",
+      "skill": "Dream Eater",
+      "skillDesc": "Innate. Target any ally. Apply 3 Meditate. Exile.",
+      "skillPart": "horn",
+      "tier": 4,
+      "trait": "Mage"
+    },
+    "momo": {
+      "attack": "Feathery Dart",
+      "axieId": 12,
+      "class": "Bird",
+      "kit": [
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Ambush. Deal 3 hits.",
+          "name": "Feathery Dart",
+          "part": "mouth",
+          "partClass": "Bird",
+          "partId": "bird-mouth-01"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any ally. +1 Lil Bro to Discard Pile.",
+          "name": "Big Sister",
+          "part": "horn",
+          "partClass": "Bird",
+          "partId": "bird-horn-01"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Randomly deal 3 hits. On your next turn, add 1 Feather Dagger to your hand per unique Enemy hit. (Cap: 2 Feather Dagger)",
+          "name": "Lil Bro",
+          "part": "back",
+          "partClass": "Bird",
+          "partId": "bird-back-01"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Ambush. Deal 5 hits. Exile all Feather Daggers from Hand, bonus +5 DMG per card Exiled.",
+          "name": "Death Shower",
+          "part": "tail",
+          "partClass": "Bird",
+          "partId": "bird-tail-01"
+        }
+      ],
+      "name": "Momo",
+      "partClasses": [
+        "Bird"
+      ],
+      "parts": {
+        "back": "bird-back-01",
+        "ears": "bug-ears-03",
+        "eyes": "bird-eyes-01",
+        "horn": "bird-horn-01",
+        "mouth": "bird-mouth-01",
+        "tail": "bird-tail-01"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "momo-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "momo-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "momo-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "momo-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "momo.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "momo-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "momo-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "momo-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "momo-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "momo-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "momo-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "momo-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 5,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/12",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/12-1",
+      "skill": "Death Shower",
+      "skillDesc": "Ambush. Deal 5 hits. Exile all Feather Daggers from Hand, bonus +5 DMG per card Exiled.",
+      "skillPart": "tail",
+      "tier": 1,
+      "trait": "Sniper"
+    },
+    "noir": {
+      "attack": "Ranchu",
+      "axieId": 23,
+      "class": "Aquatic",
+      "kit": [
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Attack all enemies. +1 Bubble to allied Axies.",
+          "name": "Ranchu",
+          "part": "mouth",
+          "partClass": "Aquatic",
+          "partId": "aquatic-mouth-01"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Ambush. +2 Taunt to self and the target.",
+          "name": "Beast Bun",
+          "part": "horn",
+          "partClass": "Beast",
+          "partId": "beast-horn-09"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Retain. Shield allied Axies. +1 Bulwark. Target any ally. Convert up to 3 Bubble into Bubble Bomb.",
+          "name": "Sponge",
+          "part": "back",
+          "partClass": "Aquatic",
+          "partId": "aquatic-back-08"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any ally. +1 Bulwark. +7 Shield per Bubble & Bubble Bomb on the target.",
+          "name": "Oranda",
+          "part": "tail",
+          "partClass": "Aquatic",
+          "partId": "aquatic-tail-03"
+        }
+      ],
+      "name": "Noir",
+      "partClasses": [
+        "Aquatic",
+        "Beast"
+      ],
+      "parts": {
+        "back": "aquatic-back-08",
+        "ears": "aquatic-ears-10",
+        "eyes": "aquatic-eyes-03",
+        "horn": "beast-horn-09",
+        "mouth": "aquatic-mouth-01",
+        "tail": "aquatic-tail-03"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "noir-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "noir-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "noir-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "noir-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "noir.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "noir-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "noir-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "noir-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "noir-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "noir-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "noir-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "noir-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 5,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/23",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/23-1",
+      "skill": "Sponge",
+      "skillDesc": "Retain. Shield allied Axies. +1 Bulwark. Target any ally. Convert up to 3 Bubble into Bubble Bomb.",
+      "skillPart": "back",
+      "tier": 4,
+      "trait": "Bastion"
+    },
+    "olek": {
+      "attack": "Beetroot",
+      "axieId": 2,
+      "class": "Plant",
+      "kit": [
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "Consume up to 4 Leaf. Randomly deal 3 hits. +8 DMG per Leaf consumed.",
+          "name": "Beetroot",
+          "part": "mouth",
+          "partClass": "Plant",
+          "partId": "plant-mouth-01"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "+35 Shield to self and an allied Axie with the lowest HP.",
+          "name": "Rusty Helm",
+          "part": "horn",
+          "partClass": "Mech",
+          "partId": "mech-horn-03"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any ally. Apply 1 Leaf & 2 Cleanser.",
+          "name": "Succulent",
+          "part": "back",
+          "partClass": "Plant",
+          "partId": "plant-back-01"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "All allies are healed & +1 Leaf. Bonus 1 Leaf if there is another ally Plant Axie alive.",
+          "name": "Sprout",
+          "part": "tail",
+          "partClass": "Plant",
+          "partId": "plant-tail-01"
+        }
+      ],
+      "name": "Olek",
+      "partClasses": [
+        "Mech",
+        "Plant"
+      ],
+      "parts": {
+        "back": "plant-back-01",
+        "ears": "reptile-ears-03",
+        "eyes": "plant-eyes-01",
+        "horn": "mech-horn-03",
+        "mouth": "plant-mouth-01",
+        "tail": "plant-tail-01"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "olek-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "olek-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "olek-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "olek-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "olek.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "olek-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "olek-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "olek-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "olek-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "olek-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "olek-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "olek-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 4,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/2",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/2-1",
+      "skill": "Rusty Helm",
+      "skillDesc": "+35 Shield to self and an allied Axie with the lowest HP.",
+      "skillPart": "horn",
+      "tier": 1,
+      "trait": "Bastion"
+    },
+    "pomodoro": {
+      "attack": "Platypus",
+      "axieId": 17,
+      "class": "Bug",
+      "kit": [
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Retain. Shield allies. +10 Shield per turn Retained. (Cap: +40 Shield)",
+          "name": "Platypus",
+          "part": "mouth",
+          "partClass": "Beast",
+          "partId": "beast-mouth-07"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any ally. +1 Bulwark. Draw 1 Card. Ethereal. When banished, grant 25 Shield to allies.",
+          "name": "Lost Dream",
+          "part": "horn",
+          "partClass": "Mech",
+          "partId": "mech-horn-05"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "Get +10 ATK whenever this Axie grants Shield to other allies. (cap: 60 ATK)",
+          "name": "Village Hero",
+          "part": "back",
+          "partClass": "Mech",
+          "partId": "mech-back-03"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Retain. Target any ally. +1 Bulwark. +2 Cocoon. +1 Cocoon per turn Retained. (Cap: +3 Cocoon)",
+          "name": "Leaf Bug",
+          "part": "tail",
+          "partClass": "Bug",
+          "partId": "bug-tail-05"
+        }
+      ],
+      "name": "Pomodoro",
+      "partClasses": [
+        "Beast",
+        "Bug",
+        "Mech"
+      ],
+      "parts": {
+        "back": "mech-back-03",
+        "ears": "bug-ears-08",
+        "eyes": "bird-eyes-03",
+        "horn": "mech-horn-05",
+        "mouth": "beast-mouth-07",
+        "tail": "bug-tail-05"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "pomodoro-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "pomodoro-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "pomodoro-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "pomodoro-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "pomodoro.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "pomodoro-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "pomodoro-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "pomodoro-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "pomodoro-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "pomodoro-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "pomodoro-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "pomodoro-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 2,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/17",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/17-1",
+      "skill": "Lost Dream",
+      "skillDesc": "Target any ally. +1 Bulwark. Draw 1 Card. Ethereal. When banished, grant 25 Shield to allies.",
+      "skillPart": "horn",
+      "tier": 2,
+      "trait": "Bastion"
+    },
+    "puffy": {
+      "attack": "Puff",
+      "axieId": 3,
+      "class": "Aquatic",
+      "kit": [
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "Ambush. If target isn't Alert, Steal (25% of unblocked DMG) as HP.",
+          "name": "Puff",
+          "part": "mouth",
+          "partClass": "Beast",
+          "partId": "beast-mouth-03"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "Randomly deal 2 hits. +1 Bubble to allied Axies.",
+          "name": "Jellytacle",
+          "part": "horn",
+          "partClass": "Aquatic",
+          "partId": "aquatic-horn-01"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "Retain.+1 Fragment if you have Skill Card on Hand.",
+          "name": "Tiny Dino",
+          "part": "back",
+          "partClass": "Reptile",
+          "partId": "reptile-back-03"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Consume all Energy. For each Energy Consumed, +5 DMG & randomly deal 1 hits.",
+          "name": "Puff",
+          "part": "tail",
+          "partClass": "Aquatic",
+          "partId": "aquatic-tail-01"
+        }
+      ],
+      "name": "Puffy",
+      "partClasses": [
+        "Aquatic",
+        "Beast",
+        "Reptile"
+      ],
+      "parts": {
+        "back": "reptile-back-03",
+        "ears": "aquatic-ears-01",
+        "eyes": "aquatic-eyes-01",
+        "horn": "aquatic-horn-01",
+        "mouth": "beast-mouth-03",
+        "tail": "aquatic-tail-01"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "puffy-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "puffy-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "puffy-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "puffy-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "puffy.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "puffy-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "puffy-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "puffy-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "puffy-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "puffy-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "puffy-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "puffy-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 4,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/3",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/3-1",
+      "skill": "Jellytacle",
+      "skillDesc": "Randomly deal 2 hits. +1 Bubble to allied Axies.",
+      "skillPart": "horn",
+      "tier": 1,
+      "trait": "Assassin"
+    },
+    "rouge": {
+      "attack": "Ranchu",
+      "axieId": 24,
+      "class": "Aquatic",
+      "kit": [
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Attack all enemies. +1 Bubble to allied Axies.",
+          "name": "Ranchu",
+          "part": "mouth",
+          "partClass": "Aquatic",
+          "partId": "aquatic-mouth-01"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any ally. Target's next Single Attack +65 DMG.",
+          "name": "Lotus",
+          "part": "horn",
+          "partClass": "Plant",
+          "partId": "plant-horn-09"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Retain. Shield allied Axies. +1 Bulwark. Target any ally. Convert up to 3 Bubble into Bubble Bomb.",
+          "name": "Sponge",
+          "part": "back",
+          "partClass": "Aquatic",
+          "partId": "aquatic-back-08"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Target any enemy. Dispel: 3.",
+          "name": "Eye Wing",
+          "part": "tail",
+          "partClass": "Bug",
+          "partId": "bug-tail-07"
+        }
+      ],
+      "name": "Rouge",
+      "partClasses": [
+        "Aquatic",
+        "Bug",
+        "Plant"
+      ],
+      "parts": {
+        "back": "aquatic-back-08",
+        "ears": "aquatic-ears-10",
+        "eyes": "aquatic-eyes-05",
+        "horn": "plant-horn-09",
+        "mouth": "aquatic-mouth-01",
+        "tail": "bug-tail-07"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "rouge-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "rouge-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "rouge-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "rouge-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "rouge.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "rouge-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "rouge-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "rouge-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "rouge-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "rouge-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "rouge-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "rouge-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 4,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/24",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/24-1",
+      "skill": "Lotus",
+      "skillDesc": "Target any ally. Target's next Single Attack +65 DMG.",
+      "skillPart": "horn",
+      "tier": 3,
+      "trait": "Sniper"
+    },
+    "shillin": {
+      "attack": "Nose Drill",
+      "axieId": 11,
+      "class": "Bug",
+      "kit": [
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "On target with Shield, +50% DMG",
+          "name": "Nose Drill",
+          "part": "mouth",
+          "partClass": "Bug",
+          "partId": "bug-mouth-01"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "On targets with Fragile, +20 DMG & deal Pure DMG; otherwise, apply 3 Fragile.",
+          "name": "Shocker",
+          "part": "horn",
+          "partClass": "Mech",
+          "partId": "mech-horn-01"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "On your next turn, +1 copy of this Axie's other Attack Cards to Hand. Banish.",
+          "name": "Paper Wing",
+          "part": "back",
+          "partClass": "Bird",
+          "partId": "bird-back-03"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Retain. Target any enemy. Deal 120% of shield DMG done as Splash DMG.",
+          "name": "Shield Shattering",
+          "part": "tail",
+          "partClass": "Bug",
+          "partId": "bug-tail-03"
+        }
+      ],
+      "name": "Shillin",
+      "partClasses": [
+        "Bird",
+        "Bug",
+        "Mech"
+      ],
+      "parts": {
+        "back": "bird-back-03",
+        "ears": "bug-ears-01",
+        "eyes": "bug-eyes-01",
+        "horn": "mech-horn-01",
+        "mouth": "bug-mouth-01",
+        "tail": "bug-tail-03"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "shillin-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "shillin-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "shillin-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "shillin-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "shillin.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "shillin-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "shillin-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "shillin-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "shillin-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "shillin-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "shillin-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "shillin-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 4,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/11",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/11-1",
+      "skill": "Shield Shattering",
+      "skillDesc": "Retain. Target any enemy. Deal 120% of shield DMG done as Splash DMG.",
+      "skillPart": "tail",
+      "tier": 2,
+      "trait": "Assassin"
+    },
+    "shufen": {
+      "attack": "Maggot",
+      "axieId": 15,
+      "class": "Dusk",
+      "kit": [
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "+4 DMG per Bad Luck (Cap: +80). Initial: Discard 1 random Card from Enemy Draw Pile.",
+          "name": "Maggot",
+          "part": "mouth",
+          "partClass": "Bug",
+          "partId": "bug-mouth-03"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any Ally. Apply 3 Weak to all enemies. If Enemy has Reshuffled deck, add 1 Jinx to Enemy Draw Pile.",
+          "name": "Darksea Jellyfish",
+          "part": "horn",
+          "partClass": "Aquatic",
+          "partId": "aquatic-horn-03"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Retain. If both player Draw Pile has at least 2 Cards, both player draw 2 cards.",
+          "name": "Greedy Urn",
+          "part": "back",
+          "partClass": "Dusk",
+          "partId": "dusk-back-01"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Ambush. Initial: Add 1 Jinx to Enemy Draw Pile; otherwise, to Discard Pile.",
+          "name": "Tadpole",
+          "part": "tail",
+          "partClass": "Aquatic",
+          "partId": "aquatic-tail-06"
+        }
+      ],
+      "name": "Shufen",
+      "partClasses": [
+        "Aquatic",
+        "Bug",
+        "Dusk"
+      ],
+      "parts": {
+        "back": "dusk-back-01",
+        "ears": "bug-ears-05",
+        "eyes": "dusk-eyes-07",
+        "horn": "aquatic-horn-03",
+        "mouth": "bug-mouth-03",
+        "tail": "aquatic-tail-06"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "shufen-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "shufen-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "shufen-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "shufen-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "shufen.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "shufen-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "shufen-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "shufen-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "shufen-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "shufen-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "shufen-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "shufen-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 2,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/15",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/15-1",
+      "skill": "Darksea Jellyfish",
+      "skillDesc": "Target any Ally. Apply 3 Weak to all enemies. If Enemy has Reshuffled deck, add 1 Jinx to Enemy Draw Pile.",
+      "skillPart": "horn",
+      "tier": 5,
+      "trait": "Assassin"
+    },
+    "temujin": {
+      "attack": "Shishi",
+      "axieId": 14,
+      "class": "Dawn",
+      "kit": [
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Attack all enemies. Apply 2 Fear to Enemies take unblocked DMG.",
+          "name": "Shishi",
+          "part": "mouth",
+          "partClass": "Beast",
+          "partId": "beast-mouth-13"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "Randomly deal 1 hit, +50% DMG on target with Fear, +50% DMG on furthest enemy.",
+          "name": "Small Yak",
+          "part": "horn",
+          "partClass": "Beast",
+          "partId": "beast-horn-11"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any Ally. Whenever an enemy take damage from Cursed Cards, +7 Heal (Cap: +70). Deal DMG equal to 25% Stat to lowest HP Enemy Axie.",
+          "name": "White Gourd",
+          "part": "back",
+          "partClass": "Dawn",
+          "partId": "dawn-back-05"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any Enemy, Reverse Heal. Whenever an enemy take damage from Cursed Cards, +7 Heal (Cap: +70). Heal equal to 25% Stat for lowest HP allied Axie.",
+          "name": "Black Gourd",
+          "part": "tail",
+          "partClass": "Dusk",
+          "partId": "dusk-tail-03"
+        }
+      ],
+      "name": "Temujin",
+      "partClasses": [
+        "Beast",
+        "Dawn",
+        "Dusk"
+      ],
+      "parts": {
+        "back": "dawn-back-05",
+        "ears": "dawn-ears-01",
+        "eyes": "dawn-eyes-01",
+        "horn": "beast-horn-11",
+        "mouth": "beast-mouth-13",
+        "tail": "dusk-tail-03"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "temujin-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "temujin-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "temujin-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "temujin-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "temujin.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "temujin-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "temujin-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "temujin-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "temujin-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "temujin-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "temujin-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "temujin-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 3,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/14",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/14-1",
+      "skill": "Black Gourd",
+      "skillDesc": "Target any Enemy, Reverse Heal. Whenever an enemy take damage from Cursed Cards, +7 Heal (Cap: +70). Heal equal to 25% Stat for lowest HP allied Axie.",
+      "skillPart": "tail",
+      "tier": 5,
+      "trait": "Spikes"
+    },
+    "tripp": {
+      "attack": "Nut Cracker",
+      "axieId": 5,
+      "class": "Beast",
+      "kit": [
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "This Axie's Nut Cracker Cards get +10 ATK. (Cap: +60 ATK)",
+          "name": "Nut Cracker",
+          "part": "mouth",
+          "partClass": "Beast",
+          "partId": "beast-mouth-02"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "+1 Bulwark. Draw 1 Card. If a Nut Cracker Card is drawn, +10 ATK to Nut Cracker Cards in your Deck then Banish this Card.",
+          "name": "Acorn Cap",
+          "part": "horn",
+          "partClass": "Plant",
+          "partId": "plant-horn-07"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any ally. +10 Base Heal whenever you play a Nut Cracker Card. (Cap: +60 Base Heal)",
+          "name": "Nutdha Statue",
+          "part": "back",
+          "partClass": "Dawn",
+          "partId": "dawn-back-01"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "This Axie's Nut Cracker Cards get +10 ATK. (Cap: +60 ATK)",
+          "name": "Nut Cracker",
+          "part": "tail",
+          "partClass": "Beast",
+          "partId": "beast-tail-10"
+        }
+      ],
+      "name": "Tripp",
+      "partClasses": [
+        "Beast",
+        "Dawn",
+        "Plant"
+      ],
+      "parts": {
+        "back": "dawn-back-01",
+        "ears": "beast-ears-04",
+        "eyes": "beast-eyes-07",
+        "horn": "plant-horn-07",
+        "mouth": "beast-mouth-02",
+        "tail": "beast-tail-10"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "tripp-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "tripp-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "tripp-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "tripp-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "tripp.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "tripp-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "tripp-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "tripp-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "tripp-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "tripp-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "tripp-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "tripp-awakened-move.png",
+          "time": 0.675
+        }
+      },
+      "purity": 4,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/5",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/5-1",
+      "skill": "Acorn Cap",
+      "skillDesc": "+1 Bulwark. Draw 1 Card. If a Nut Cracker Card is drawn, +10 ATK to Nut Cracker Cards in your Deck then Banish this Card.",
+      "skillPart": "horn",
+      "tier": 2,
+      "trait": "Vanguard"
+    },
+    "venoki": {
+      "attack": "Chemical Fang",
+      "axieId": 7,
+      "class": "Reptile",
+      "kit": [
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "Heal 1 HP per Poison on the target.",
+          "name": "Chemical Fang",
+          "part": "mouth",
+          "partClass": "Reptile",
+          "partId": "reptile-mouth-01"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "+2 DMG per Poison on the target.",
+          "name": "Poison Tube",
+          "part": "horn",
+          "partClass": "Reptile",
+          "partId": "reptile-horn-01"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any ally. Apply 3 Poison to a random Enemy 3 times.",
+          "name": "Death Shroom",
+          "part": "back",
+          "partClass": "Plant",
+          "partId": "plant-back-05"
+        },
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any ally. Limit: 3. Apply 3 Poison to a random Enemy. +1 Centipede to Discard Pile.",
+          "name": "Centipede",
+          "part": "tail",
+          "partClass": "Bug",
+          "partId": "bug-tail-01"
+        }
+      ],
+      "name": "Venoki",
+      "partClasses": [
+        "Bug",
+        "Plant",
+        "Reptile"
+      ],
+      "parts": {
+        "back": "plant-back-05",
+        "ears": "reptile-ears-01",
+        "eyes": "reptile-eyes-01",
+        "horn": "reptile-horn-01",
+        "mouth": "reptile-mouth-01",
+        "tail": "bug-tail-01"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "venoki-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "venoki-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "venoki-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "venoki-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "venoki.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "venoki-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "venoki-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "venoki-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "venoki-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "venoki-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "venoki-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "venoki-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 4,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/7",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/7-1",
+      "skill": "Death Shroom",
+      "skillDesc": "Target any ally. Apply 3 Poison to a random Enemy 3 times.",
+      "skillPart": "back",
+      "tier": 3,
+      "trait": "Spikes"
+    },
+    "xia": {
+      "attack": "Hazelnut",
+      "axieId": 21,
+      "class": "Beast",
+      "kit": [
+        {
+          "abilityType": "Skill",
+          "attackType": "Ranged",
+          "desc": "Target any ally. +1 Bulwark. +1 Rage.",
+          "name": "Hazelnut",
+          "part": "mouth",
+          "partClass": "Plant",
+          "partId": "plant-mouth-03"
+        },
+        {
+          "abilityType": "AttackMelee",
+          "attackType": "Melee",
+          "desc": "+1 Rage to allied Axies. Bonus 1 Rage if this Axie has > 30 Shield.",
+          "name": "Rocky Skull",
+          "part": "horn",
+          "partClass": "Beast",
+          "partId": "beast-horn-01"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Attack all enemies. +1 Shield per unblocked DMG.",
+          "name": "Pangolin Slayer",
+          "part": "back",
+          "partClass": "Beast",
+          "partId": "beast-back-01"
+        },
+        {
+          "abilityType": "AttackRanged",
+          "attackType": "Ranged",
+          "desc": "Attack all enemies. +1 Shield per unblocked DMG.",
+          "name": "Pangolin",
+          "part": "tail",
+          "partClass": "Beast",
+          "partId": "beast-tail-05"
+        }
+      ],
+      "name": "Xia",
+      "partClasses": [
+        "Beast",
+        "Plant"
+      ],
+      "parts": {
+        "back": "beast-back-01",
+        "ears": "beast-ears-12",
+        "eyes": "reptile-eyes-03",
+        "horn": "beast-horn-01",
+        "mouth": "plant-mouth-03",
+        "tail": "beast-tail-05"
+      },
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "xia-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "xia-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "xia-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "xia-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "xia.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "xia-move.png",
+          "time": 0.338
+        }
+      },
+      "posesAwakened": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "xia-awakened-attack.png",
+          "time": 0.375
+        },
+        "cast": {
+          "animation": "attack/ranged/cast-high",
+          "file": "xia-awakened-cast.png",
+          "time": 0.367
+        },
+        "death": {
+          "animation": "defense/hit-by-normal-dramatic",
+          "file": "xia-awakened-death.png",
+          "time": 0.45
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal-crit",
+          "file": "xia-awakened-hit.png",
+          "time": 0.208
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "xia-awakened.png",
+          "time": 0.0
+        },
+        "move": {
+          "animation": "action/run",
+          "file": "xia-awakened-move.png",
+          "time": 0.338
+        }
+      },
+      "purity": 4,
+      "skeleton": "Assets/OriginsKit/PvE/Starters/21",
+      "skeletonAwakened": "Assets/OriginsKit/PvE/Starters/21-1",
+      "skill": "Pangolin",
+      "skillDesc": "Attack all enemies. +1 Shield per unblocked DMG.",
+      "skillPart": "tail",
+      "tier": 3,
+      "trait": "Bastion"
+    }
+  },
+  "boss": {
+    "chimera_phase1": {
+      "chimera": "gray-wolf",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "chimera_phase1-attack.png",
+          "time": 0.39
+        },
+        "death": {
+          "animation": "defense/hit-die",
+          "file": "chimera_phase1-death.png",
+          "time": 0.1
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal",
+          "file": "chimera_phase1-hit.png",
+          "time": 0.25
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "chimera_phase1.png",
+          "time": 0.0
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Chimeras/gray-wolf"
+    },
+    "chimera_phase2": {
+      "chimera": "werewolf",
+      "poses": {
+        "attack": {
+          "animation": "attack/melee/normal-attack",
+          "file": "chimera_phase2-attack.png",
+          "time": 0.825
+        },
+        "death": {
+          "animation": "defense/hit-die",
+          "file": "chimera_phase2-death.png",
+          "time": 2.28
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal",
+          "file": "chimera_phase2-hit.png",
+          "time": 0.917
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "chimera_phase2.png",
+          "time": 0.0
+        }
+      },
+      "skeleton": "Assets/OriginsKit/PvE/Chimeras/werewolf"
+    },
+    "chimera_token": {
+      "chimera": "gray-wolf"
+    }
+  },
+  "classes": {
+    "Aquatic": {
+      "arena": "arena-aquatic.jpg",
+      "gtkIcon": "aquatic",
+      "icon": "aquatic.png",
+      "tint": "#02c1db"
+    },
+    "Beast": {
+      "arena": "arena-beast.jpg",
+      "gtkIcon": "beast",
+      "icon": "beast.png",
+      "tint": "#ffa400"
+    },
+    "Bird": {
+      "arena": "arena-bird.jpg",
+      "gtkIcon": "bird",
+      "icon": "bird.png",
+      "tint": "#e75393"
+    },
+    "Bug": {
+      "arena": "arena-bug.jpg",
+      "gtkIcon": "bug",
+      "icon": "bug.png",
+      "tint": "#fe4434"
+    },
+    "Dawn": {
+      "arena": "arena-dawn.jpg",
+      "gtkIcon": "hidden_2",
+      "icon": "dawn.png",
+      "tint": "#8facff"
+    },
+    "Dusk": {
+      "arena": "arena-dusk.jpg",
+      "gtkIcon": "hidden_3",
+      "icon": "dusk.png",
+      "tint": "#0e759e"
+    },
+    "Mech": {
+      "arena": "arena-mech.jpg",
+      "gtkIcon": "hidden_1",
+      "icon": "mech.png",
+      "tint": "#cac2db"
+    },
+    "Plant": {
+      "arena": "arena-plant.jpg",
+      "gtkIcon": "plant",
+      "icon": "plant.png",
+      "tint": "#6bc603"
+    },
+    "Reptile": {
+      "arena": "arena-reptile.jpg",
+      "gtkIcon": "reptile",
+      "icon": "reptile.png",
+      "tint": "#a956cb"
+    }
+  },
+  "icons": {
+    "daily": {
+      "arcane": "power_energy_master",
+      "bloodmoon": "bloodmoon",
+      "bounty": "rune_neutral_utility_1",
+      "glass": "buff_dmg_boost",
+      "ironwall": "rune_mech_defensive_1",
+      "slowtime": "debuff_disarmed"
+    },
+    "intent": [
+      "attack-and-buff.png",
+      "attack-and-debuff.png",
+      "attack-and-defend.png",
+      "attack-melee.png",
+      "attack-ranged.png",
+      "buff.png",
+      "dangerous-action.png",
+      "debuff.png",
+      "defend-and-buff.png",
+      "defend-and-debuff.png",
+      "moderate-attack.png",
+      "moderate-defend.png",
+      "secret-action.png",
+      "strong-attack.png",
+      "strong-defend.png",
+      "weak-attack.png",
+      "weak-defend.png"
+    ],
+    "node": [
+      "node_current.png",
+      "node_default.png",
+      "node_draw.png",
+      "node_lose.png",
+      "node_lose_none.png",
+      "node_win.png"
+    ],
+    "part": [
+      "beast-eyes.png",
+      "beast-ears.png",
+      "beast-mouth.png",
+      "beast-horn.png",
+      "beast-back.png",
+      "beast-tail.png",
+      "bug-eyes.png",
+      "bug-ears.png",
+      "bug-mouth.png",
+      "bug-horn.png",
+      "bug-back.png",
+      "bug-tail.png",
+      "bird-eyes.png",
+      "bird-ears.png",
+      "bird-mouth.png",
+      "bird-horn.png",
+      "bird-back.png",
+      "bird-tail.png",
+      "plant-eyes.png",
+      "plant-ears.png",
+      "plant-mouth.png",
+      "plant-horn.png",
+      "plant-back.png",
+      "plant-tail.png",
+      "aquatic-eyes.png",
+      "aquatic-ears.png",
+      "aquatic-mouth.png",
+      "aquatic-horn.png",
+      "aquatic-back.png",
+      "aquatic-tail.png",
+      "reptile-eyes.png",
+      "reptile-ears.png",
+      "reptile-mouth.png",
+      "reptile-horn.png",
+      "reptile-back.png",
+      "reptile-tail.png"
+    ],
+    "relic": {
+      "adrenaline": "Potion/potion_haste_large",
+      "arcane": "Weapon/gold_staff",
+      "banner": "Weapon/long_bow",
+      "battery": "Shell/shell_shock",
+      "bloodmoon": "Shell/shell_burn",
+      "bounty": "Shell/shell_concentrated_damage_medium",
+      "capacitor": "Potion/potion_energy_large",
+      "cloak": "Potion/potion_stealth_medium",
+      "crest": "Armor/steel_shield",
+      "elixir": "Potion/potion_health_large",
+      "gem": "Accessory/gold_ruby_ring",
+      "glass": "Potion/potion_might_small",
+      "ironwall": "Armor/iron_plate_mail",
+      "mint": "Potion/potion_energy_small",
+      "runestone": "Weapon/silver_staff",
+      "scope": "Weapon/composite_bow",
+      "scrap": "Accessory/gold_ring",
+      "secondwind": "Potion/potion_cure_ailment_large",
+      "slowtime": "Shell/shell_slow",
+      "spores": "Shell/shell_area_damage_small",
+      "tax": "Accessory/gold_necklace",
+      "watch": "Potion/potion_haste_medium"
+    },
+    "status": {
+      "alert": "buff_alert",
+      "bleed": "debuff_bleed",
+      "bubble": "buff_bubble",
+      "bulwark": "buff_bulwark",
+      "cleanser": "buff_cleanser",
+      "curse": "power_cursed_doll",
+      "fear": "debuff_fear",
+      "fragile": "debuff_fragile",
+      "fury": "buff_fury",
+      "heal_block": "debuff_heal_block",
+      "leaf": "buff_leaf",
+      "meditate": "buff_meditate",
+      "poison": "debuff_poison",
+      "rage": "buff_rage",
+      "reflect": "secret_reflect",
+      "sleep": "debuff_sleep",
+      "stealth": "buff_stealth",
+      "stunned": "debuff_stunned",
+      "taunt": "neutral_taunt",
+      "weak": "debuff_weak"
+    },
+    "trait": {
+      "Assassin": "debuff_death_mark",
+      "Bastion": "power_advance_shielding",
+      "Mage": "buff_meditate",
+      "Sniper": "second_target",
+      "Spikes": "buff_spike",
+      "Vanguard": "buff_rage"
+    }
+  },
+  "note": "Units are the 19 official Origins starter Axies. Body sprites are frames posed out of the kit Spine 3.8 skeletons; every Axie ships a base body and its awakened (stage-1) body. Class and part icons come from the gtk2d toolkit; status, intent, node and HP art and the arenas are shipped kit art.",
+  "sources": {
+    "gtk2d": "https://github.com/axieinfinity/unity-axie-gtk2d",
+    "origins-kit": "https://github.com/axieinfinity/axie-origins-asset-kit"
+  },
+  "summons": {
+    "hermitcrab": {
+      "poses": {
+        "attack": {
+          "animation": "battle/taunt",
+          "file": "hermitcrab-attack.png",
+          "time": 0.875
+        },
+        "death": {
+          "animation": "defense/hit-die",
+          "file": "hermitcrab-death.png",
+          "time": 0.1
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal",
+          "file": "hermitcrab-hit.png",
+          "time": 0.333
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "hermitcrab.png",
+          "time": 0.0
+        }
+      },
+      "skeleton": "Assets/OriginsKit/Summoners/truefanhermitcrab"
+    },
+    "sparrow": {
+      "poses": {
+        "attack": {
+          "animation": "attack/ranged/cast",
+          "file": "sparrow-attack.png",
+          "time": 0.583
+        },
+        "death": {
+          "animation": "defense/hit-die",
+          "file": "sparrow-death.png",
+          "time": 0.2
+        },
+        "hit": {
+          "animation": "defense/hit-by-normal",
+          "file": "sparrow-hit.png",
+          "time": 0.25
+        },
+        "idle": {
+          "animation": "action/idle/normal",
+          "file": "sparrow.png",
+          "time": 0.0
+        }
+      },
+      "skeleton": "Assets/OriginsKit/Summoners/sparrow"
+    }
+  }
+}
