@@ -2695,6 +2695,18 @@
       "Sniper": "second_target",
       "Spikes": "buff_spike",
       "Vanguard": "buff_rage"
+    },
+    "ui": {
+      "avatar-frame.png": "PvE/UI/InBattle/avatar_frame.png",
+      "energy-jar.png": "PvE/UI/InBattle/energy_jar.png",
+      "frame-back.png": "PvE/UI/Frames/frame_back.png",
+      "frame-border.png": "PvE/UI/Frames/frame_border.png",
+      "hp-fill.png": "PvE/UI/HpBar2/hp-small.png",
+      "hp-track.png": "PvE/UI/HpBar2/hp-bar-small.png",
+      "icon-shield.png": "PvE/UI/InBattle/icon_shield.png",
+      "name-panel.png": "PvE/UI/InBattle/name_panel.png",
+      "stage-boss.png": "PvE/UI/Chapter/icon_stage_boss.png",
+      "star.png": "PvE/UI/Frames/star.png"
     }
   },
   "note": "Units are the 19 official Origins starter Axies. Body sprites are frames posed out of the kit Spine 3.8 skeletons; every Axie ships a base body and its awakened (stage-1) body. Class and part icons come from the gtk2d toolkit; status, intent, node and HP art and the arenas are shipped kit art.",
